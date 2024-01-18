@@ -5,7 +5,7 @@ import React, { useState } from "react";
 import "./PageLayout.css";
 import NavBar from "./NavBar";
 import Countdown from "./Countdown";
-import WeatherApp from "./Weatherapp";
+import WeatherApp from "./WeatherApp";
 import SnacksList from "./SnacksList";
 import Snacks from "./Snacks";
 import WaitTimes from "./WaitTimes";

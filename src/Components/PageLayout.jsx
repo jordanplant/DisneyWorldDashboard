@@ -17,7 +17,6 @@ function PageLayout() {
         <div className="card-containers">
           <div className="title-bar card">
             <h1 className="text-gradient">Hello Disney World</h1>
-            <NavBar />
           </div>
           <div className="countdown-bar card">
             <h2 className="text-gradient">Days to go</h2>

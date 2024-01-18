@@ -1,5 +1,5 @@
 import React from "react";
-import styles from "./Snackslist.module.css";
+import styles from "./SnacksList.module.css";
 
 const Snacks = ({ snacks, handleComplete, handleEdit, handleDelete }) => {
   return (

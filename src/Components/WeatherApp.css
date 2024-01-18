@@ -1,0 +1,98 @@
+/*
+* Prefixed by https://autoprefixer.github.io
+* PostCSS: v8.4.14,
+* Autoprefixer: v10.4.7
+* Browsers: last 4 version
+*/
+
+:root {
+  --main-color: #00a9fe;
+  --light-color: #f7f7ff;
+  --dark-color: #2f3542;
+  --gradient: linear-gradient(135deg, #153677, #4e085f);
+  --gradientTwo: linear-gradient(135deg, #00fee5, #6f47ae);
+  --opaque: #f7f7ffe9;
+}
+
+.weather {
+  /* box-sizing: border-box; */
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  color: #fff;
+}
+
+.weather-icon {
+  width: 50px;
+}
+
+.weather h3 {
+  font-size: 20px;
+  font-weight: 600;
+  margin: 0;
+}
+
+.weather h4 {
+  font-size: 20px;
+  font-weight: 400;
+  margin: 0px;
+  margin-top: -5px;
+}
+
+.weather p {
+  font-size: 10px;
+  margin: 5px;
+}
+
+.weather-text {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+  padding-left: 10px;
+}
+
+.details {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+.col {
+  display: flex;
+
+  align-items: center;
+  text-align: left;
+  padding-left: 20px;
+}
+
+.col svg {
+  width: 30px;
+}
+
+.humidity,
+.wind {
+  fill: var(--opaque);
+  font-size: 10px;
+  font-weight: bold;
+}
+
+.clearDay {
+  fill: #e8ce08;
+}
+
+.cloudyDay {
+  fill: #e9e5e5;
+}
+
+.drizzle,
+.rain {
+  fill: gray;
+}
+
+.thunderstorm {
+  fill: #000;
+}

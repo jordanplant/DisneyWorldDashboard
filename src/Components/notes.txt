@@ -1,0 +1,351 @@
+
+//NAVBAR
+<nav>
+<Link to="/">Home</Link>
+<NavLink to="/About">About</NavLink>
+</nav>
+
+:root {
+  --gradient: linear-gradient(135deg, #153677, #4e085f);
+  --mkGradient: linear-gradient(135deg, #4682b4, #ff69b4);
+  --epcotGradient: linear-gradient(135deg, #a9a9a9, #4682b4);
+  --hsGradient: linear-gradient(135deg, rgb(236, 80, 106), #f3cc56);
+  --akGradient: linear-gradient(135deg, #228b22, rgb(214, 201, 142));
+}
+
+nav {
+  margin: 0px;
+}
+
+nav span {
+  text-decoration: none;
+  color: inherit;
+}
+
+nav ul {
+  list-style: none;
+  margin: 0px;
+  padding: 0px;
+}
+
+nav ul {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+nav ul li {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  text-align: center;
+  padding: 20px 30px 20px 30px;
+  color: var(--light-color);
+}
+
+span {
+  padding-top: 5px;
+}
+
+nav li > span {
+  /* position: absolute; */
+  bottom: 12px;
+  font-size: 10px;
+  opacity: 1;
+  transform: translateY(5px);
+  -webkit-transform: translateY(5px);
+  transition: transform 0.3s,
+    opacity 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  -webkit-transition: transform 0.3s,
+    opacity 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+nav li.active > span {
+  opacity: 0;
+  transform: translateY(70px);
+}
+
+nav li img {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  font-size: 24px;
+  border-radius: 100%;
+  background-color: var(--light-color);
+  transform: scale(1);
+  transition: transform 0.3s, background-color 0.3s;
+  transition-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+nav li.active {
+  transform: scale(1.65);
+  background: transparent;
+  box-shadow: none;
+}
+
+/* nav span {
+  top: 65%;
+} */
+
+/* .img {
+  fill: var(--light-color);
+} */
+
+.WDW_logo {
+  position: relative;
+  left: 1px;
+  height: 25px;
+  fill: var(--light-color);
+}
+
+.magicKingdom,
+.epcot,
+.hollywoodStudios,
+.animalKingdom {
+  height: 30px;
+  /* bottom: 5px; */
+}
+
+.logo.enlarge {
+  position: relative;
+  /* bottom: 5px; */
+  height: 200px; /* Adjust the height value as needed */
+}
+
+.magicKingdom.enlarge {
+  position: relative;
+  bottom: 5px;
+  height: 200px;
+}
+.hollywoodStudios.enlarge {
+  position: relative;
+  bottom: 2px;
+  height: 200px;
+}
+
+.mk-circle.active {
+  position: relative;
+  /* left: 75px;
+  top: 35px; */
+  display: flex;
+  flex: row;
+  align-items: center;
+  justify-content: center;
+  width: 50px;
+  height: 50px;
+  font-size: 24px;
+  border-radius: 500%;
+  background-color: transparent;
+  transform: scale(1);
+  transition: transform 0.3s, background-color 0.3s;
+  transition-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  -webkit-transform: scale(1);
+  -webkit-transition: transform 0.3s, background-color 0.3s;
+  -webkit-transition-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+.mk-circle.active {
+  transform: scale(1.65);
+  background: transparent;
+  box-shadow: none;
+}
+
+.epcot-circle.active {
+  position: relative;
+  /* left: 175px;
+  top: 35px; */
+  display: flex;
+  flex: row;
+  align-items: center;
+  justify-content: center;
+  width: 50px;
+  height: 50px;
+  font-size: 24px;
+  border-radius: 500%;
+  background-color: transparent;
+  transform: scale(1);
+  transition: transform 0.3s, background-color 0.3s;
+  transition-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  -webkit-transform: scale(1);
+  -webkit-transition: transform 0.3s, background-color 0.3s;
+  -webkit-transition-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.epcot-circle.active {
+  transform: scale(1.65);
+  background: transparent;
+  box-shadow: none;
+}
+
+.home-circle.active {
+  position: relative;
+  /* left: 277px;
+  top: 35px; */
+  display: flex;
+  flex: row;
+  align-items: center;
+  justify-content: center;
+  width: 50px;
+  height: 50px;
+  font-size: 24px;
+  border-radius: 500%;
+  background-color: transparent;
+  transform: scale(1);
+  transition: transform 0.3s, background-color 0.3s;
+  transition-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  -webkit-transform: scale(1);
+  -webkit-transition: transform 0.3s, background-color 0.3s;
+  -webkit-transition-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.home-circle.active {
+  transform: scale(1.65);
+  background: transparent;
+  box-shadow: none;
+}
+.hs-circle.active {
+  position: relative;
+  /* left: 377px;
+  top: 35px; */
+  display: flex;
+  flex: row;
+  align-items: center;
+  justify-content: center;
+  width: 50px;
+  height: 50px;
+  font-size: 24px;
+  border-radius: 500%;
+  background-color: transparent;
+  transform: scale(1);
+  transition: transform 0.3s, background-color 0.3s;
+  transition-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  -webkit-transform: scale(1);
+  -webkit-transition: transform 0.3s, background-color 0.3s;
+  -webkit-transition-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.hs-circle.active {
+  transform: scale(1.65);
+  background: transparent;
+  box-shadow: none;
+}
+.ak-circle.active {
+  position: relative;
+  /* left: 477px;
+  top: 35px; */
+  display: flex;
+  flex: row;
+  align-items: center;
+  justify-content: center;
+  width: 50px;
+  height: 50px;
+  font-size: 24px;
+  border-radius: 500%;
+  background-color: transparent;
+  transform: scale(1);
+  transition: transform 0.3s, background-color 0.3s;
+  transition-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  -webkit-transform: scale(1);
+  -webkit-transition: transform 0.3s, background-color 0.3s;
+  -webkit-transition-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.ak-circle.active {
+  transform: scale(1.65);
+  background: transparent;
+  box-shadow: none;
+}
+
+/* ITEM ONE  */
+.mk-circle.active {
+  background: #ff69b4;
+  /* background: linear-gradient(to top, #4682b4, #ff69b4); */
+  /* box-shadow: rgb(255 105 180 / 100%) 0 20px 40px -3px; */
+}
+
+/* ITEM TWO */
+.epcot-circle.active {
+  background: #4682b4;
+  /* box-shadow: rgb(169 169 169 / 100%) 0 20px 40px -3px; */
+}
+
+/* ITEM THREE */
+
+.home-circle.active {
+  background: #4e085f;
+  /* box-shadow: rgb(70 130 180 / 100%) 0 20px 40px -3px; */
+}
+/* ITEM FOUR */
+
+.hs-circle.active {
+  background: #f3cc56;
+  /* box-shadow: rgb(236 80 106 / 100%) 0 20px 40px -3px; */
+}
+
+/* ITEM FIVE */
+.ak-circle.active {
+  background: #d6c98e;
+  /* box-shadow: rgb(214 201 142 / 100%) 0 20px 40px -3px; */
+}
+
+
+
+// snacks list
+ul li {
+  list-style: none;
+  font-size: 17px;
+  padding: 12px 8px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  cursor: pointer;
+  position: relative;
+}
+
+/* ul li::before {
+  content: "";
+  position: absolute;
+  height: 28px;
+  width: 28px;
+  border-radius: 50%;
+  background-image: url(src/Components/assets/checkbox-blank-circle-line.svg);
+  background-size: cover;
+  background-position: center;
+  top: 8px;
+  left: -30px;
+} */
+
+ul li.checked {
+  color: #4e085f;
+  text-decoration: line-through;
+}
+
+ul li.checked::before {
+  background-image: url(src/Components/assets/checkbox-circle-line.svg);
+}
+
+ul li span {
+  position: absolute;
+  right: 0;
+  top: 1.5px;
+  width: 40px;
+  height: 40px;
+  font-size: 22px;
+  color: var(--opaque);
+  line-height: 40px;
+  text-align: center;
+  border-radius: 50%;
+}
+
+ul li span:hover {
+  background: var(--gradientTwo);
+}
+
+li {
+  color: var(--light-color);
+}

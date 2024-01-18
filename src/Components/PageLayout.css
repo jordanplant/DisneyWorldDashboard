@@ -1,0 +1,97 @@
+:root {
+  --main-padding: 20px; /* Define a CSS variable for main padding */
+}
+
+body {
+  margin: 0; /* Remove default body margin */
+  display: flex;
+  justify-content: center; /* Center horizontally */
+  align-items: center; /* Center vertically */
+  min-height: 100vh; /* Make body take the full viewport height */
+}
+
+main {
+  max-width: 640px;
+  padding: var(--main-padding);
+}
+
+.card {
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.3);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  -webkit-box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  padding: 10px;
+}
+
+.text-gradient {
+  background: -webkit-linear-gradient(#e6ebed, #0d9fc7);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+h1 {
+  font-size: 3em;
+  margin: 0;
+  padding: 10px 0;
+}
+
+.card-containers {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+  gap: 10px;
+  z-index: 0;
+}
+.title-bar {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  width: calc(100% - 1 * var(--main-padding));
+  grid-column: span 2;
+  margin: 0 auto;
+}
+
+.behind-navbar {
+  /* background: transparent; */
+  position: relative;
+  top: -877px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  flex: 1;
+  flex-shrink: 0;
+  /* align-items: center; */
+  z-index: 0;
+}
+
+.countdown-bar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  grid-row: 2;
+  flex: 1;
+}
+
+.weather-bar {
+  grid-row: 2;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+}
+.snacks-bar {
+  grid-row: 3;
+  grid-column: span 2;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.waitTimes-bar {
+  grid-row: 4;
+  grid-column: span 2;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}

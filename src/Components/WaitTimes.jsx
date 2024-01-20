@@ -2,7 +2,8 @@ import React, { useState, useEffect } from "react";
 import styles from "./WaitTimes.module.css";
 
 const allowedRideIds = [146, 138, 133, 137, 130, 134, 140, 129];
-const apiUrl = "https://queue-times.com/parks/6/queue_times.json";
+// Replace this with the relative URL of your serverless function
+const apiUrl = "/api/waitTimes"; // Assuming your serverless function is named waitTimes.js
 
 function WaitTimes() {
   const [ridesData, setRidesData] = useState([]);

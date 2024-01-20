@@ -6,7 +6,9 @@ import styles from "./SnacksList.module.css";
 
 const SnacksList = () => {
   const [input, setInput] = useState("");
-  const [snacks, setSnacks] = useState([]);
+  const [snacks, setSnacks] = useState([
+    { id: uuidv4(), title: "Mickey Pretzel", completed: false },
+  ]);
   const [editMode, setEditMode] = useState(false);
   const [editedSnack, setEditedSnack] = useState(null);
 

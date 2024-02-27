@@ -2,6 +2,13 @@
   box-sizing: border-box;
 } */
 
+.noSnacksMessage {
+  padding-top: 5px;
+  text-decoration: none;
+  color: #fff;
+  text-align: center;
+}
+
 button {
   all: unset;
 }
@@ -15,6 +22,7 @@ button {
   border: none;
   outline: none;
   background: #fff;
+  color: #444428;
   /* margin-left: 5px; */
   padding: 16px;
   border-radius: 40px 0px 0px 40px;

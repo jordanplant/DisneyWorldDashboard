@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { v4 as uuidv4 } from "uuid";
 import Snacks from "./Snacks";
 import styles from "./SnacksList.module.css";
+// import("dotenv").then((dotenv) => dotenv.config());
 
 const isDevelopment = process.env.NODE_ENV === "development";
 const apiUrl = isDevelopment
@@ -75,8 +76,10 @@ const SnacksList = () => {
         if (!response.ok) {
           throw new Error("Error adding snack");
         }
-        const newSnack = await response.json();
-        setSnacks((prevSnacks) => [...prevSnacks, newSnack]);
+        const newSnack = await response.json(); // Assuming this is the snack data received from your createSnack API
+        const updatedSnacks = [...snacks, newSnack];
+        setSnacks(updatedSnacks); // Update local state
+        updateJsonBin(updatedSnacks); // Update JSONBin
       } catch (error) {
         console.error("Failed to add snack:", error);
       }
@@ -114,31 +117,104 @@ const SnacksList = () => {
     </p>
   );
 
+  const handleComplete = async (id) => {
+    const snackToUpdate = snacks.find((snack) => snack.id === id);
+    if (!snackToUpdate) {
+      console.error("Snack to update not found.");
+      return;
+    }
+
+    // Toggle the completion status locally for immediate UI update
+    const updatedSnacks = snacks.map((snack) =>
+      snack.id === id ? { ...snack, completed: !snack.completed } : snack
+    );
+    setSnacks(updatedSnacks);
+
+    // Prepare the data to send to the server
+    const updatedData = {
+      id: snackToUpdate.id,
+      title: snackToUpdate.title, // Include if necessary
+      completed: !snackToUpdate.completed,
+    };
+
+    // Send the update to the server
+    try {
+      const response = await fetch(`${apiUrl}/updateSnack`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(updatedData),
+      });
+
+      if (!response.ok) {
+        throw new Error(
+          "Failed to update snack completion status on the server."
+        );
+      }
+
+      console.log(
+        "Snack completion status updated successfully on the server."
+      );
+    } catch (error) {
+      console.error(
+        "Failed to update snack completion status in JSONBin:",
+        error
+      );
+      // Optionally handle the error, such as reverting the local state change
+    }
+  };
+
+  const updateJsonBin = async (snacksData) => {
+    const binId = process.env.BIN_ID;
+    const apiKey = process.env.BIN_KEY;
+    const url = `https://api.jsonbin.io/v3/b/${binId}`;
+
+    try {
+      const response = await fetch(url, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          "X-Master-Key": apiKey,
+        },
+        body: JSON.stringify(snacksData),
+      });
+
+      if (!response.ok) {
+        throw new Error(`Failed to update: ${response.statusText}`);
+      }
+
+      // Optionally, you might want to fetch the latest snacks data here to ensure UI consistency
+      const data = await response.json();
+      console.log("Update successful", data);
+    } catch (error) {
+      console.error("Error updating JSONBin:", error);
+      // Optionally handle the error, such as reverting the local state change
+    }
+  };
+
   return (
     <div>
       <form className={styles.formBar} onSubmit={onFormSubmit}>
         <input
           type="text"
-          placeholder="Enter your snack here..."
+          placeholder="Enter your snacks here"
           className={styles.taskInput}
           value={input}
-          onChange={onInputChange}
           required
+          onChange={onInputChange}
         />
-        <button type="submit" className={styles.buttonAdd}>
-          {editMode ? "Update Snack" : "Add Snack"}
+        <button className={styles.buttonAdd} type="submit">
+          {editMode ? "Update" : "Add"}
         </button>
       </form>
 
-      {snacks.length === 0 ? (
-        noSnacksMessage
-      ) : (
-        <Snacks
-          snacks={snacks}
-          handleEdit={handleEdit}
-          handleDelete={handleDelete}
-        />
-      )}
+      <Snacks
+        snacks={snacks}
+        handleComplete={handleComplete}
+        handleEdit={handleEdit}
+        handleDelete={handleDelete}
+      />
     </div>
   );
 };

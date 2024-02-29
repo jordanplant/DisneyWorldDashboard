@@ -18,7 +18,7 @@ const Snacks = ({ snacks, handleComplete, handleEdit, handleDelete }) => {
               <span className={styles.buttons}>
                 <button
                   className={styles.buttonComplete}
-                  onClick={() => handleComplete(snack)}
+                  onClick={() => handleComplete(snack.id)}
                 >
                   <i className="far fa-check-circle fa-xs"></i>
                 </button>

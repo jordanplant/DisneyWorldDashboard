@@ -1,28 +1,39 @@
-import { promises as fs } from "fs";
-const filePath = "./snacks.json"; // Adjust the path as necessary
-
 export default async function handler(req, res) {
   if (req.method === "DELETE") {
-    const { id } = req.body; // Assuming ID is sent in the request body, adjust as necessary
+    const { id } = req.body; // Assuming ID is sent in the request body
+    const API_KEY = process.env.BIN_KEY;
+    const BIN_ID = process.env.BIN_ID;
+    const JSONBIN_URL = `https://api.jsonbin.io/v3/b/${BIN_ID}/latest`;
+
     try {
-      const data = await fs.readFile(filePath, "utf8");
-      let snacks = JSON.parse(data);
+      // Fetch the current list of snacks
+      const fetchResponse = await fetch(JSONBIN_URL, {
+        method: "GET",
+        headers: { "X-Master-Key": API_KEY },
+      });
+
+      if (!fetchResponse.ok) throw new Error("Failed to fetch current snacks");
+
+      const { record: snacks } = await fetchResponse.json();
 
       const filteredSnacks = snacks.filter((snack) => snack.id !== id);
       if (snacks.length === filteredSnacks.length) {
         return res.status(404).json({ message: "Snack not found" });
       }
 
-      // Write the updated snacks list without the deleted snack
-      await fs.writeFile(
-        filePath,
-        JSON.stringify(filteredSnacks, null, 2),
-        "utf8"
-      );
+      // Update the bin with the filtered list
+      await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          "X-Master-Key": API_KEY,
+        },
+        body: JSON.stringify(filteredSnacks),
+      });
 
       res.status(200).json({ message: "Snack deleted successfully" });
     } catch (error) {
-      console.error("Error deleting snack:", error);
+      console.error("Error in operation:", error);
       res.status(500).json({ message: "Failed to delete snack" });
     }
   } else {

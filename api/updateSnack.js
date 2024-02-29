@@ -1,14 +1,22 @@
-import { promises as fs } from "fs";
-const filePath = "./snacks.json"; // Adjust the path as necessary
-
 export default async function handler(req, res) {
   if (req.method === "PUT") {
     const { id, title, completed } = req.body;
-    try {
-      const data = await fs.readFile(filePath, "utf8");
-      let snacks = JSON.parse(data);
+    const API_KEY = process.env.BIN_KEY;
+    const BIN_ID = process.env.BIN_ID;
+    const JSONBIN_URL = `https://api.jsonbin.io/v3/b/${BIN_ID}/latest`;
 
+    try {
+      // Fetch the current list of snacks
+      const fetchResponse = await fetch(JSONBIN_URL, {
+        method: "GET",
+        headers: { "X-Master-Key": API_KEY },
+      });
+
+      if (!fetchResponse.ok) throw new Error("Failed to fetch current snacks");
+
+      const { record: snacks } = await fetchResponse.json();
       const snackIndex = snacks.findIndex((snack) => snack.id === id);
+
       if (snackIndex === -1) {
         return res.status(404).json({ message: "Snack not found" });
       }
@@ -16,8 +24,15 @@ export default async function handler(req, res) {
       // Update the snack
       snacks[snackIndex] = { ...snacks[snackIndex], title, completed };
 
-      // Write the updated snacks back to the file
-      await fs.writeFile(filePath, JSON.stringify(snacks, null, 2), "utf8");
+      // Update the bin with the new list of snacks
+      await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          "X-Master-Key": API_KEY,
+        },
+        body: JSON.stringify(snacks),
+      });
 
       res.status(200).json(snacks[snackIndex]);
     } catch (error) {

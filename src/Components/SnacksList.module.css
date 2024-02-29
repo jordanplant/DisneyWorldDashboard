@@ -3,7 +3,9 @@
 } */
 
 .noSnacksMessage {
-  padding-top: 5px;
+  margin: 0 auto;
+  width: 60%;
+  padding: 15px;
   text-decoration: none;
   color: #fff;
   text-align: center;

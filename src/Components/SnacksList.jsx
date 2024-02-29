@@ -99,7 +99,13 @@ const SnacksList = () => {
       if (!response.ok) {
         throw new Error("Error deleting snack");
       }
-      setSnacks(snacks.filter((snack) => snack.id !== id));
+
+      // Filter out the snack to delete
+      const updatedSnacks = snacks.filter((snack) => snack.id !== id);
+      setSnacks(updatedSnacks); // Update local state with the filtered list
+
+      // Update JSONBin with the new list (including handling the case where the list is now empty)
+      await updateJsonBin(updatedSnacks);
     } catch (error) {
       console.error("Failed to delete snack:", error);
     }
@@ -113,7 +119,7 @@ const SnacksList = () => {
 
   const noSnacksMessage = (
     <p className={styles.noSnacksMessage}>
-      No snacks have been added yet. Please add some!
+      Oh no, you're going to be hungry! 😱 Please add some snacks!
     </p>
   );
 
@@ -165,8 +171,9 @@ const SnacksList = () => {
     }
   };
 
+  // Assume updateJsonBin is defined elsewhere in your component or imported
   const updateJsonBin = async (snacksData) => {
-    const binId = process.env.BIN_ID;
+    const binId = process.env.BIN_ID; // Use the correct env variable names
     const apiKey = process.env.BIN_KEY;
     const url = `https://api.jsonbin.io/v3/b/${binId}`;
 
@@ -177,19 +184,16 @@ const SnacksList = () => {
           "Content-Type": "application/json",
           "X-Master-Key": apiKey,
         },
-        body: JSON.stringify(snacksData),
+        body: JSON.stringify(snacksData), // Ensure this matches JSONBin's expected format
       });
 
       if (!response.ok) {
-        throw new Error(`Failed to update: ${response.statusText}`);
+        throw new Error(`Failed to update JSONBin: ${response.statusText}`);
       }
 
-      // Optionally, you might want to fetch the latest snacks data here to ensure UI consistency
-      const data = await response.json();
-      console.log("Update successful", data);
+      console.log("JSONBin updated successfully.");
     } catch (error) {
       console.error("Error updating JSONBin:", error);
-      // Optionally handle the error, such as reverting the local state change
     }
   };
 
@@ -209,12 +213,16 @@ const SnacksList = () => {
         </button>
       </form>
 
-      <Snacks
-        snacks={snacks}
-        handleComplete={handleComplete}
-        handleEdit={handleEdit}
-        handleDelete={handleDelete}
-      />
+      {snacks.length === 0 ? (
+        noSnacksMessage
+      ) : (
+        <Snacks
+          snacks={snacks}
+          handleComplete={handleComplete}
+          handleEdit={handleEdit}
+          handleDelete={handleDelete}
+        />
+      )}
     </div>
   );
 };

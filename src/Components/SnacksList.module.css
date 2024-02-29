@@ -69,7 +69,7 @@ li::before {
   height: 28px;
   width: 28px;
   border-radius: 50%;
-  background-image: url(/public/assets/checkbox-blank-circle-line.svg);
+  background-image: url(/assets/checkbox-blank-circle-line.svg);
   background-size: cover;
   background-position: center;
   /* top: 8px; */

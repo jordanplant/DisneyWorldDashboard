@@ -7,7 +7,7 @@ import styles from "./SnacksList.module.css";
 const isDevelopment = process.env.NODE_ENV === "development";
 const apiUrl = isDevelopment
   ? "http://localhost:3000/api"
-  : "https://your-production-url.com/api";
+  : "https://disney-world-dashboard.vercel.app/api";
 
 const SnacksList = () => {
   const [input, setInput] = useState("");

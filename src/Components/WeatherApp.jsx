@@ -127,7 +127,9 @@ function WeatherApp() {
           <h3 className="temp">{weatherData.temp}</h3>
           <h4 className="city">Orlando</h4>
         </div>
-        <div className="details">
+
+        {/* MAKE A SWIPEABLE FEATURE */}
+        {/* <div className="details">
           <div className="col">
             <svg
               className="humidity"
@@ -154,7 +156,7 @@ function WeatherApp() {
               <p>Wind Speed</p>
             </div>
           </div>
-        </div>
+        </div> */}
       </div>
     </div>
   );

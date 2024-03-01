@@ -7,7 +7,9 @@
   --gradient: linear-gradient(135deg, #153677, #4e085f);
   --gradientTwo: linear-gradient(135deg, #00fee5, #6f47ae);
   --opaque: #f7f7ffe9;
+  max-width: 480px;
 }
+
 main {
   background: var(--gradient);
 }

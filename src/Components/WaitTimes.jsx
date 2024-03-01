@@ -1,45 +1,45 @@
 import React, { useState, useEffect } from "react";
 import styles from "./WaitTimes.module.css";
 
-// const allowedRideIds = [146, 138, 133, 137, 130, 134, 140, 129];
-const apiUrl = "/api/waitTimes"; // Assuming your serverless function is named waitTimes.js
+const apiUrl = "/api/waitTimes";
+const parkIdMapping = {
+  MagicKingdom: "6",
+  Epcot: "5",
+  HollywoodStudios: "7",
+  AnimalKingdom: "8",
+};
 
 function WaitTimes() {
   const [ridesData, setRidesData] = useState([]);
   const [ascending, setAscending] = useState(true);
   const [isLoading, setIsLoading] = useState(true);
-
   const [activeButton, setActiveButton] = useState(null);
 
-  const handleButtonClick = (parkId) => {
-    setActiveButton(activeButton === parkId ? null : parkId);
+  const handleButtonClick = (parkName) => {
+    const parkId = parkIdMapping[parkName];
+    setActiveButton(activeButton === parkName ? null : parkName);
+    fetchAndDisplayRides(parkId);
   };
 
-  const fetchAndDisplayRides = async () => {
-    setIsLoading(true); // Set loading to true
+  const fetchAndDisplayRides = async (parkId) => {
+    setIsLoading(true);
+
+    if (!parkId) {
+      console.log("No park selected.");
+      setIsLoading(false);
+      return; // Early return if no parkId is provided
+    }
 
     try {
-      const response = await fetch(apiUrl);
-
+      const response = await fetch(`${apiUrl}?parkId=${parkId}`);
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
-
       const data = await response.json();
-      const lands = data.lands;
-
-      const filteredRides = lands.flatMap((land) => land.rides);
-
-      // const filteredRides = lands.flatMap((land) =>
-      //   land.rides.filter((ride) => allowedRideIds.includes(ride.id))
-      // );
-
+      const filteredRides = data.lands.flatMap((land) => land.rides);
       const sortedRides = filteredRides.sort((a, b) => {
-        if (a.is_open && !b.is_open) {
-          return -1;
-        } else if (!a.is_open && b.is_open) {
-          return 1;
-        }
+        if (a.is_open && !b.is_open) return -1;
+        else if (!a.is_open && b.is_open) return 1;
         return a.wait_time - b.wait_time;
       });
 
@@ -47,7 +47,7 @@ function WaitTimes() {
     } catch (error) {
       console.error("An error occurred:", error);
     } finally {
-      setIsLoading(false); // Set loading to false when data is fetched
+      setIsLoading(false);
     }
   };
 
@@ -58,28 +58,27 @@ function WaitTimes() {
 
   const sortedField = (field) => () => {
     const compare = (a, b) => {
-      if (field === "name") {
-        return a[field].localeCompare(b[field]);
-      }
+      if (field === "name") return a[field].localeCompare(b[field]);
       return a[field] - b[field];
     };
 
-    const sortedRides = ridesData.sort((a, b) =>
+    const sortedRides = [...ridesData].sort((a, b) =>
       ascending ? compare(a, b) : -compare(a, b)
     );
-
-    setRidesData([...sortedRides]);
+    setRidesData(sortedRides);
     toggleSortOrder();
   };
 
   const refreshRides = () => {
-    // Use the existing ridesData while refreshing
     setIsLoading(true);
-    fetchAndDisplayRides();
+    if (activeButton) {
+      fetchAndDisplayRides(parkIdMapping[activeButton]);
+    }
   };
 
   useEffect(() => {
-    fetchAndDisplayRides();
+    // Optionally, fetch data for a default park on component mount
+    // fetchAndDisplayRides("6");
   }, []);
 
   return (
@@ -89,7 +88,7 @@ function WaitTimes() {
           <i className="fa-solid fa-rotate-right fa-2xl"></i>
         </button>
       </div>
-      {/* <div className={styles.parkSelect}>
+      <div className={styles.parkSelect}>
         <span className={styles.parkIcons}>
           <button
             className={`${styles.parkMK} ${
@@ -335,7 +334,7 @@ function WaitTimes() {
             </p>
           </button>
         </span>
-      </div> */}
+      </div>
 
       {isLoading ? (
         <p className={styles.loadingMessage}>

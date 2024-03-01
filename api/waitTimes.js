@@ -2,8 +2,10 @@
 import fetch from "node-fetch";
 
 export default async (req, res) => {
+  const { parkId } = req.query; // Assuming you're using query parameters
+
   try {
-    const apiUrl = "https://queue-times.com/parks/6/queue_times.json";
+    const apiUrl = `https://queue-times.com/parks/${parkId}/queue_times.json`;
     const response = await fetch(apiUrl);
 
     if (!response.ok) {

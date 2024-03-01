@@ -127,11 +127,6 @@ button.active .parkName {
   transition: opacity 0.5s ease, transform 0.5s ease;
 }
 
-.parkEpcot,
-.ParkHS,
-.ParkAK {
-}
-
 .parkMK .activeSvg {
   fill: linear-gradient(135deg, #4682b4, #ff69b4);
 }

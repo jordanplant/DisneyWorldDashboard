@@ -370,7 +370,20 @@ function WaitTimes() {
           <tbody>
             {ridesData.map((ride, index) => (
               <tr key={index}>
-                <td className={styles.rideRow}>{ride.name}</td>
+                <td className={styles.rideRow}>
+                  {ride.name.includes(" - ")
+                    ? ride.name.split(" - ").map((part, index, array) =>
+                        index < array.length - 1 ? (
+                          <React.Fragment key={index}>
+                            {part}
+                            <br />-{" "}
+                          </React.Fragment>
+                        ) : (
+                          part
+                        )
+                      )
+                    : ride.name}
+                </td>
                 <td className={styles.waitRow}>{ride.wait_time} mins</td>
                 <td className={ride.is_open ? styles.open : styles.closed}>
                   {ride.is_open ? "OPEN" : "CLOSED"}

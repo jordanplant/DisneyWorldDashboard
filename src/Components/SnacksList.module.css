@@ -15,6 +15,7 @@ button {
   all: unset;
 }
 .formBar {
+  width: auto;
   display: flex;
   justify-content: center;
 }

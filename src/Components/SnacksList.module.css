@@ -4,7 +4,7 @@
 
 .formContainer{
   width: 100%;
-  overflow: hidden;
+  /* overflow: hidden; */
 }
 
 .noSnacksMessage {
@@ -20,6 +20,7 @@ button {
   all: unset;
 }
 .formBar {
+  box-sizing: border-box;
   width: auto;
   display: flex;
   justify-content: center;

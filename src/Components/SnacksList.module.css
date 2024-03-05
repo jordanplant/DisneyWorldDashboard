@@ -2,9 +2,7 @@
   box-sizing: border-box;
 } */
 
-.formContainer{
-  /* width: 100%; */
-  /* overflow: hidden; */
+.formContainer {
 }
 
 .noSnacksMessage {
@@ -20,13 +18,13 @@ button {
   all: unset;
 }
 .formBar {
-  box-sizing: border-box;
-  /* width: auto; */
+
   display: flex;
   justify-content: center;
 }
 
 .taskInput {
+  width: 70%;
   /* flex: 1; */
   border: none;
   outline: none;
@@ -58,17 +56,23 @@ button {
 }
 
 .snack li {
+  color: #fff;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
   margin: 0;
   padding: 0;
   /* width: 200px; */
+  position: relative;
+  padding-left: 10px;
 }
+
 
 .waitRow > * {
   text-align: center;
 }
+
+
 
 li::before {
   content: "";
@@ -79,8 +83,10 @@ li::before {
   background-image: url(/assets/checkbox-blank-circle-line.svg);
   background-size: cover;
   background-position: center;
-  /* top: 8px; */
-  left: 10px;
+  margin-right: 20px;
+  left: -40px; /* Adjust left position of the circle within the li */
+  top: 50%; /* Align vertically in the middle of the li */
+  transform: translateY(-50%); /* Center vertically */
 }
 
 .buttons {

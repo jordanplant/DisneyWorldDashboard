@@ -13,7 +13,7 @@ function WaitTimes() {
   const [ridesData, setRidesData] = useState([]);
   const [ascending, setAscending] = useState(true);
   const [isLoading, setIsLoading] = useState(true);
-  const [activeButton, setActiveButton] = useState(null);
+  const [activeButton, setActiveButton] = useState("MagicKingdom");
 
   const handleButtonClick = (parkName) => {
     const parkId = parkIdMapping[parkName];
@@ -69,27 +69,16 @@ function WaitTimes() {
     toggleSortOrder();
   };
 
-  const refreshRides = () => {
-    setIsLoading(true);
-    if (activeButton) {
-      fetchAndDisplayRides(parkIdMapping[activeButton]);
-    }
-  };
 
   useEffect(() => {
     // Optionally, fetch data for a default park on component mount
-    // fetchAndDisplayRides("6");
+    fetchAndDisplayRides("6");
   }, []);
 
   return (
     <div className={styles.waitTimes}>
-      <div className={styles.refreshContainer}>
-        <button className={styles.refreshButton} onClick={refreshRides}>
-          <i className="fa-solid fa-rotate-right fa-2xl"></i>
-        </button>
-      </div>
-      <div className={styles.parkSelect}>
-        <span className={styles.parkIcons}>
+
+        <div className={styles.parkIcons}>
           <button
             className={`${styles.parkMK} ${
               activeButton === "MagicKingdom" ? "active" : ""
@@ -130,7 +119,7 @@ function WaitTimes() {
                 fill={
                   activeButton === "MagicKingdom"
                     ? "url(#parkMKGradient)"
-                    : "#fff"
+                    : "rgba(255, 255, 255, 0.7)"
                 }
                 d="M66,62.7h-2.1v-1.6h0.9l-3.5-10l-3.5,10h0.8v1.6h-2.9L55.7,49h1.8L54,36L50.4,46V28.4l1.5-5.6h-1.5v-2.7h1.4l-4-15.8
 	l7.1-2.2L47.8,0v4.2l-4.1,15.9h1.4v2.7h-1.5l1.5,5.6v9.1l-0.4-1.3l-3.3-10.4h-4.5L34.1,36l-1.7-6l-3.1,13h1.3l0.2,10.7L26,40.8
@@ -186,7 +175,7 @@ function WaitTimes() {
               </defs>
               <path
                 fill={
-                  activeButton === "Epcot" ? "url(#parkEpcotGradient)" : "#fff"
+                  activeButton === "Epcot" ? "url(#parkEpcotGradient)" : "rgba(255, 255, 255, 0.7)"
                 }
                 d="M47,35.6h-4.9l2.5-4.3l2.5-4.3h-9.8l2.5-4.3l2.5-4.3l2.5,4.3l2.5,4.3l2.5-4.3l2.5-4.3l2.5,4.3l2.5,4.2
 	l2.5,4.3l2.5,4.3H52l2.5,4.3l2.5,4.3H47l2.5-4.3l2.5-4.3L47,35.6z M71.8,71.1l-11-12.5c4.1-4.1,6.9-9.4,8-15
@@ -244,7 +233,7 @@ function WaitTimes() {
                 fill={
                   activeButton === "HollywoodStudios"
                     ? "url(#parkHSGradient)"
-                    : "#fff"
+                    : "rgba(255, 255, 255, 0.7)"
                 }
                 d="M52,38.5h-7.2V34H52L52,38.5z M52,47.4h-7.2v-4.5H52L52,47.4z M52,56.3h-7.2v-4.5H52L52,56.3z M43.3,28
 	H37V24c0-0.8,0.3-1.6,0.9-2.2c0.6-0.6,1.4-0.9,2.2-0.9s1.6,0.3,2.2,0.9c0.6,0.6,0.9,1.4,0.9,2.2V28z M35.6,38.5h-7.2V34h7.2V38.5z
@@ -302,7 +291,7 @@ function WaitTimes() {
                 fill={
                   activeButton === "AnimalKingdom"
                     ? "url(#parkAKGradient)"
-                    : "#fff"
+                    : "rgba(255, 255, 255, 0.7)"
                 }
                 d="M59.4,40.6l-6.1,1.8c-0.8,0-0.7-1.2-0.5-1.5l2.3-4.7c0-0.1,0.1-0.1,0.2-0.2c0.1,0,0.2-0.1,0.2-0.1
 	s0.2,0,0.3,0c0.1,0,0.2,0.1,0.2,0.1c1.1,1.2,2.3,2.3,3.5,3.4C59.8,39.8,59.8,40.5,59.4,40.6z M51.9,34.4c-2,2.1-3.9,4.5-5.5,6.9
@@ -333,9 +322,8 @@ function WaitTimes() {
               Kingdom
             </p>
           </button>
-        </span>
       </div>
-
+      <div className={styles.fixedHeightTable}>
       {isLoading ? (
         <p className={styles.loadingMessage}>
           <i className="fa-solid fa-wand-magic-sparkles fa-2xl"></i> Conjuring
@@ -344,6 +332,7 @@ function WaitTimes() {
       ) : ridesData.length === 0 ? (
         <p>Magic needs to rest too. Try again later</p>
       ) : (
+        <div className={styles.scrollableContainer}>
         <table id="dataTable">
           <thead>
             <tr>
@@ -354,17 +343,17 @@ function WaitTimes() {
                 Attraction
               </th>
               <th
-                className={`${styles.sortable} ${styles.waitTimes}`}
+                className={`${styles.sortable} ${styles.waitTime}`}
                 onClick={sortedField("wait_time")}
               >
                 Wait Time
               </th>
-              <th
+              {/* <th
                 className={`${styles.sortable} ${styles.isOpen}`}
                 onClick={sortedField("is_open")}
               >
                 Status
-              </th>
+              </th> */}
             </tr>
           </thead>
           <tbody>
@@ -384,15 +373,27 @@ function WaitTimes() {
                       )
                     : ride.name}
                 </td>
-                <td className={styles.waitRow}>{ride.wait_time} mins</td>
-                <td className={ride.is_open ? styles.open : styles.closed}>
+                <td className={styles.waitRow}>
+        {!ride.is_open ? (
+          <span className={styles.closed}>CLOSED</span>
+        ) : (
+          <React.Fragment>
+            <span className={styles.bold}>{ride.wait_time}</span> mins
+          </React.Fragment>
+        )}
+      </td>           
+{/* <td className={ride.is_open ? styles.open : styles.closed}>
                   {ride.is_open ? "OPEN" : "CLOSED"}
-                </td>
+                </td> */}
               </tr>
             ))}
           </tbody>
+
         </table>
+        </div>
+  
       )}
+            </div>
 
       <a href="https://queue-times.com/">Powered by Queue-Times.com</a>
     </div>

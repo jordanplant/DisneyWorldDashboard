@@ -6,12 +6,19 @@
   --akGradient: linear-gradient(135deg, #228b22, #d6c98e);
 }
 
+
+
 a {
   padding-top: 5px;
   text-decoration: none;
-  color: #fff;
+  color: hsla(0, 0%, 100%, 0.8);
   text-align: right;
 }
+
+p {
+  color: #fff;
+}
+
 
 .open {
   color: #04f104;
@@ -27,32 +34,14 @@ a {
   text-align: center;
 }
 
-.waitRow {
+.waitRow{
   text-align: center;
 }
 
-.refreshContainer {
-  width: 100%;
-  display: flex;
-  justify-content: flex-end;
-}
 
-.refreshButton {
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  padding: 10px;
-
-  color: #fff;
-  cursor: pointer;
-}
-
-.refreshButton:active {
-  color: #828282;
-}
 
 .waitTimes {
-  margin: 0px 10px;
+  margin: 0px 5px;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -72,27 +61,49 @@ table {
   border-collapse: collapse;
 }
 
+
+th{
+  color: hsla(0, 0%, 100%, 0.9);
+}
+
+.waitTime {
+  /* Adjust the width as needed */
+  width: 90px; /* for example */
+}
+
 td {
   border-bottom: 1px solid #ffffff18;
-
-  padding: 2px 10px;
+  color: #fff;
+  padding: 5px 5px;
 }
+
+
+
+.bold {
+  font-weight: bold;
+}
+
+
+
 
 .parkIcons {
   display: flex;
   justify-content: space-around;
-  /* gap: 60px; */
   cursor: pointer;
+  margin: 0px;
+  width: 100%;
 }
 
 .parkIcon {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  display: block;
   width: 50px;
-  fill: white;
+  height: 50px;
+  /* fill: #ffffff80; */
   transition: transform 0.5s ease;
 }
+
+
+
 .parkName {
   text-align: center;
   font-size: 12px;
@@ -100,12 +111,13 @@ td {
   transition: opacity 0.5s ease, transform 0.5s ease;
   opacity: 1;
   transform: translateY(0);
+  color: rgba(255, 255, 255, 0.95);
 }
 
 /* Initial state for the button */
 button {
   transition: transform 0.5s ease;
-  display: inline-flex;
+  display: flex;
   flex-direction: column;
   align-items: center;
 }
@@ -113,7 +125,7 @@ button {
 /* Style for when the paragraph is moved and faded out */
 button.active .parkName {
   opacity: 0;
-  transform: translateY(20px); /* Adjust as needed */
+  transform: translateY(20px);
 }
 
 .activeSvg {
@@ -127,6 +139,21 @@ button.active .parkName {
   transition: opacity 0.5s ease, transform 0.5s ease;
 }
 
-.parkMK .activeSvg {
-  fill: linear-gradient(135deg, #4682b4, #ff69b4);
+
+.fixedHeightTable {
+  height: 400px;
+  width: 330px; /* Set a fixed width for the table container */
+  overflow-y: auto; 
 }
+
+.scrollableContainer {
+  max-height: 400px;
+  overflow-y: auto; 
+}
+
+.loadingMessage {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+

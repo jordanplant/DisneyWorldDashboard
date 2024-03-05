@@ -142,7 +142,7 @@ const SnacksList = () => {
     // Prepare the data to send to the server
     const updatedData = {
       id: snackToUpdate.id,
-      title: snackToUpdate.title, // Include if necessary
+      title: snackToUpdate.title, 
       completed: !snackToUpdate.completed,
     };
 
@@ -170,13 +170,11 @@ const SnacksList = () => {
         "Failed to update snack completion status in JSONBin:",
         error
       );
-      // Optionally handle the error, such as reverting the local state change
     }
   };
 
-  // Assume updateJsonBin is defined elsewhere in your component or imported
   const updateJsonBin = async (snacksData) => {
-    const binId = process.env.BIN_ID; // Use the correct env variable names
+    const binId = process.env.BIN_ID; 
     const apiKey = process.env.BIN_KEY;
     const url = `https://api.jsonbin.io/v3/b/${binId}`;
 
@@ -187,7 +185,7 @@ const SnacksList = () => {
           "Content-Type": "application/json",
           "X-Master-Key": apiKey,
         },
-        body: JSON.stringify(snacksData), // Ensure this matches JSONBin's expected format
+        body: JSON.stringify(snacksData),
       });
 
       if (!response.ok) {

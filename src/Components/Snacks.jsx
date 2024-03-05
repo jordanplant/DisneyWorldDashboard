@@ -5,13 +5,12 @@ const Snacks = ({ snacks, handleComplete, handleEdit, handleDelete }) => {
   return (
     <>
       <div>
-        <ul className={styles.snack}>
+        <ul className={styles.snacksList}>
           {snacks.map((snack) => (
             <React.Fragment key={snack.id}>
               <li
-                className={
-                  snack.completed ? styles.completedSnack : styles.snackItem
-                }
+                key={snack.id}
+                className={`${styles.snack} ${snack.completed ? styles.completed : ''}`}
               >
                 {snack.title}
               </li>

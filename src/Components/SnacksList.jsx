@@ -14,6 +14,7 @@ const SnacksList = () => {
   const [snacks, setSnacks] = useState([]);
   const [editMode, setEditMode] = useState(false);
   const [editedSnack, setEditedSnack] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   const onInputChange = (event) => {
     setInput(event.target.value);
@@ -29,6 +30,8 @@ const SnacksList = () => {
       setSnacks(data);
     } catch (error) {
       console.error("Error fetching snacks:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -213,7 +216,9 @@ const SnacksList = () => {
         </button>
       </form>
 
-      {snacks.length === 0 ? (
+      {loading ? (
+        <p className={styles.loadingMessage}><i class="fa-solid fa-cookie-bite fa-2xl"></i> Loading snacks...</p>
+      ) : snacks.length === 0 ? (
         noSnacksMessage
       ) : (
         <Snacks

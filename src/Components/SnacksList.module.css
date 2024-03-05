@@ -4,6 +4,7 @@
 
 .formContainer{
   width: 100%;
+  overflow: hidden;
 }
 
 .noSnacksMessage {

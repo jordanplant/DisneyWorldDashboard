@@ -395,7 +395,7 @@ function WaitTimes() {
       )}
             </div>
 
-      <a href="https://queue-times.com/">Powered by Queue-Times.com</a>
+      <a href="https://queue-times.com/" target="_blank">Powered by Queue-Times.com</a>
     </div>
   );
 }

@@ -198,7 +198,7 @@ const SnacksList = () => {
   };
 
   return (
-    <div>
+    <div className={styles.formContainer}>
       <form className={styles.formBar} onSubmit={onFormSubmit}>
         <input
           type="text"

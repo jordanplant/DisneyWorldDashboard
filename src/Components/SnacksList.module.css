@@ -3,7 +3,7 @@
 } */
 
 .formContainer{
-  width: 100%;
+  /* width: 100%; */
   /* overflow: hidden; */
 }
 
@@ -21,7 +21,7 @@ button {
 }
 .formBar {
   box-sizing: border-box;
-  width: auto;
+  /* width: auto; */
   display: flex;
   justify-content: center;
 }

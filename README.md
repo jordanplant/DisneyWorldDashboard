@@ -30,16 +30,6 @@
 
 ---
 
-## Getting Started
-
-To get started with the Disney World React Dashboard, follow these steps:
-
-1. **Clone the repository:** `git clone https://github.com/your-username/disney-world-react-dashboard.git`
-2. **Install dependencies:** `npm install`
-3. **Start the development server:** `npm start`
-4. **Open your browser and navigate to:** `http://localhost:3000`
-
----
 
 ## Credits
 

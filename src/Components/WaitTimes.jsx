@@ -17,6 +17,7 @@ function WaitTimes() {
 
   const handleButtonClick = (parkName) => {
     const parkId = parkIdMapping[parkName];
+    console.log("Park ID:", parkId); // Log the retrieved park ID
     setActiveButton(activeButton === parkName ? null : parkName);
     fetchAndDisplayRides(parkId);
   };

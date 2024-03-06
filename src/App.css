@@ -10,7 +10,7 @@
   max-width: 480px;
 }
 
-main {
+body {
   background: var(--gradient);
 }
 

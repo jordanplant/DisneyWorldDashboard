@@ -215,7 +215,7 @@ const SnacksList = () => {
       </form>
 
       {loading ? (
-        <p className={styles.loadingMessage}><i class="fa-solid fa-cookie-bite fa-2xl"></i> Loading snacks...</p>
+        <p className={styles.loadingMessage}><i className="fa-solid fa-cookie-bite fa-2xl"></i> Loading snacks...</p>
       ) : snacks.length === 0 ? (
         noSnacksMessage
       ) : (

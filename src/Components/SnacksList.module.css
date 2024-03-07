@@ -49,16 +49,27 @@ button {
   justify-content: space-between;
 }
 
+.ButtonContainer {
+  position: absolute; /* Position the ButtonContainer absolutely */
+  /* top: 0; */
+  right: 0;
+  z-index:1;
+}
+
+
 .snack {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   color: #fff;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
   margin: 0;
-  padding: 0;
-  /* width: 200px; */
-  position: relative;
+  padding: 10px;
   padding-left: 10px;
+  z-index: 0;
 }
 
 .completed {
@@ -88,50 +99,6 @@ li::before {
   transform: translateY(-50%); /* Center vertically */
 }
 
-.buttons {
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-end;
-  margin-bottom: 5px;
-}
-
-.buttonComplete,
-.buttonEdit,
-.buttonDelete {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 25px;
-  height: 25px;
-  margin: 2px 2px;
-  border-radius: 50%;
-}
-
-.buttonComplete {
-  color: #2f582f;
-  background-color: #79de79;
-}
-.buttonEdit {
-  color: #444428;
-  background-color: #fcfc99;
-}
-.buttonDelete {
-  color: #401a18;
-  background-color: #fb6962;
-}
-
-.buttonComplete:active {
-  background-color: #2f582f;
-  color: #79de79;
-}
-.buttonEdit:active {
-  background-color: #444428;
-  color: #fcfc99;
-}
-.buttonDelete:active {
-  background-color: #401a18;
-  color: #fb6962;
-}
 
 
 

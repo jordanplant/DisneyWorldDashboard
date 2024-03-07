@@ -1,5 +1,6 @@
 import React from "react";
 import styles from "./SnacksList.module.css";
+import ButtonContainer from "./ButtonContainer";
 
 const Snacks = ({ snacks, handleComplete, handleEdit, handleDelete }) => {
   return (
@@ -8,13 +9,20 @@ const Snacks = ({ snacks, handleComplete, handleEdit, handleDelete }) => {
         <ul className={styles.snacksList}>
           {snacks.map((snack) => (
             <React.Fragment key={snack.id}>
-              <li
-                key={snack.id}
-                className={`${styles.snack} ${snack.completed ? styles.completed : ''}`}
-              >
-                {snack.title}
-              </li>
-              <span className={styles.buttons}>
+<li
+  key={snack.id}
+  className={`${styles.snack} ${snack.completed ? styles.completed : ''}`}
+>
+  <span>{snack.title}</span>
+  <span className={styles.ButtonContainer}>
+    <ButtonContainer
+                   snack={snack}
+                   handleComplete={handleComplete}
+                   handleEdit={handleEdit}
+                   handleDelete={handleDelete} />
+  </span>
+</li>
+              {/* <span className={styles.buttons}>
                 <button
                   className={styles.buttonComplete}
                   onClick={() => handleComplete(snack.id)}
@@ -36,7 +44,7 @@ const Snacks = ({ snacks, handleComplete, handleEdit, handleDelete }) => {
                 >
                   <i className="fas fa-trash fa-xs"></i>
                 </button>
-              </span>
+              </span> */}
             </React.Fragment>
           ))}
         </ul>

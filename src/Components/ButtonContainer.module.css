@@ -1,0 +1,74 @@
+.buttonContainer{
+    display: flex;
+justify-content: flex-end;
+z-index: 1;
+}
+
+
+
+.buttons {
+    display: flex;
+    flex-direction: row;
+    /* justify-content: flex-end; */
+    /* margin-bottom: 5px; */
+    transform: translateX(140%); 
+    transition: transform 0.3s ease; /* Add transition effect for transform property */
+opacity: 0;  
+}
+
+  .show {
+    transform: translateX(0%); /* Move the buttons back to their original position when shown */
+opacity: 1;  
+}
+  
+
+  
+  
+ .buttonOption, .buttonComplete,
+  .buttonEdit,
+  .buttonDelete {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 25px;
+    height: 25px;
+    margin: 2px 2px;
+    border-radius: 50%;
+  }
+
+  .buttonOption {
+    color: #393939;
+    background-color: #daefda;
+    margin-right: auto;
+  }
+  
+  .buttonComplete {
+    color: #2f582f;
+    background-color: #79de79;
+  }
+  .buttonEdit {
+    color: #444428;
+    background-color: #fcfc99;
+  }
+  .buttonDelete {
+    color: #401a18;
+    background-color: #fb6962;
+  }
+
+  .buttonOption:active {
+    background-color: #393939;
+    color: #daefda;
+  }
+  
+  .buttonComplete:active {
+    background-color: #2f582f;
+    color: #79de79;
+  }
+  .buttonEdit:active {
+    background-color: #444428;
+    color: #fcfc99;
+  }
+  .buttonDelete:active {
+    background-color: #401a18;
+    color: #fb6962;
+  }

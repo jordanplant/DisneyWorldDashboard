@@ -5,6 +5,7 @@ import WeatherApp from "./WeatherApp";
 import SnacksList from "./SnacksList";
 
 import WaitTimes from "./WaitTimes";
+import ButtonContainer from "./ButtonContainer";
 
 function PageLayout() {
   const [input, setInput] = useState("");
@@ -45,7 +46,7 @@ function PageLayout() {
           </div>
         </div>
         <div className="footer">
-        <a href="https://github.com/jordanplant/DisneyWorldDashboard---JS-React-Node" target="_blank"><i class="fa-brands fa-github fa-xl"></i></a>
+        <a href="https://github.com/jordanplant/DisneyWorldDashboard---JS-React-Node" target="_blank"><i className="fa-brands fa-github fa-xl"></i></a>
         <p>v1</p>
       </div>
       </main>

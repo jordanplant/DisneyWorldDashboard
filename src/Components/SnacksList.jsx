@@ -15,7 +15,7 @@ const SnacksList = () => {
   const [editMode, setEditMode] = useState(false);
   const [editedSnack, setEditedSnack] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [loadingAddOrEdit, setLoadingAddOrEdit] = useState(false);
+  const [loadingAddOrEdit, setLoadingAddOrEdit] = useState(true);
 
   const onInputChange = (event) => {
     setInput(event.target.value);
@@ -231,7 +231,7 @@ const SnacksList = () => {
           onChange={onInputChange}
         />
         <button className={styles.buttonAdd} type="submit" disabled={loadingAddOrEdit}>
-          {loadingAddOrEdit ? <i className="fa-solid fa-spinner fa-spin-pulse fa-xl"></i> : (editMode ? "Update" : "Add")}
+          {loadingAddOrEdit ? <i className="fa-solid fa-spinner fa-spin fa-xl"></i> : (editMode ? "Update" : "Add")}
         </button>
       </form>
 

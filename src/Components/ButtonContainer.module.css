@@ -1,0 +1,65 @@
+.buttonContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.buttonEdit,
+.buttonDelete,
+.buttonOption {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  position: absolute;
+  top: 0;
+  transition: transform 0.3s ease, opacity 0.3s ease; /* Adding transition for smooth animation */
+}
+
+.buttonOption {
+  color: #393939;
+  background-color: hsla(120, 40%, 90%, 0.9);
+  margin-right: auto;
+  z-index: 2;
+  top: 0;
+}
+
+.buttonOption:active {
+  background-color: hsla(0, 0%, 22%, 0.765);
+  color: #daefda;
+}
+
+.buttonEdit {
+  color: #444428;
+  background-color: #fcfc99;
+  z-index: 1;
+  opacity: 0;
+}
+
+.buttonEdit:active {
+  background-color: #444428;
+  color: #fcfc99;
+}
+
+.buttonDelete {
+  color: #401a18;
+  background-color: #fb6962;
+  z-index: 0;
+  opacity: 0
+}
+
+.buttonDelete:active {
+  background-color: #401a18;
+  color: #fb6962;
+}
+
+.showEdit{
+  transform: translateX(-60px); /* Adjust as needed */
+  opacity: 1;
+}
+.showDelete{
+  transform: translateX(-30px); /* Adjust as needed */
+  opacity: 1;
+}

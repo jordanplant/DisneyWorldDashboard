@@ -1,0 +1,22 @@
+.buttonContainer{
+    display: flex;
+justify-content: flex-end;
+z-index: 1;
+}
+
+
+
+.buttons {
+    display: flex;
+    flex-direction: row;
+    /* justify-content: flex-end; */
+    /* margin-bottom: 5px; */
+    transform: translateX(140%); 
+    transition: transform 0.3s ease; /* Add transition effect for transform property */
+opacity: 0;  
+}
+
+  .show {
+    transform: translateX(0%); /* Move the buttons back to their original position when shown */
+opacity: 1;  
+}

@@ -43,61 +43,13 @@ button {
   border-radius: 0px 40px 40px 00px;
 }
 
-.buttons {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-}
-
-.snack {
-  color: #fff;
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  margin: 0;
-  padding: 0;
-  /* width: 200px; */
-  position: relative;
-  padding-left: 10px;
-}
-
-.completed {
-  text-decoration: line-through;
-  color: purple;
-}
-
-
-.waitRow > * {
-  text-align: center;
+.snacksList {
+  overflow: hidden;
 }
 
 
 
-li::before {
-  content: "";
-  position: absolute;
-  height: 28px;
-  width: 28px;
-  border-radius: 50%;
-  background-image: url(/assets/checkbox-blank-circle-line.svg);
-  background-size: cover;
-  background-position: center;
-  margin-right: 20px;
-  left: -40px; /* Adjust left position of the circle within the li */
-  top: 50%; /* Align vertically in the middle of the li */
-  transform: translateY(-50%); /* Center vertically */
-}
-
-.buttons {
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-end;
-  margin-bottom: 5px;
-}
-
-.buttonComplete,
-.buttonEdit,
-.buttonDelete {
+.buttonComplete {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -107,40 +59,69 @@ li::before {
   border-radius: 50%;
 }
 
+
 .buttonComplete {
-  color: #2f582f;
-  background-color: #79de79;
-}
-.buttonEdit {
-  color: #444428;
-  background-color: #fcfc99;
-}
-.buttonDelete {
-  color: #401a18;
-  background-color: #fb6962;
-}
+  display: flex;
+  position: absolute;
 
+  color: #fff;
+
+  border: 3px solid #00fee5;
+  transform: translateY(10%);
+  left: 10px;
+
+}
 .buttonComplete:active {
-  background-color: #2f582f;
-  color: #79de79;
-}
-.buttonEdit:active {
-  background-color: #444428;
-  color: #fcfc99;
-}
-.buttonDelete:active {
-  background-color: #401a18;
-  color: #fb6962;
+  background-color: #800080;
+  color: #fff;
+  border: 3px solid #800080;
 }
 
 
 
-li {
+.snack {
+  position:static;
+  display: flex;
+  justify-content: space-between;
+
+  color: #fff;
+  flex-direction: row;
+  flex-wrap: wrap;
+  margin: 0;
+  padding: 10px;
+  padding-left: 10px;
+  z-index: 0;
   border-bottom: 1px solid #ffffff18;
   list-style: none;
-
-  /* padding: 2px 10px; */
 }
+
+.SnackButtonContainer{
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+left: -8%;
+}
+
+.completed {
+  text-decoration: line-through;
+  color: #800080;
+
+}
+
+.completedButton {
+  color: #800080;
+  border: 3px solid #800080;
+}
+
+
+
+
+
+
+
+
+
 
 .loadingMessage {
   display: flex;

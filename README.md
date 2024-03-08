@@ -44,11 +44,14 @@ This project wouldn't have been possible without the following resources:
 
 ## Updates
 
-- **1.1 -** Enhanced functionality and aesthetics of Snacks List Option Buttons.
+- **V1.1**
+- Enhanced functionality and aesthetics of Snacks List Option Buttons.
+- Added loading functions for form submissions, edits and deletions
+- Added list sorting based on completion
 
 ---
 
 ## Feedback and Support
 
-Feedback and contributions are welcome! If you encounter any issues or have suggestions for improvement, feel free to [open an issue](https://github.com/your-username/disney-world-react-dashboard/issues).
+Feedback and contributions are welcome!
 

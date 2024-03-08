@@ -9,10 +9,17 @@ const Snacks = ({ snacks, handleComplete, handleEdit, handleDelete }) => {
         <ul className={styles.snacksList}>
           {snacks.map((snack) => (
             <React.Fragment key={snack.id}>
+              <button
+          className={`${styles.buttonComplete} ${snack.completed ? styles.completedButton : ''}`}
+          onClick={() => handleComplete(snack.id)}
+        >
+          <i className="far fa-check-circle fa-xs"></i>
+        </button>
 <li
   key={snack.id}
   className={`${styles.snack} ${snack.completed ? styles.completed : ''}`}
 >
+
   <span>{snack.title}</span>
   <span className={styles.ButtonContainer}>
     <ButtonContainer

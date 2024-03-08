@@ -1,74 +1,70 @@
-.buttonContainer{
-    display: flex;
-justify-content: flex-end;
-z-index: 1;
+.buttonContainer {
+  position: relative;
 }
-
-
 
 .buttons {
-    display: flex;
-    flex-direction: row;
-    /* justify-content: flex-end; */
-    /* margin-bottom: 5px; */
-    transform: translateX(140%); 
-    transition: transform 0.3s ease; /* Add transition effect for transform property */
-opacity: 0;  
+  position: absolute;
+  top: 0;
+  right: 0;
+  display: flex;
+  flex-direction: column; /* Stack buttons vertically */
 }
 
-  .show {
-    transform: translateX(0%); /* Move the buttons back to their original position when shown */
-opacity: 1;  
+.show {
+  transform: translate(0, -50%);
 }
-  
 
-  
-  
- .buttonOption, .buttonComplete,
-  .buttonEdit,
-  .buttonDelete {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 25px;
-    height: 25px;
-    margin: 2px 2px;
-    border-radius: 50%;
-  }
+.slideIn {
+  transition-delay: 0.1s;
+}
 
-  .buttonOption {
-    color: #393939;
-    background-color: #daefda;
-    margin-right: auto;
-  }
-  
-  .buttonComplete {
-    color: #2f582f;
-    background-color: #79de79;
-  }
-  .buttonEdit {
-    color: #444428;
-    background-color: #fcfc99;
-  }
-  .buttonDelete {
-    color: #401a18;
-    background-color: #fb6962;
-  }
+.slideOut {
+  transform: translateX(100%);
+}
 
-  .buttonOption:active {
-    background-color: #393939;
-    color: #daefda;
-  }
-  
-  .buttonComplete:active {
-    background-color: #2f582f;
-    color: #79de79;
-  }
-  .buttonEdit:active {
-    background-color: #444428;
-    color: #fcfc99;
-  }
-  .buttonDelete:active {
-    background-color: #401a18;
-    color: #fb6962;
-  }
+.buttonOption,
+.buttonEdit,
+.buttonDelete {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 25px;
+  height: 25px;
+  margin: 2px 2px;
+  border-radius: 50%;
+  position: relative; /* Ensure proper z-index stacking */
+}
+
+.buttonOption {
+  color: #393939;
+  background-color: hsla(120, 40%, 90%, 0.9);
+  margin-right: auto;
+  z-index: 2; /* Ensure it's above other buttons */
+}
+
+.buttonOption:active {
+  background-color: hsla(0, 0%, 22%, 0.765);
+  color: #daefda;
+}
+
+.buttonEdit {
+  color: #444428;
+  background-color: #fcfc99;
+  z-index: 1; /* Ensure it's below the option button but above the delete button */
+}
+
+.buttonEdit:active {
+  background-color: #444428;
+  color: #fcfc99;
+}
+
+.buttonDelete {
+  color: #401a18;
+  background-color: #fb6962;
+  z-index: 0; /* Ensure it's below other buttons */
+}
+
+.buttonDelete:active {
+  background-color: #401a18;
+  color: #fb6962;
+}

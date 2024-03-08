@@ -56,6 +56,34 @@ button {
   z-index:1;
 }
 
+.buttonComplete {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 25px;
+  height: 25px;
+  margin: 2px 2px;
+  border-radius: 50%;
+}
+
+
+.buttonComplete {
+  display: flex;
+  position: absolute;
+
+  color: #00fee5;
+
+  border: 3px solid #00fee5;
+  transform: translateY(10%);
+  left: 10px;
+
+}
+.buttonComplete:active {
+  background-color: #00fee5;
+  color: #800080;
+  border: 3px solid #800080;
+}
+
 
 .snack {
   position: relative;
@@ -74,9 +102,14 @@ button {
 
 .completed {
   text-decoration: line-through;
-  color: purple;
+  color: #800080;
+
 }
 
+.completedButton {
+  color: #800080;
+  border: 3px solid #800080;
+}
 
 .waitRow > * {
   text-align: center;
@@ -84,20 +117,7 @@ button {
 
 
 
-li::before {
-  content: "";
-  position: absolute;
-  height: 28px;
-  width: 28px;
-  border-radius: 50%;
-  background-image: url(/assets/checkbox-blank-circle-line.svg);
-  background-size: cover;
-  background-position: center;
-  margin-right: 20px;
-  left: -40px; /* Adjust left position of the circle within the li */
-  top: 50%; /* Align vertically in the middle of the li */
-  transform: translateY(-50%); /* Center vertically */
-}
+
 
 
 

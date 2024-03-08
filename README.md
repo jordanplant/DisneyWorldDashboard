@@ -42,9 +42,9 @@ This project wouldn't have been possible without the following resources:
 
 ---
 
-## License
+## Updates
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+- **1.1 -** Enhanced functionality and aesthetics of Snacks List Option Buttons.
 
 ---
 

@@ -15,6 +15,7 @@ const SnacksList = () => {
   const [editMode, setEditMode] = useState(false);
   const [editedSnack, setEditedSnack] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [loadingAddOrEdit, setLoadingAddOrEdit] = useState(false);
 
   const onInputChange = (event) => {
     setInput(event.target.value);
@@ -27,6 +28,18 @@ const SnacksList = () => {
         throw new Error("Failed to fetch snacks");
       }
       const data = await response.json();
+  
+      // Custom sorting function to sort by completed: false at the top and completed: true at the bottom
+      data.sort((a, b) => {
+        if (a.completed && !b.completed) {
+          return 1;
+        }
+        if (!a.completed && b.completed) {
+          return -1;
+        }
+        return 0;
+      });
+  
       setSnacks(data);
     } catch (error) {
       console.error("Error fetching snacks:", error);
@@ -34,6 +47,7 @@ const SnacksList = () => {
       setLoading(false);
     }
   };
+  
 
   useEffect(() => {
     fetchSnacks();
@@ -41,6 +55,7 @@ const SnacksList = () => {
 
   const onFormSubmit = async (event) => {
     event.preventDefault();
+    setLoadingAddOrEdit(true);
 
     if (editMode) {
       try {
@@ -67,6 +82,9 @@ const SnacksList = () => {
       } catch (error) {
         console.error("Failed to update snack:", error);
       }
+      finally {
+        setLoadingAddOrEdit(false); 
+      }
     } else {
       try {
         const response = await fetch(`${apiUrl}/createSnack`, {
@@ -78,14 +96,17 @@ const SnacksList = () => {
         });
         if (!response.ok) {
           throw new Error("Error adding snack");
-        }
+        } 
         const newSnack = await response.json(); // Assuming this is the snack data received from your createSnack API
         const updatedSnacks = [...snacks, newSnack];
         setSnacks(updatedSnacks); // Update local state
         updateJsonBin(updatedSnacks); // Update JSONBin
       } catch (error) {
         console.error("Failed to add snack:", error);
+      } finally {
+        setLoadingAddOrEdit(false); // Reset loading state after operation is complete
       }
+  
     }
     setInput("");
   };
@@ -209,8 +230,8 @@ const SnacksList = () => {
           required
           onChange={onInputChange}
         />
-        <button className={styles.buttonAdd} type="submit">
-          {editMode ? "Update" : "Add"}
+        <button className={styles.buttonAdd} type="submit" disabled={loadingAddOrEdit}>
+          {loadingAddOrEdit ? <i className="fa-solid fa-spinner fa-spin-pulse fa-xl"></i> : (editMode ? "Update" : "Add")}
         </button>
       </form>
 

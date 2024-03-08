@@ -42,6 +42,12 @@ button {
   cursor: pointer;
   border-radius: 0px 40px 40px 00px;
 }
+.buttonAdd i {
+margin-top: 40%;
+margin-right: 30%;
+
+
+}
 
 .snacksList {
   overflow: hidden;
@@ -67,8 +73,8 @@ button {
   color: #fff;
 
   border: 3px solid #00fee5;
-  transform: translateY(10%);
-  left: 10px;
+  transform: translateY(15%) translateX(-120%);
+  /* left: 10px; */
 
 }
 .buttonComplete:active {

@@ -1,8 +1,22 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import styles from "./SnacksList.module.css";
 import ButtonContainer from "./ButtonContainer";
 
 const Snacks = ({ snacks, handleComplete, handleEdit, handleDelete }) => {
+  const [loadingSnackId, setLoadingSnackId] = useState(null);
+
+  const handleCompleteWithLoading = async (id) => {
+    setLoadingSnackId(id);
+    await handleComplete(id);
+    setTimeout(() => setLoadingSnackId(null), 500);
+  };
+
+  const handleDeleteWithLoading = async (id) => {
+    setLoadingSnackId(id);
+    await handleDelete(id);
+    setTimeout(() => setLoadingSnackId(null), 500);
+  };
+
   return (
     <>
       <div>
@@ -10,25 +24,26 @@ const Snacks = ({ snacks, handleComplete, handleEdit, handleDelete }) => {
           {snacks.map((snack) => (
             <React.Fragment key={snack.id}>
               <button
-          className={`${styles.buttonComplete} ${snack.completed ? styles.completedButton : ''}`}
-          onClick={() => handleComplete(snack.id)}
-        >
-          <i className="far fa-check-circle fa-xs"></i>
-        </button>
-<li
-  key={snack.id}
-  className={`${styles.snack} ${snack.completed ? styles.completed : ''}`}
->
-
-  <span>{snack.title}</span>
-  <span className={styles.SnackButtonContainer}>
-    <ButtonContainer
-                   snack={snack}
-                   handleComplete={handleComplete}
-                   handleEdit={handleEdit}
-                   handleDelete={handleDelete} />
-  </span>
-</li>
+                className={`${styles.buttonComplete} ${snack.completed ? styles.completedButton : ''}`}
+                onClick={() => handleCompleteWithLoading(snack.id)}
+                disabled={loadingSnackId === snack.id}
+              >
+                {loadingSnackId === snack.id ? <i className="fa-solid fa-spinner fa-spin-pulse"></i> : <i className="far fa-check-circle fa-xs"></i>}
+              </button>
+              <li
+                key={snack.id}
+                className={`${styles.snack} ${snack.completed ? styles.completed : ''}`}
+              >
+                <span>{snack.title}</span>
+                <span className={styles.SnackButtonContainer}>
+                  <ButtonContainer
+                    snack={snack}
+                    handleComplete={handleComplete}
+                    handleEdit={handleEdit}
+                    handleDelete={() => handleDeleteWithLoading(snack.id)}
+                  />
+                </span>
+              </li>
             </React.Fragment>
           ))}
         </ul>

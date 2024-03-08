@@ -43,18 +43,11 @@ button {
   border-radius: 0px 40px 40px 00px;
 }
 
-.buttons {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
+.snacksList {
+  overflow: hidden;
 }
 
-.ButtonContainer {
-  position: absolute; /* Position the ButtonContainer absolutely */
-  /* top: 0; */
-  right: 0;
-  z-index:1;
-}
+
 
 .buttonComplete {
   display: flex;
@@ -71,7 +64,7 @@ button {
   display: flex;
   position: absolute;
 
-  color: #00fee5;
+  color: #fff;
 
   border: 3px solid #00fee5;
   transform: translateY(10%);
@@ -79,25 +72,35 @@ button {
 
 }
 .buttonComplete:active {
-  background-color: #00fee5;
-  color: #800080;
+  background-color: #800080;
+  color: #fff;
   border: 3px solid #800080;
 }
 
 
+
 .snack {
-  position: relative;
+  position:static;
   display: flex;
   justify-content: space-between;
-  align-items: center;
+
   color: #fff;
-  display: flex;
   flex-direction: row;
   flex-wrap: wrap;
   margin: 0;
   padding: 10px;
   padding-left: 10px;
   z-index: 0;
+  border-bottom: 1px solid #ffffff18;
+  list-style: none;
+}
+
+.SnackButtonContainer{
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+left: -8%;
 }
 
 .completed {
@@ -111,9 +114,6 @@ button {
   border: 3px solid #800080;
 }
 
-.waitRow > * {
-  text-align: center;
-}
 
 
 
@@ -122,12 +122,6 @@ button {
 
 
 
-li {
-  border-bottom: 1px solid #ffffff18;
-  list-style: none;
-
-  /* padding: 2px 10px; */
-}
 
 .loadingMessage {
   display: flex;

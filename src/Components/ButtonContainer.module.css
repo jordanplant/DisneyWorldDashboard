@@ -1,45 +1,29 @@
 .buttonContainer {
-  position: relative;
-}
-
-.buttons {
-  position: absolute;
-  top: 0;
-  right: 0;
   display: flex;
-  flex-direction: column; /* Stack buttons vertically */
+  justify-content: center;
+  align-items: center;
 }
 
-.show {
-  transform: translate(0, -50%);
-}
-
-.slideIn {
-  transition-delay: 0.1s;
-}
-
-.slideOut {
-  transform: translateX(100%);
-}
-
-.buttonOption,
 .buttonEdit,
-.buttonDelete {
+.buttonDelete,
+.buttonOption {
   display: flex;
   justify-content: center;
   align-items: center;
   width: 25px;
   height: 25px;
-  margin: 2px 2px;
   border-radius: 50%;
-  position: relative; /* Ensure proper z-index stacking */
+  position: absolute;
+  top: 0;
+  transition: transform 0.3s ease, opacity 0.3s ease; /* Adding transition for smooth animation */
 }
 
 .buttonOption {
   color: #393939;
   background-color: hsla(120, 40%, 90%, 0.9);
   margin-right: auto;
-  z-index: 2; /* Ensure it's above other buttons */
+  z-index: 2;
+  top: 0;
 }
 
 .buttonOption:active {
@@ -50,7 +34,8 @@
 .buttonEdit {
   color: #444428;
   background-color: #fcfc99;
-  z-index: 1; /* Ensure it's below the option button but above the delete button */
+  z-index: 1;
+  opacity: 0;
 }
 
 .buttonEdit:active {
@@ -61,10 +46,20 @@
 .buttonDelete {
   color: #401a18;
   background-color: #fb6962;
-  z-index: 0; /* Ensure it's below other buttons */
+  z-index: 0;
+  opacity: 0
 }
 
 .buttonDelete:active {
   background-color: #401a18;
   color: #fb6962;
+}
+
+.showEdit{
+  transform: translateX(-60px); /* Adjust as needed */
+  opacity: 1;
+}
+.showDelete{
+  transform: translateX(-30px); /* Adjust as needed */
+  opacity: 1;
 }

@@ -22,6 +22,7 @@
   justify-content: center;
   position: relative;
   color: #fff;
+  height: 122px;
 }
 
 .weather-icon {
@@ -43,7 +44,7 @@
 
 .weather p {
   font-size: 10px;
-  margin: 5px;
+  margin: 0px 10px;
 }
 
 .weather-text {
@@ -62,23 +63,38 @@
 
 .col {
   display: flex;
-
   align-items: center;
   text-align: left;
-  padding-left: 20px;
+  margin: 5px;
 }
 
 .col svg {
+  height: 30px;
   width: 30px;
+  
 }
 
+
+
 .humidity,
-.wind {
+.wind, .sunset {
   fill: var(--opaque);
-  font-size: 10px;
+  font-size: 12px !important;
   font-weight: bold;
 }
 
+
+.humidity {
+  fill: #00a9fe;
+}
+
+.wind {
+  fill: #20cd06;
+}
+
+.sunset {
+  fill: #153677;
+}
 .clearDay {
   fill: #e8ce08;
 }
@@ -95,3 +111,23 @@
 .thunderstorm {
   fill: #000;
 }
+
+.dots-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.dot {
+  height: 10px;
+  width: 10px;
+  background-color: hsla(0, 0%, 22%, 0.5);
+  border-radius: 50%;
+  margin: 0 5px;
+  cursor: pointer;
+}
+
+.dot.active {
+  background-color: #daefda;
+}
+

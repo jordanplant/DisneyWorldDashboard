@@ -49,6 +49,8 @@ This project wouldn't have been possible without the following resources:
 - Added loading functions for form submissions, edits and deletions
 - Added list sorting based on completion
 
+- **V1.2**
+- Implemented a Weather Carousel feature to split the data, enhancing readability.
 ---
 
 ## Feedback and Support

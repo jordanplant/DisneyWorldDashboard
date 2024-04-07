@@ -1,0 +1,150 @@
+:root {
+    --gradient: linear-gradient(135deg, #153677, #4e085f);
+    --mkGradient: linear-gradient(135deg, #519ddb, #ff69b4);
+    --epcotGradient: linear-gradient(135deg, #d8d8d8, #4682b4);
+    --hsGradient: linear-gradient(135deg, #ec506a, #f3cc56);
+    --akGradient: linear-gradient(135deg, #228b22, #d6c98e);
+  }
+
+.itinDateContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.itinDateButton{
+    padding: 0 1em;
+    color:#ffffffb3;
+}
+
+.itinDateButton:active{
+    color:rgb(255, 255, 255);
+}
+
+.itinDate{
+    font-size: 1.5em;
+}
+
+.itinParkSelection{
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    padding: 5px;
+}
+
+.itinPark{
+    border: 1px solid #ffffffb3;
+    padding: 5px 10px;
+    margin: 3px;
+    border-radius: 50px;
+    text-align: center;
+}
+.itinMkActive{
+    background:var(--mkGradient);
+    font-weight: bold;
+    border: 2px solid #ffffffb3;
+}
+.itinEpcotActive{
+    background:var(--epcotGradient);
+    font-weight: bold;
+    border: 2px solid #ffffffb3;
+}
+.itinHsActive{
+    background:var(--hsGradient);
+    font-weight: bold;
+    border: 2px solid #ffffffb3;
+}
+.itinAkActive{
+    background:var(--akGradient);
+    font-weight: bold;
+    border: 2px solid #ffffffb3;
+}
+
+.itinForm {
+    display: flex;
+    justify-content: center;
+    margin: 10px 0px;
+
+    
+}
+
+.itinForm input {
+    border: none;
+    outline: none;
+    background: #fff;
+    color: #444428;
+ 
+
+
+}
+
+.itinForm input:nth-child(1){
+    padding: 5px 5px;
+    border-radius: 40px 0px 0px 40px;
+    text-indent: 2px;
+}
+
+
+.itinForm input:nth-child(1){
+    border-radius: 40px 0px 0px 40px;
+
+}
+
+.itinForm input:nth-child(1){
+    border-radius: 40px 0px 0px 40px;
+
+}.itinForm input::-webkit-calendar-picker-indicator{
+background-color: #000;
+border-radius: 50px;
+}
+
+.buttonAdd {
+    border: none;
+    outline: none;
+    padding: 10px 10px;
+    background: -o-linear-gradient(315deg, #00fee5, #6f47ae);
+    background: linear-gradient(135deg, #00fee5, #6f47ae);
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 0px 40px 40px 0px;
+  }
+  
+.calendar table {
+    border-collapse: collapse;
+
+  }
+
+  .calCategories > th{
+    color: hsla(0, 0%, 100%, 0.9);
+
+  }
+
+  .calCategories th:nth-child(1){
+
+    width: 90px;
+  }
+
+  .calCategories th:nth-child(2){
+    width: 230px;
+  }
+  
+
+
+  .calDetails > tr > td {
+    border-bottom: 1px solid #ffffff18;
+    color: #fff;
+    padding: 5px 5px;
+    text-align: center; /* turn this off if you want activities to be left aligned */
+  }
+
+
+    /* .calDetails > tr > td:nth-child(1){
+  text-align: center;} */
+
+
+  .calDetails tr:nth-child(even) {
+    background-color: #ffffff18; 
+  }
+  

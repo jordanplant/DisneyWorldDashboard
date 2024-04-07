@@ -6,6 +6,7 @@ import SnacksList from "./SnacksList";
 
 import WaitTimes from "./WaitTimes";
 import ButtonContainer from "./ButtonContainer";
+import Itinerary from "./Itinerary";
 
 function PageLayout() {
   const [input, setInput] = useState("");
@@ -44,10 +45,14 @@ function PageLayout() {
             <h2 className="text-gradient">Wait Times</h2>
             <WaitTimes />
           </div>
+          <div className="itinerary-bar card">
+            <h2 className="text-gradient">Itinerary (temp location)</h2>
+<Itinerary/>
+          </div>
         </div>
         <div className="footer">
         <a href="https://github.com/jordanplant/DisneyWorldDashboard---JS-React-Node" target="_blank"><i className="fa-brands fa-github fa-xl"></i></a>
-        <p>v1.2</p>
+        <p>v1.1.3</p>
       </div>
       </main>
 

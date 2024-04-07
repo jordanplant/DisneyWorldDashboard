@@ -52,6 +52,9 @@ This project wouldn't have been possible without the following resources:
 - **V1.2**
 - Implemented a Weather Carousel feature to split the data, enhancing readability.
 ---
+- **V1.3**
+- Added itinerary form
+---
 
 ## Feedback and Support
 

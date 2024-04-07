@@ -70,6 +70,7 @@ const Itinerary = () => {
 
 
         </form>
+        <p>**ADD PARK TIMES FOR THAT DAY HERE**</p>
 
       {/* <form className={styles.formBar} onSubmit={onFormSubmit}>
         <input

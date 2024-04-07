@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import styles from "./itinerary.module.css";
+import styles from "./Itinerary.module.css";
 
 const Itinerary = () => {
   const [activeButton, setActiveButton] = useState(null);

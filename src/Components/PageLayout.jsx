@@ -46,7 +46,7 @@ function PageLayout() {
             <WaitTimes />
           </div>
           <div className="itinerary-bar card">
-            <h2 className="text-gradient">Itinerary (temp location)</h2>
+            <h2 className="text-gradient">Itinerary (WIP)</h2>
 <Itinerary/>
           </div>
         </div>

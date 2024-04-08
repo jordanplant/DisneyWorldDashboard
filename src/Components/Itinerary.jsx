@@ -3,6 +3,54 @@ import styles from "./Itinerary.module.css";
 
 const Itinerary = () => {
   const [activeButton, setActiveButton] = useState(null);
+  const [selectedPark, setSelectedPark] = useState('');
+  const [selectedTime, setSelectedTime] = useState('');
+  const [activity, setActivity] = useState('');
+  const [itinerary, setItinerary] = useState([]);
+
+  const handleParkChange = (park) => {
+    setSelectedPark(park);
+  };
+
+  const handleTimeChange = (time) => {
+    setSelectedTime(time);
+  };
+
+  const handleActivityChange = (e) => {
+    setActivity(e.target.value);
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (selectedPark && selectedTime && activity) {
+      const newEntry = {
+        park: selectedPark,
+        time: selectedTime,
+        activity: activity
+      };
+      
+      const prevEntry = itinerary.length > 0 ? itinerary[itinerary.length - 1] : null;
+      const isSamePark = prevEntry && prevEntry.park === selectedPark;
+      const isConsecutiveTime = prevEntry && prevEntry.time < selectedTime;
+
+      if (isSamePark && isConsecutiveTime) {
+        // Add new entry to the existing group
+        setItinerary(prevItinerary => [...prevItinerary, newEntry]);
+      } else {
+        // Start a new group with the new entry
+        setItinerary(prevItinerary => [...prevItinerary, { park: selectedPark }, newEntry]);
+      }
+
+      // Clear input fields after submission
+      setSelectedPark('');
+      setSelectedTime('');
+      setActivity('');
+    } else {
+      // Handle incomplete form submission
+      alert('Please fill in all fields.');
+    }
+  };
+  
 
   const handleButtonClick = (parkName) => {
     setActiveButton(prevActiveButton => prevActiveButton === parkName ? null : parkName);
@@ -21,50 +69,57 @@ const Itinerary = () => {
         </button>
       </div>
       <div className={styles.itinParkSelection}>
-        <button
+      <button
           className={`${styles.itinPark} ${
-            activeButton === "itinMk" ? styles.itinMkActive : ""
+            selectedPark === "Magic Kingdom" ? styles.itinMkActive : ""
           }`}
-          onClick={() => handleButtonClick("itinMk")}
+          onClick={() => handleParkChange("Magic Kingdom")}
         >
           Magic Kingdom
         </button>
         <button
           className={`${styles.itinPark} ${
-            activeButton === "itinEpcot" ? styles.itinEpcotActive : ""
+            selectedPark === "Epcot" ? styles.itinEpcotActive : ""
           }`}
-          onClick={() => handleButtonClick("itinEpcot")}
+          onClick={() => handleParkChange("Epcot")}
         >
           Epcot
         </button>
         <button
           className={`${styles.itinPark} ${
-            activeButton === "itinHs" ? styles.itinHsActive : ""
+            selectedPark === "Hollywood Studios" ? styles.itinHsActive : ""
           }`}
-          onClick={() => handleButtonClick("itinHs")}
+          onClick={() => handleParkChange("Hollywood Studios")}
         >
           Hollywood Studios
         </button>
         <button
           className={`${styles.itinPark} ${
-            activeButton === "itinAk" ? styles.itinAkActive : ""
+            selectedPark === "Animal Kingdom" ? styles.itinAkActive : ""
           }`}
-          onClick={() => handleButtonClick("itinAk")}
+          onClick={() => handleParkChange("Animal Kingdom")}
         >
           Animal Kingdom
         </button>
       </div>
-      <div className={styles.itinFormContainer}>
+      <div className={styles.itinFormContainer} onSubmit={handleSubmit}>
         <form className={styles.itinForm}>
-            <input
-            type="time"
-            required/>
-            <input type='text'
-                      placeholder="Enter your activities here"
-              required/>
+        <input
+          type="time"
+          value={selectedTime}
+          onChange={(e) => handleTimeChange(e.target.value)}
+          required
+        />
+        <input
+          type="text"
+          value={activity}
+          onChange={handleActivityChange}
+          placeholder="Enter your activities here"
+          required
+        />
             <button className={styles.buttonAdd} type='submit'>
                 
-                add
+                Add
             </button>
 
 
@@ -72,53 +127,49 @@ const Itinerary = () => {
         </form>
         <p>**ADD PARK TIMES FOR THAT DAY HERE**</p>
 
-      {/* <form className={styles.formBar} onSubmit={onFormSubmit}>
-        <input
-          type="text"
-          placeholder="Enter your snacks here"
-          className={styles.taskInput}
-          value={input}
-          required
-          onChange={onInputChange}
-        />
-        <button className={styles.buttonAdd} type="submit" disabled={loadingAddOrEdit}>
-          {loadingAddOrEdit ? <i className="fa-solid fa-spinner fa-spin-pulse fa-xl"></i> : (editMode ? "Update" : "Add")}
-        </button>
-      </form> */}
       
 
       </div>
 
 
       <div className={styles.itinCalendar}>
-<table className={styles.calendar} id='calendar'>
-    <thead className={styles.calCategories}>
 
-        <th>Time:</th>
-        <th>Activity:</th>
+      <table className={styles.calendar} id='calendar'>
+          <thead className={styles.calCategories}>
+            <tr>
+              <th>Time:</th>
+              <th>Activity:</th>
+            </tr>
+          </thead>
+          <tbody className={styles.calDetails}>
+          {itinerary.map((entry, index) => {
+  if (entry.activity) {
+    return (
+      <tr key={index}>
+        <td>{entry.time}</td>
+        <td>{entry.activity}</td>
+      </tr>
+    );
+  } else {
+    const headerClass = `${styles.calParkName} ${
+      entry.park === "Magic Kingdom" ? styles.magicKingdomHeader :
+      entry.park === "Epcot" ? styles.epcotHeader :
+      entry.park === "Hollywood Studios" ? styles.hollywoodStudiosHeader :
+      entry.park === "Animal Kingdom" ? styles.animalKingdomHeader :
+      // Add similar conditions for other parks if needed
+      ""
+    }`;
 
-    </thead>
-    <tbody className={styles.calDetails}>
-        <tr>
-    <td className={styles.calTime}>09:00</td>
-    <td className={styles.calActivity}>Breakfast</td>
-    </tr>
-    <tr>
-    <td className={styles.calTime}>10:00</td>
-    <td className={styles.calActivity}>take pics</td>
-    </tr>
-    <tr>
-    <td className={styles.calTime}>11:00</td>
-    <td className={styles.calActivity}>get snacks</td>
-    </tr>
-    <tr>
-    <td className={styles.calTime}>12:00</td>
-    <td className={styles.calActivity}>Meet Mickey</td>
-    </tr>
-    </tbody>
+    return (
+      <tr key={index}>
+        <td colSpan="2" className={headerClass}>{entry.park}</td>
+      </tr>
+    );
+  }
+})}
+          </tbody>
+        </table>
 
-
-</table>
 
       </div>
       

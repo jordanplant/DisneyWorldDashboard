@@ -45,10 +45,10 @@ function PageLayout() {
             <h2 className="text-gradient">Wait Times</h2>
             <WaitTimes />
           </div>
-          {/* <div className="itinerary-bar card">
+          <div className="itinerary-bar card">
             <h2 className="text-gradient">Itinerary (WIP)</h2>
 <Itinerary/>
-          </div> */}
+          </div>
         </div>
         <div className="footer">
         <a href="https://github.com/jordanplant/DisneyWorldDashboard---JS-React-Node" target="_blank"><i className="fa-brands fa-github fa-xl"></i></a>

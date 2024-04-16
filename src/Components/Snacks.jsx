@@ -37,10 +37,9 @@ const Snacks = ({ snacks, handleComplete, handleEdit, handleDelete }) => {
                 <span>{snack.title}</span>
                 <span className={styles.SnackButtonContainer}>
                   <ButtonContainer
-                    snack={snack}
-                    handleComplete={handleComplete}
-                    handleEdit={handleEdit}
-                    handleDelete={() => handleDeleteWithLoading(snack.id)}
+                    item={snack} // Pass the snack object as the item prop
+                    handleEdit={handleEdit} // Pass the handleEdit function
+                    handleDelete={() => handleDeleteWithLoading(snack.id)} // Pass the handleDelete function
                   />
                 </span>
               </li>

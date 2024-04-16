@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styles from "./ButtonContainer.module.css";
 
-const ButtonContainer = ({ snack, handleEdit, handleDelete }) => {
+const ButtonContainer = ({ item, handleEdit, handleDelete, isItinerary }) => {
   const [showEditButton, setShowEditButton] = useState(false);
   const [showDeleteButton, setShowDeleteButton] = useState(false);
 
@@ -10,23 +10,25 @@ const ButtonContainer = ({ snack, handleEdit, handleDelete }) => {
     setShowDeleteButton(prevState => !prevState);
   };
   
-
   const handleEditClick = () => {
-    handleEdit(snack);
+    const { id, ...newData } = item;
+    handleEdit(id, newData);
   };
 
   const handleDeleteClick = () => {
-    handleDelete(snack.id);
+    handleDelete(item.id);
   };
 
+  // Determine which container style to use based on the isItinerary prop
+  const containerStyle = isItinerary ? styles.itineraryContainer : '';
+
   return (
-    <div className={styles.buttonContainer}>
+    <div className={`${styles.buttonContainer} ${containerStyle}`}>
       <button
         className={`${styles.buttonEdit} ${showEditButton ? styles.showEdit : ''}`}
         onClick={handleEditClick}
-        disabled={!snack || snack.completed}
       >
-        <i className="far fa-pen-to-square fa-xs"></i>
+        <i className="far fa-edit fa-xs"></i> {/* Change the icon to an edit icon */}
       </button>
 
       <button

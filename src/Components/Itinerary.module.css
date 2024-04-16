@@ -11,12 +11,32 @@
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
+    border: 2px solid #ffffffb3;
+    padding: 10px 0px;
+    color: #ffffffb3;
+    border-radius: 50px;
 }
 
+.itinFormContainer{
+  display: flex;
+  justify-content: center;
+  width: 100%;
+
+}
 .itinDateButton{
     padding: 0 1em;
     color:#ffffffb3;
 }
+
+.itineraryDate {
+  all:unset;
+  font-weight:900;
+  font-size: 18px;
+  color: #fff;
+  text-align: center;
+}
+
+
 
 .itinDateButton:active{
     color:rgb(255, 255, 255);
@@ -31,6 +51,7 @@
     align-items: center;
     flex-wrap: wrap;
     padding: 5px;
+    margin: 5px 0px;
 }
 
 .itinPark{
@@ -70,6 +91,7 @@
     display: flex;
     justify-content: center;
     margin: 10px 0px;
+    width: 100%;
 
     
 }
@@ -85,36 +107,46 @@
 }
 
 .itinForm input:nth-child(1){
-    padding: 5px 5px;
+    padding: 15px 20px;
     border-radius: 40px 0px 0px 40px;
     text-indent: 2px;
 }
 
 
-.itinForm input:nth-child(1){
-    border-radius: 40px 0px 0px 40px;
+.itinForm input:nth-child(2){
+  width: 100%;
 
 }
 
-.itinForm input:nth-child(1){
-    border-radius: 40px 0px 0px 40px;
 
-}.itinForm input::-webkit-calendar-picker-indicator{
-background-color: #000;
+.itinForm input::-webkit-calendar-picker-indicator{
+/* background-color: #000; */
 border-radius: 50px;
 }
 
 .buttonAdd {
+  display: flex;
     border: none;
     outline: none;
-    padding: 10px 10px;
+    padding: 20px 10px;
     background: -o-linear-gradient(315deg, #00fee5, #6f47ae);
     background: linear-gradient(135deg, #00fee5, #6f47ae);
     color: #fff;
     font-size: 16px;
     cursor: pointer;
     border-radius: 0px 40px 40px 0px;
+    text-align: center;
   }
+
+  .buttonAdd i {
+      margin-top: 6px;
+      margin-right: 6px;
+      
+      
+      }
+    
+    
+    
   
 .calendar table {
     border-collapse: collapse;
@@ -124,15 +156,16 @@ border-radius: 50px;
   .calCategories > th{
     color: hsla(0, 0%, 100%, 0.9);
 
+
   }
 
   .calCategories th:nth-child(1){
 
-    width: 90px;
+    width: 10%;
   }
 
   .calCategories th:nth-child(2){
-    width: 230px;
+    width: 70%x;
   }
   
 
@@ -159,9 +192,22 @@ border-radius: 50px;
     color: #fff;
   
     font-size: 30px;
-
-
   }
+
+  .noAbsolutePosition {
+    position: unset !important; 
+  }
+  
+
+  .loadingMessage {
+    margin: 0 auto;
+    text-align: center;
+  }
+  
+  .loadingMessage i {
+    padding: 5px;
+  }
+
 /* 
   .magicKingdomHeader {
     font-size: 30px;

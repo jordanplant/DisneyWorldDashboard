@@ -140,7 +140,7 @@ const apiUrl = isDevelopment
     } catch (error) {
       console.error('Error updating activity in itinerary:', error);
     } finally {
-      setLoadingAddOrEdit(false); // Stop loading after updating activity
+      setLoadingAddOrEdit(true); // Stop loading after updating activity
     }
   };
   
@@ -170,6 +170,12 @@ const apiUrl = isDevelopment
   };
 
   
+
+  const noItineraryMessage = (
+    <p className={styles.noItinerary}>
+      You've got nothing planned for today. lets change that!
+    </p>
+  );
   
 
   return (
@@ -178,6 +184,7 @@ const apiUrl = isDevelopment
         <button
           className={`${styles.itinDateButton} ${styles.pageLeft}`}
           onClick={() => handleDateChange(-1)}
+          disabled={loading}
         >
           <i className="fa-solid fa-arrow-left fa-2xl"></i>
         </button>
@@ -188,13 +195,16 @@ const apiUrl = isDevelopment
           name="Itinerary Date"
           value={date}
           onChange={(e) => setDate(e.target.value)}
+          disabled={loading}
         />
 
         <button
           className={`${styles.itinDateButton} ${styles.pageRight}`}
           onClick={() => handleDateChange(1)}
+          disabled={loading}
         >
           <i className="fa-solid fa-arrow-right fa-2xl"></i>
+
         </button>
       </div>
       <div className={styles.itinParkSelection}>
@@ -203,6 +213,7 @@ const apiUrl = isDevelopment
             selectedPark === 'Magic Kingdom' ? styles.itinMkActive : ''
           }`}
           onClick={() => handleParkChange('Magic Kingdom')}
+          disabled={loading}
         >
           Magic Kingdom
         </button>
@@ -211,6 +222,7 @@ const apiUrl = isDevelopment
             selectedPark === 'Epcot' ? styles.itinEpcotActive : ''
           }`}
           onClick={() => handleParkChange('Epcot')}
+          disabled={loading}
         >
           Epcot
         </button>
@@ -219,6 +231,7 @@ const apiUrl = isDevelopment
             selectedPark === 'Hollywood Studios' ? styles.itinHsActive : ''
           }`}
           onClick={() => handleParkChange('Hollywood Studios')}
+          disabled={loading}
         >
           Hollywood Studios
         </button>
@@ -227,6 +240,7 @@ const apiUrl = isDevelopment
             selectedPark === 'Animal Kingdom' ? styles.itinAkActive : ''
           }`}
           onClick={() => handleParkChange('Animal Kingdom')}
+          disabled={loading}
         >
           Animal Kingdom
         </button>
@@ -248,8 +262,9 @@ const apiUrl = isDevelopment
   onChange={handleActivityChange}
   placeholder="Enter your activities here"
   required
+  disabled={loading}
 />
-<button className={styles.buttonAdd} type="submit" disabled={loadingAddOrEdit}>
+<button className={styles.buttonAdd} type="submit" disabled={loading || loadingAddOrEdit}>
   {loadingAddOrEdit ? (
     <i className="fa-solid fa-spinner fa-spin-pulse fa-xl"/>
   ) : (
@@ -260,65 +275,72 @@ const apiUrl = isDevelopment
       </div>
 
       <div className={styles.itinCalendar}>
-        <table className={styles.calendar} id="calendar">
-          {loading ? (
-                    <p className={styles.loadingMessage}><i className="fa-solid fa-cookie-bite fa-2xl"></i> Loading Itinerary...</p>
-          ) : (
-            <>
-          <thead className={styles.calCategories}>
+  <table className={styles.calendar} id="calendar">
+    <tbody className={styles.calDetails}>
+      {loading ? (
+        // Render loading message
+        <tr>
+          <td colSpan="3" className={styles.loadingMessage}>
+            <p className={styles.loadingMessages}>
+              <i className="fa-regular fa-calendar fa-2xl"></i> Loading Itinerary...
+            </p>
+          </td>
+        </tr>
+      ) :  (
+        // Render itinerary content
+        <>
+          {/* Iterate over the unique parks in the itinerary */}
+          {[...new Set(itinerary.map(activity => activity.park))].map((park, parkIndex) => {
+            // Filter activities by the current park and date
+            const activitiesForPark = itinerary.filter(activity => activity.park === park && activity.date === date);
+            // Check if there are any activities for the current park and date
+            if (activitiesForPark.length > 0) {
+              return (
+                <React.Fragment key={parkIndex}>
+                  {/* Render the park name as a group header */}
+                  <tr>
+                    <td colSpan="3" className={styles.calParkName}>{park}</td>
+                  </tr>
+                  {/* Map over activities for the current park */}
+                  {activitiesForPark.map((activity, index) => (
+                    <tr key={index}>
+                      <td className={styles.timeColumn}>{activity.time}</td>
+                      <td className={styles.activityColumn}>
+                        {loadingDelete === activity.id ? "Deleting..." : activity.activity}
+                      </td>
+                      <td className={styles.editColumn}>
+                        <ButtonContainer
+                          item={activity}
+                          handleUpdate={handleUpdate}
+                          handleDelete={handleDelete}
+                          handleEdit={() => handleEdit(activity)}
+                          isItinerary={true}
+                        />
+                      </td>
+                    </tr>
+                  ))}
+                </React.Fragment>
+              );
+            }
+            // Return null if there are no activities for the current park and date
+            return null;
+          })}
+          {/* Render no itinerary message if there are no activities for the current date */}
+          {itinerary.filter(activity => activity.date === date).length === 0 && (
             <tr>
-              <th>Time:</th>
-              <th>Activity:</th>
-              <th></th>
+              <td colSpan="3" className={styles.noItinerary}>
+                {noItineraryMessage}
+              </td>
             </tr>
-          </thead>
-          <tbody className={styles.calDetails}>
-  {/* Iterate over the unique parks in the itinerary */}
-  {[...new Set(itinerary.map(activity => activity.park))].map((park, parkIndex) => {
-    // Filter activities by the current park and date
-    const activitiesForPark = itinerary.filter(activity => activity.park === park && activity.date === date);
-    // Check if there are any activities for the current park
-    if (activitiesForPark.length > 0) {
-      return (
-        <React.Fragment key={parkIndex}>
-          {/* Render the park name as a group header */}
-          <tr>
-            <td colSpan="3" className={styles.calParkName}>
-              {park}
-            </td>
-      </tr>
-      {/* Filter activities by the current park and date, then map over them */}
-      {itinerary
-        .filter(activity => activity.park === park && activity.date === date)
-        .map((activity, index) => (
-          <tr key={index}>
-            <td>{activity.time}</td>
-            <td>{activity.activity}</td>
-            <td>
-              <ButtonContainer
-                item={activity}
-                handleUpdate={handleUpdate}
-                handleDelete={handleDelete}
-                handleEdit={() => handleEdit(activity)}
-                isItinerary={true}
-              />
-            </td>
-          </tr>
-        ))}
-    </React.Fragment>
-        );
-      }
-      // Return null if there are no activities for the current park
-      return null;
-    })}
-</tbody>
-</>
           )}
-        </table>
-      </div>
-      {/* Loading screen for deleting activity */}
-      {loadingDelete && <div className={styles.loadingMessage}>Deleting...</div>}
-    
+        </>
+      )}
+    </tbody>
+  </table>
+</div>
+
+
+
     </>
   );
 };

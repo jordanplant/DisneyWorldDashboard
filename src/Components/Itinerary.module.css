@@ -65,25 +65,25 @@
 .itinMkActive{
     background:var(--mkGradient);
     font-weight: bold;
-    border: 2px solid #ffffffb3;
+    /* border: 2px solid #ffffffb3; */
     color: #fff;
 }
 .itinEpcotActive{
     background:var(--epcotGradient);
     font-weight: bold;
-    border: 2px solid #ffffffb3;
+    /* border: 2px solid #ffffffb3; */
     color: #fff;
 }
 .itinHsActive{
     background:var(--hsGradient);
     font-weight: bold;
-    border: 2px solid #ffffffb3;
+    /* border: 2px solid #ffffffb3; */
     color: #fff;
 }
 .itinAkActive{
     background:var(--akGradient);
     font-weight: bold;
-    border: 2px solid #ffffffb3;
+    /* border: 2px solid #ffffffb3; */
     color: #fff;
 }
 
@@ -144,38 +144,56 @@ border-radius: 50px;
       
       
       }
-    
-    
-    
   
-.calendar table {
-    border-collapse: collapse;
+    
+    .itinCalendar {
+      /* width:100%; */
 
-  }
+    }
+    .calendar {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    
+    .calCategories > th {
+      color: hsla(0, 0%, 100%, 0.9);
+      width: 33.33%; /* Set width for each th element */
+    }
 
-  .calCategories > th{
-    color: hsla(0, 0%, 100%, 0.9);
+    .timeColumn {
+      max-width: 5%;
+    }
+    
+    .activityColumn {
+      max-width: 90%;
+    }
+    
+    .editColumn {
+      max-width: 5%;
+    }
+    
 
-
-  }
-
-  .calCategories th:nth-child(1){
-
-    width: 10%;
-  }
-
-  .calCategories th:nth-child(2){
-    width: 70%x;
-  }
+    
+    .calDetails > tr > td {
+      /* border-bottom: 1px solid #ffffff18; */
+      color: #fff;
+      padding: 10px;
+      text-align: center;
+      width: 33.33%; /* Set width for each td element */
+    }
+    
+    .calDetails tr:nth-child(even) {
+      background-color: #ffffff18; 
+    }
+    
+    .calParkName {
+      font-weight: bold;
+      color: #fff;
+      font-size: 30px;
   
+    }
+    
 
-
-  .calDetails > tr > td {
-    border-bottom: 1px solid #ffffff18;
-    color: #fff;
-    padding: 5px 5px;
-    text-align: center; /* turn this off if you want activities to be left aligned */
-  }
 
 
     /* .calDetails > tr > td:nth-child(1){
@@ -192,6 +210,7 @@ border-radius: 50px;
     color: #fff;
   
     font-size: 30px;
+
   }
 
   .noAbsolutePosition {
@@ -200,11 +219,12 @@ border-radius: 50px;
   
 
   .loadingMessage {
-    margin: 0 auto;
-    text-align: center;
+    width: 100%;
+
+
   }
   
-  .loadingMessage i {
+  .loadingMessages i {
     padding: 5px;
   }
 

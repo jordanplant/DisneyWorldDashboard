@@ -52,7 +52,7 @@ function PageLayout() {
         </div>
         <div className="footer">
         <a href="https://github.com/jordanplant/DisneyWorldDashboard---JS-React-Node" target="_blank"><i className="fa-brands fa-github fa-xl"></i></a>
-        <p>v1.1.3</p>
+        <p>v1.3</p>
       </div>
       </main>
 

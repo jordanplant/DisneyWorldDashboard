@@ -53,7 +53,7 @@ This project wouldn't have been possible without the following resources:
 - Implemented a Weather Carousel feature to split the data, enhancing readability.
 ---
 - **V1.3**
-- Added itinerary form
+- Updated Snack list to include prices and locations
 ---
 
 ## Feedback and Support

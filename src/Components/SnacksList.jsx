@@ -252,7 +252,7 @@ const SnacksList = () => {
         <div className={styles.formSecondaryInputs}>
           <input
             type="number"
-            placeholder="$"
+            placeholder="$5.00"
             className={subInputClass}
             value={price}
             onChange={onPriceChange}

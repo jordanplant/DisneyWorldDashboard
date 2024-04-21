@@ -177,7 +177,9 @@ left: -8%;
   border: 3px solid #800080;
 }
 
-
+.completed .snacksInfo  {
+  color: #800080;
+}
 
 
 

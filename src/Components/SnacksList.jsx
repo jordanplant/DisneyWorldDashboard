@@ -156,39 +156,43 @@ const SnacksList = () => {
       console.error("Snack to update not found.");
       return;
     }
-
+  
     // Toggle the completion status locally for immediate UI update
     const updatedSnacks = snacks.map((snack) =>
-      snack.id === id ? { ...snack, completed: !snack.completed } : snack
+      snack.id === id
+        ? {
+            ...snack,
+            completed: !snack.completed,
+            price: snack.price, // Retain the original price
+            location: snack.location, // Retain the original location
+          }
+        : snack
     );
     setSnacks(updatedSnacks);
-
-    // Prepare the data to send to the server
-    const updatedData = {
-      id: snackToUpdate.id,
-      title: snackToUpdate.title,
-      completed: !snackToUpdate.completed,
-    };
-
-    // Send the update to the server
+  
+    // Update the completion status on the server
     try {
       const response = await fetch(`${apiUrl}/updateSnack`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(updatedData),
+        body: JSON.stringify({
+          id: snackToUpdate.id,
+          title: snackToUpdate.title,
+          completed: !snackToUpdate.completed,
+          price: snackToUpdate.price, // Include price in the update
+          location: snackToUpdate.location, // Include location in the update
+        }),
       });
-
+  
       if (!response.ok) {
         throw new Error(
           "Failed to update snack completion status on the server."
         );
       }
-
-      console.log(
-        "Snack completion status updated successfully on the server."
-      );
+  
+      console.log("Snack completion status updated successfully on the server.");
     } catch (error) {
       console.error(
         "Failed to update snack completion status in JSONBin:",
@@ -196,6 +200,7 @@ const SnacksList = () => {
       );
     }
   };
+  
 
   const updateJsonBin = async (snacksData) => {
     const binId = process.env.BIN_ID;

@@ -17,11 +17,17 @@ const Snacks = ({ snacks, handleComplete, handleEdit, handleDelete }) => {
     setTimeout(() => setLoadingSnackId(null), 500);
   };
 
+  const renderSnacks = () => {
+    const completedSnacks = snacks.filter((snack) => snack.completed);
+    const nonCompletedSnacks = snacks.filter((snack) => !snack.completed);
+    return [...nonCompletedSnacks, ...completedSnacks];
+  };
+
   return (
     <>
       <div>
         <ul className={styles.snacksList}>
-          {snacks.map((snack) => (
+          {renderSnacks().map((snack) => (
             <React.Fragment key={snack.id}>
               <button
                 className={`${styles.buttonComplete} ${snack.completed ? styles.completedButton : ''}`}
@@ -35,12 +41,12 @@ const Snacks = ({ snacks, handleComplete, handleEdit, handleDelete }) => {
                 className={`${styles.snack} ${snack.completed ? styles.completed : ''}`}
               >
                 <div className={styles.snackContainer}>
-                <span className={styles.snackTitle}>{snack.title}</span>
-                <div className={styles.snacksInfo}>
-                <span className={styles.snackPrice}>${snack.price}</span>
-                <span>-</span>
-                <span className={styles.snackLocation}>{snack.location}</span>
-                </div>
+                  <span className={styles.snackTitle}>{snack.title}</span>
+                  <div className={styles.snacksInfo}>
+                    <span className={styles.snackPrice}>${snack.price}</span>
+                    <span>-</span>
+                    <span className={styles.snackLocation}>{snack.location}</span>
+                  </div>
                 </div>
                 <span className={styles.SnackButtonContainer}>
                   <ButtonContainer

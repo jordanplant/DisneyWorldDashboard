@@ -34,7 +34,14 @@ const Snacks = ({ snacks, handleComplete, handleEdit, handleDelete }) => {
                 key={snack.id}
                 className={`${styles.snack} ${snack.completed ? styles.completed : ''}`}
               >
-                <span>{snack.title}</span>
+                <div className={styles.snackContainer}>
+                <span className={styles.snackTitle}>{snack.title}</span>
+                <div className={styles.snacksInfo}>
+                <span className={styles.snackPrice}>${snack.price}</span>
+                <span>-</span>
+                <span className={styles.snackLocation}>{snack.location}</span>
+                </div>
+                </div>
                 <span className={styles.SnackButtonContainer}>
                   <ButtonContainer
                     snack={snack}

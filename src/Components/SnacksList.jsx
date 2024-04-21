@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { v4 as uuidv4 } from "uuid";
 import Snacks from "./Snacks";
 import styles from "./SnacksList.module.css";
-// import("dotenv").then((dotenv) => dotenv.config());
 
 const isDevelopment = process.env.NODE_ENV === "development";
 const apiUrl = isDevelopment
@@ -10,15 +9,25 @@ const apiUrl = isDevelopment
   : "https://disney-world-dashboard.vercel.app/api";
 
 const SnacksList = () => {
-  const [input, setInput] = useState("");
+  const [title, setTitle] = useState("");
+  const [price, setPrice] = useState("");
+  const [location, setLocation] = useState("");
   const [snacks, setSnacks] = useState([]);
   const [editMode, setEditMode] = useState(false);
-  const [editedSnack, setEditedSnack] = useState(null);
   const [loading, setLoading] = useState(true);
   const [loadingAddOrEdit, setLoadingAddOrEdit] = useState(false);
+  const [editedSnack, setEditedSnack] = useState(null); // Define editedSnack state
 
   const onInputChange = (event) => {
-    setInput(event.target.value);
+    setTitle(event.target.value);
+  };
+
+  const onPriceChange = (event) => {
+    setPrice(event.target.value);
+  };
+
+  const onLocationChange = (event) => {
+    setLocation(event.target.value);
   };
 
   const fetchSnacks = async () => {
@@ -28,18 +37,6 @@ const SnacksList = () => {
         throw new Error("Failed to fetch snacks");
       }
       const data = await response.json();
-  
-      // Custom sorting function to sort by completed: false at the top and completed: true at the bottom
-      data.sort((a, b) => {
-        if (a.completed && !b.completed) {
-          return 1;
-        }
-        if (!a.completed && b.completed) {
-          return -1;
-        }
-        return 0;
-      });
-  
       setSnacks(data);
     } catch (error) {
       console.error("Error fetching snacks:", error);
@@ -47,7 +44,6 @@ const SnacksList = () => {
       setLoading(false);
     }
   };
-  
 
   useEffect(() => {
     fetchSnacks();
@@ -56,24 +52,24 @@ const SnacksList = () => {
   const onFormSubmit = async (event) => {
     event.preventDefault();
     setLoadingAddOrEdit(true);
-
-    if (editMode) {
+  
+    if (editMode && editedSnack) {
       try {
         const response = await fetch(`${apiUrl}/updateSnack`, {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ id: editedSnack.id, title: input }),
+          body: JSON.stringify({ id: editedSnack.id, title, price, location }),
         });
         if (!response.ok) {
-          throw new Error("Error updating snack");
+          throw new Error("Error updating snack: " + response.statusText);
         }
         const updatedSnack = await response.json();
         setSnacks((prevSnacks) =>
           prevSnacks.map((snack) =>
             snack.id === updatedSnack.id
-              ? { ...snack, title: updatedSnack.title }
+              ? { ...snack, title: updatedSnack.title, price: updatedSnack.price, location: updatedSnack.location }
               : snack
           )
         );
@@ -81,9 +77,12 @@ const SnacksList = () => {
         setEditedSnack(null);
       } catch (error) {
         console.error("Failed to update snack:", error);
-      }
-      finally {
-        setLoadingAddOrEdit(false); 
+        // Handle error state or display error message to the user
+      } finally {
+        setLoadingAddOrEdit(false);
+        setTitle(""); // Clear form fields once done
+        setPrice("");
+        setLocation("");
       }
     } else {
       try {
@@ -92,24 +91,26 @@ const SnacksList = () => {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ title: input }),
+          body: JSON.stringify({ title, price, location }),
         });
         if (!response.ok) {
           throw new Error("Error adding snack");
-        } 
-        const newSnack = await response.json(); // Assuming this is the snack data received from your createSnack API
+        }
+        const newSnack = await response.json();
         const updatedSnacks = [...snacks, newSnack];
-        setSnacks(updatedSnacks); // Update local state
-        updateJsonBin(updatedSnacks); // Update JSONBin
+        setSnacks(updatedSnacks);
+        updateJsonBin(updatedSnacks);
       } catch (error) {
         console.error("Failed to add snack:", error);
       } finally {
-        setLoadingAddOrEdit(false); // Reset loading state after operation is complete
+        setLoadingAddOrEdit(false);
+        setTitle(""); // Clear form fields once done
+        setPrice("");
+        setLocation("");
       }
-  
     }
-    setInput("");
   };
+  
 
   const handleDelete = async (id) => {
     try {
@@ -137,8 +138,10 @@ const SnacksList = () => {
 
   const handleEdit = (snack) => {
     setEditMode(true);
-    setEditedSnack(snack);
-    setInput(snack.title);
+    setTitle(snack.title);
+    setPrice(snack.price);
+    setLocation(snack.location);
+    setEditedSnack(snack); // Set editedSnack state
   };
 
   const noSnacksMessage = (
@@ -163,7 +166,7 @@ const SnacksList = () => {
     // Prepare the data to send to the server
     const updatedData = {
       id: snackToUpdate.id,
-      title: snackToUpdate.title, 
+      title: snackToUpdate.title,
       completed: !snackToUpdate.completed,
     };
 
@@ -195,7 +198,7 @@ const SnacksList = () => {
   };
 
   const updateJsonBin = async (snacksData) => {
-    const binId = process.env.BIN_ID; 
+    const binId = process.env.BIN_ID;
     const apiKey = process.env.BIN_KEY;
     const url = `https://api.jsonbin.io/v3/b/${binId}`;
 
@@ -219,24 +222,57 @@ const SnacksList = () => {
     }
   };
 
+  const subInputClass = `${styles.subInput} ${editMode ? styles.subInputEdit : ""}`;
+
   return (
     <div className={styles.formContainer}>
       <form className={styles.formBar} onSubmit={onFormSubmit}>
-        <input
-          type="text"
-          placeholder="Enter your snacks here"
-          className={styles.taskInput}
-          value={input}
-          required
-          onChange={onInputChange}
-        />
-        <button className={styles.buttonAdd} type="submit" disabled={loadingAddOrEdit}>
-          {loadingAddOrEdit ? <i className="fa-solid fa-spinner fa-spin-pulse fa-xl"></i> : (editMode ? "Update" : "Add")}
-        </button>
+        <div className={styles.formPrimaryInputs}>
+          <input
+            type="text"
+            placeholder="Snack"
+            className={styles.taskInput}
+            value={title}
+            required
+            onChange={onInputChange}
+            disabled={loadingAddOrEdit}
+          />
+          <button
+            className={styles.buttonAdd}
+            type="submit"
+            disabled={loadingAddOrEdit}
+          >
+            {loadingAddOrEdit ? (
+              <i className="fa-solid fa-spinner fa-spin-pulse fa-xl"></i>
+            ) : (
+              editMode ? "Update" : "Add"
+            )}
+          </button>
+        </div>
+        <div className={styles.formSecondaryInputs}>
+          <input
+            type="number"
+            placeholder="$"
+            className={subInputClass}
+            value={price}
+            onChange={onPriceChange}
+            disabled={loadingAddOrEdit}
+          />
+          <input
+            type="text"
+            placeholder="Location"
+            className={subInputClass}
+            value={location}
+            onChange={onLocationChange}
+            disabled={loadingAddOrEdit}
+          />
+        </div>
       </form>
 
       {loading ? (
-        <p className={styles.loadingMessage}><i className="fa-solid fa-cookie-bite fa-2xl"></i> Loading snacks...</p>
+        <p className={styles.loadingMessage}>
+          <i className="fa-solid fa-cookie-bite fa-2xl"></i> Loading snacks...
+        </p>
       ) : snacks.length === 0 ? (
         noSnacksMessage
       ) : (

@@ -12,21 +12,61 @@ button {
   all: unset;
 }
 .formBar {
-
   display: flex;
+  flex-direction: column;
   justify-content: center;
+}
+
+.formPrimaryInputs {
+  display: flex;
+  flex-direction: row;
+}
+.formSecondaryInputs {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  margin-top: 5px;
 }
 
 .taskInput {
   width: 70%;
-  /* flex: 1; */
+
   border: none;
   outline: none;
   background: #fff;
-  color: #444428;
-  /* margin-left: 5px; */
+  color: #222222;
+ 
   padding: 16px;
   border-radius: 40px 0px 0px 40px;
+}
+.subInput {
+  width: 70%;
+  border: none;
+  outline: none;
+  background: hsla(0, 0%, 100%, 0.5);
+  color: #222222;
+  padding: 10px 16px;
+
+
+}
+.subInput:nth-child(1) {
+  border-right: 1px solid hwb(0 13% 87% / 0.5);
+  border-radius: 40px 0px 0px 40px;
+flex: 1;
+}
+.subInput:nth-child(1):focus {
+  background: hsla(0, 0%, 100%);
+}
+.subInput:nth-child(2) {
+  border-radius: 0px 40px 40px 00px;
+  flex: 4;
+}
+.subInput:nth-child(2):focus {
+  background: hsla(0, 0%, 100%);
+}
+
+.subInputEdit {
+  background: hsla(0, 0%, 100%);
 }
 
 .buttonAdd {
@@ -73,8 +113,7 @@ margin-right: 30%;
   color: #fff;
 
   border: 3px solid #00fee5;
-  transform: translateY(15%) translateX(-120%);
-  /* left: 10px; */
+  transform: translateY(45%) translateX(-120%);
 
 }
 .buttonComplete:active {
@@ -83,7 +122,10 @@ margin-right: 30%;
   border: 3px solid #800080;
 }
 
-
+.snackContainer{
+  display: flex;
+  flex-direction: column;
+}
 
 .snack {
   position:static;
@@ -99,6 +141,21 @@ margin-right: 30%;
   z-index: 0;
   border-bottom: 1px solid #ffffff18;
   list-style: none;
+}
+
+.snackTitle{
+/* font-weight: bold; */
+}
+
+.snacksInfo {
+  font-size: 12px;
+  color: #cccccc;
+  font-style: italic;
+}
+
+.snackPrice, .snackLocation {
+/* padding: 0px 5px; */
+
 }
 
 .SnackButtonContainer{

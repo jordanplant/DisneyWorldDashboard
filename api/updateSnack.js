@@ -1,6 +1,7 @@
 export default async function handler(req, res) {
   if (req.method === "PUT") {
-    const { id, title, completed } = req.body;
+    const { id, title, price, location, completed } = req.body;
+
     const API_KEY = process.env.BIN_KEY;
     const BIN_ID = process.env.BIN_ID;
     const JSONBIN_URL = `https://api.jsonbin.io/v3/b/${BIN_ID}/latest`;
@@ -22,7 +23,7 @@ export default async function handler(req, res) {
       }
 
       // Update the snack
-      snacks[snackIndex] = { ...snacks[snackIndex], title, completed };
+      snacks[snackIndex] = { ...snacks[snackIndex], title, price, location, completed };
 
       // Update the bin with the new list of snacks
       await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}`, {

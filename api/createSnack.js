@@ -20,12 +20,13 @@ export default async function handler(req, res) {
       const fetchData = await fetchResponse.json();
       const snacks = fetchData.record || [];
 
-      // Add the new snack with 'completed' explicitly set to false
+      // Add the new snack with 'completed', 'price', and 'location' fields
       const newSnack = {
         ...req.body,
         id: new Date().getTime().toString(),
         completed: false,
       };
+      
 
       snacks.push(newSnack);
 

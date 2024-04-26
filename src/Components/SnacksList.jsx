@@ -3,10 +3,13 @@ import { v4 as uuidv4 } from "uuid";
 import Snacks from "./Snacks";
 import styles from "./SnacksList.module.css";
 
-const isDevelopment = process.env.NODE_ENV === "development";
-const apiUrl = isDevelopment
-  ? "http://localhost:3000/api"
-  : "https://disney-world-dashboard.vercel.app/api";
+// const isDevelopment = process.env.NODE_ENV === "development";
+// const apiUrl = isDevelopment
+//   ? "http://localhost:3000/api"
+//   : "https://disney-world-dashboard.vercel.app/api";
+
+const apiUrl = "/api";
+
 
 const SnacksList = () => {
   const [title, setTitle] = useState("");
@@ -18,6 +21,8 @@ const SnacksList = () => {
   const [loadingAddOrEdit, setLoadingAddOrEdit] = useState(false);
   const [editedSnack, setEditedSnack] = useState(null); // Define editedSnack state
 
+
+  
   const onInputChange = (event) => {
     setTitle(event.target.value);
   };

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { v4 as uuidv4 } from "uuid";
 import Snacks from "./Snacks";
 import styles from "./SnacksList.module.css";
@@ -10,21 +10,113 @@ import styles from "./SnacksList.module.css";
 
 const apiUrl = "/api";
 
-
 const SnacksList = () => {
+  // State variables
   const [title, setTitle] = useState("");
   const [price, setPrice] = useState("");
   const [location, setLocation] = useState("");
+  const [description, setDescription] = useState("");
+  const [park, setPark] = useState("");
   const [snacks, setSnacks] = useState([]);
   const [editMode, setEditMode] = useState(false);
-  const [loading, setLoading] = useState(true);
+  const [dropdownLoading, setDropdownLoading] = useState(true);
+  const [listLoading, setListLoading] = useState(true);
   const [loadingAddOrEdit, setLoadingAddOrEdit] = useState(false);
-  const [editedSnack, setEditedSnack] = useState(null); // Define editedSnack state
+  const [editedSnack, setEditedSnack] = useState(null);
+  const [results, setResults] = useState([]);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [fetchEnabled, setFetchEnabled] = useState(true);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [searchTimeout, setSearchTimeout] = useState(null);
 
+  const inputRef = useRef(null);
+  const dropdownRef = useRef(null);
 
-  
+  useEffect(() => {
+    // Cleanup function to clear the timeout when the component unmounts or when search term changes
+    return () => {
+      if (searchTimeout) {
+        clearTimeout(searchTimeout);
+      }
+    };
+  }, [searchTimeout]);
+
+  useEffect(() => {
+    if (title.trim() !== "") {
+      fetchData(title.trim());
+    } else {
+      setResults([]);
+    }
+  }, [title]);
+
+  const fetchData = (searchTerm) => {
+    // Clear any existing timeout when the input changes
+    clearTimeout(searchTimeout);
+
+    if (searchTerm.length >= 3 && fetchEnabled) {
+      // Add fetchEnabled check
+      setDropdownOpen(true);
+      setDropdownLoading(true); // Set loading indicator when fetch operation starts
+
+      // Set a new timeout for fetching data after 200ms delay
+      setSearchTimeout(
+        setTimeout(() => {
+          fetch(`${apiUrl}/filteredMenu`)
+            .then((response) => {
+              if (!response.ok) {
+                throw new Error("Network response was not ok");
+              }
+              return response.json();
+            })
+            .then((data) => {
+              if (searchTerm.trim() === "") {
+                setResults([]);
+                setDropdownOpen(false);
+                return;
+              }
+              if (!Array.isArray(data)) {
+                throw new Error("Response data is not in the expected format");
+              }
+
+              const filteredResults = data.filter((item) =>
+                item.itemTitle.toLowerCase().includes(searchTerm.toLowerCase())
+              );
+              setResults(filteredResults);
+              setDropdownLoading(false); // Clear loading indicator after fetching data
+            })
+            .catch((error) => {
+              console.error("Error fetching data:", error);
+              setError(error.message);
+              setDropdownLoading(false); // Clear loading indicator on error
+            });
+        }, 200)
+      );
+    } else {
+      setResults([]);
+      setDropdownOpen(false);
+      setDropdownLoading(false); // Clear loading indicator if search term is less than 3 characters
+    }
+  };
+
   const onInputChange = (event) => {
-    setTitle(event.target.value);
+    const { value } = event.target;
+    setTitle(value);
+
+    // Clear any existing timeout before creating a new one
+    clearTimeout(searchTimeout);
+
+    if (value.length >= 3) {
+      // Set a new timeout for fetchData after 200ms delay
+      setSearchTimeout(
+        setTimeout(() => {
+          fetchData(value);
+        }, 200)
+      );
+    } else {
+      setResults([]);
+      setDropdownOpen(false);
+      setDropdownLoading(false); // Clear loading indicator if input length is less than 3
+    }
   };
 
   const onPriceChange = (event) => {
@@ -33,6 +125,14 @@ const SnacksList = () => {
 
   const onLocationChange = (event) => {
     setLocation(event.target.value);
+  };
+
+  const onDescriptionChange = (event) => {
+    setDescription(event.target.value);
+  };
+
+  const onParkChange = (event) => {
+    setPark(event.target.value);
   };
 
   const fetchSnacks = async () => {
@@ -46,7 +146,7 @@ const SnacksList = () => {
     } catch (error) {
       console.error("Error fetching snacks:", error);
     } finally {
-      setLoading(false);
+      setListLoading(false);
     }
   };
 
@@ -57,7 +157,7 @@ const SnacksList = () => {
   const onFormSubmit = async (event) => {
     event.preventDefault();
     setLoadingAddOrEdit(true);
-  
+
     if (editMode && editedSnack) {
       try {
         const response = await fetch(`${apiUrl}/updateSnack`, {
@@ -65,7 +165,14 @@ const SnacksList = () => {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ id: editedSnack.id, title, price, location }),
+          body: JSON.stringify({
+            id: editedSnack.id,
+            title,
+            price,
+            location,
+            description,
+            park,
+          }),
         });
         if (!response.ok) {
           throw new Error("Error updating snack: " + response.statusText);
@@ -74,10 +181,18 @@ const SnacksList = () => {
         setSnacks((prevSnacks) =>
           prevSnacks.map((snack) =>
             snack.id === updatedSnack.id
-              ? { ...snack, title: updatedSnack.title, price: updatedSnack.price, location: updatedSnack.location }
+              ? {
+                  ...snack,
+                  title: updatedSnack.title,
+                  price: updatedSnack.price,
+                  location: updatedSnack.location,
+                  description: updatedSnack.description,
+                  park: updatedSnack.restaurantLocation, // Include park
+                }
               : snack
           )
         );
+
         setEditMode(false);
         setEditedSnack(null);
       } catch (error) {
@@ -88,6 +203,9 @@ const SnacksList = () => {
         setTitle(""); // Clear form fields once done
         setPrice("");
         setLocation("");
+        setDescription("");
+        setPark("");
+        setDropdownOpen(false);
       }
     } else {
       try {
@@ -96,7 +214,7 @@ const SnacksList = () => {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ title, price, location }),
+          body: JSON.stringify({ title, price, location, description, park }),
         });
         if (!response.ok) {
           throw new Error("Error adding snack");
@@ -112,10 +230,12 @@ const SnacksList = () => {
         setTitle(""); // Clear form fields once done
         setPrice("");
         setLocation("");
+        setDescription("");
+        setPark("");
+        setFetchEnabled(true);
       }
     }
   };
-  
 
   const handleDelete = async (id) => {
     try {
@@ -161,7 +281,7 @@ const SnacksList = () => {
       console.error("Snack to update not found.");
       return;
     }
-  
+
     // Toggle the completion status locally for immediate UI update
     const updatedSnacks = snacks.map((snack) =>
       snack.id === id
@@ -170,11 +290,13 @@ const SnacksList = () => {
             completed: !snack.completed,
             price: snack.price, // Retain the original price
             location: snack.location, // Retain the original location
+            itemDescription: snack.description, // Include item description
+            restaurantLocation: snack.restaurantLocation, // Include restaurant location
           }
         : snack
     );
     setSnacks(updatedSnacks);
-  
+
     // Update the completion status on the server
     try {
       const response = await fetch(`${apiUrl}/updateSnack`, {
@@ -190,14 +312,16 @@ const SnacksList = () => {
           location: snackToUpdate.location, // Include location in the update
         }),
       });
-  
+
       if (!response.ok) {
         throw new Error(
           "Failed to update snack completion status on the server."
         );
       }
-  
-      console.log("Snack completion status updated successfully on the server.");
+
+      // console.log(
+      //   "Snack completion status updated successfully on the server."
+      // );
     } catch (error) {
       console.error(
         "Failed to update snack completion status in JSONBin:",
@@ -205,7 +329,6 @@ const SnacksList = () => {
       );
     }
   };
-  
 
   const updateJsonBin = async (snacksData) => {
     const binId = process.env.BIN_ID;
@@ -232,7 +355,35 @@ const SnacksList = () => {
     }
   };
 
-  const subInputClass = `${styles.subInput} ${editMode ? styles.subInputEdit : ""}`;
+  const onSelectItem = (item) => {
+    setTitle(item.itemTitle);
+    setPrice(item.itemPrice);
+    setLocation(item.restaurantName);
+    setDescription(item.itemDescription);
+    setPark(item.restaurantLocation);
+
+    // Clear any existing timeout and search state
+    clearTimeout(searchTimeout); // Clear the search timeout
+    setDropdownOpen(false); // Close the dropdown
+    setDropdownLoading(false); // Stop the loading indicator
+
+    // Stop the fetch process
+    setFetchEnabled(false);
+  };
+
+  const clearInputs = () => {
+    setTitle("");
+    setPrice("");
+    setLocation("");
+    setDescription("");
+    setPark("");
+    setDropdownOpen(false);
+    inputRef.current && inputRef.current.focus(); // Focus back on the input after clearing
+  };
+
+  const subInputClass = `${styles.subInput} ${
+    editMode ? styles.subInputEdit : ""
+  }`;
 
   return (
     <div className={styles.formContainer}>
@@ -240,13 +391,19 @@ const SnacksList = () => {
         <div className={styles.formPrimaryInputs}>
           <input
             type="text"
-            placeholder="Snack"
+            placeholder="Search/Add Snack"
             className={styles.taskInput}
             value={title}
             required
             onChange={onInputChange}
             disabled={loadingAddOrEdit}
+            ref={inputRef}
           />
+          {title && ( // Show the close button only when there's text in the input
+            <div className={styles.clearButton} onClick={() => clearInputs("")}>
+              <i className="fa-solid fa-circle-xmark"></i>
+            </div>
+          )}
           <button
             className={styles.buttonAdd}
             type="submit"
@@ -254,8 +411,10 @@ const SnacksList = () => {
           >
             {loadingAddOrEdit ? (
               <i className="fa-solid fa-spinner fa-spin-pulse fa-xl"></i>
+            ) : editMode ? (
+              "Update"
             ) : (
-              editMode ? "Update" : "Add"
+              "Add"
             )}
           </button>
         </div>
@@ -278,8 +437,27 @@ const SnacksList = () => {
           />
         </div>
       </form>
-
-      {loading ? (
+      <div
+        className={`${styles.resultsList} ${dropdownOpen ? styles.open : ""}`}
+        ref={dropdownRef}
+      >
+        {dropdownLoading && <p className={styles.loadingMessage}>Loading...</p>}
+        {results.map((item) => (
+          <div
+            onClick={() => onSelectItem(item)}
+            className={styles.dropdownRow}
+            key={item.id}
+          >
+            <div className={styles.searchResult} key={item.id}>
+              <span className={styles.resultItemTitle}>{item.itemTitle}</span>
+              <span className={styles.resultRestaurantInfo}>
+                {item.restaurantName}
+              </span>
+            </div>
+          </div>
+        ))}
+      </div>
+      {listLoading ? (
         <p className={styles.loadingMessage}>
           <i className="fa-solid fa-cookie-bite fa-2xl"></i> Loading snacks...
         </p>

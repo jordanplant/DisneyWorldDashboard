@@ -3,15 +3,26 @@ import "./PageLayout.css";
 import Countdown from "./Countdown";
 import WeatherApp from "./WeatherApp";
 import SnacksList from "./SnacksList";
-
 import WaitTimes from "./WaitTimes";
-import ButtonContainer from "./ButtonContainer";
-import Itinerary from "./Itinerary";
 
 function PageLayout() {
   const [input, setInput] = useState("");
   const [snacks, setSnacks] = useState([]);
   const [editSnack, setEditSnack] = useState(null);
+  const [results, setResults] = useState([]);
+  const [selectedItem, setSelectedItem] = useState(null); // State to hold selected item data
+
+  const handleSelect = (item) => {
+    setSelectedItem(item);
+  };
+
+  const handleResultsClose = () => {
+    // Add logic to close the results or dropdown here
+    // For example:
+    setSelectedItem(null); // Clear the selected item
+  };
+
+
 
   return (
     <>
@@ -30,7 +41,6 @@ function PageLayout() {
           </div>
           <div className="snacks-bar card">
             <h2 className="text-gradient">Snacks</h2>
-
             <SnacksList
               input={input}
               setInput={setInput}
@@ -47,15 +57,19 @@ function PageLayout() {
           </div>
           {/* <div className="itinerary-bar card">
             <h2 className="text-gradient">Itinerary (WIP)</h2>
-<Itinerary/>
+            <Itinerary />
           </div> */}
         </div>
         <div className="footer">
-        <a href="https://github.com/jordanplant/DisneyWorldDashboard---JS-React-Node" target="_blank"><i className="fa-brands fa-github fa-xl"></i></a>
-        <p>v1.3</p>
-      </div>
+          <a
+            href="https://github.com/jordanplant/DisneyWorldDashboard---JS-React-Node"
+            target="_blank"
+          >
+            <i className="fa-brands fa-github fa-xl"></i>
+          </a>
+          <p>v1.3</p>
+        </div>
       </main>
-
     </>
   );
 }

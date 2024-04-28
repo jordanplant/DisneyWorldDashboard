@@ -29,21 +29,21 @@ button {
 }
 
 .taskInput {
-  width: 70%;
+  width: 100%;
 
   border: none;
   outline: none;
   background: #fff;
   color: #222222;
  
-  padding: 16px;
+  padding: 16px 0px 16px 16px;
   border-radius: 40px 0px 0px 40px;
 }
 .subInput {
   width: 70%;
   border: none;
   outline: none;
-  background: hsla(0, 0%, 100%, 0.8);
+  background: #ffffffcc;
   color: #222222;
   padding: 10px 16px;
 
@@ -147,7 +147,8 @@ margin-right: 30%;
 /* font-weight: bold; */
 }
 
-.snacksInfo {
+.snacksInfo
+  {
   font-size: 12px;
   color: #cccccc;
   font-style: italic;
@@ -194,6 +195,78 @@ left: -8%;
   align-items: center;
 }
 
+
+
 .loadingMessage i {
   padding: 5px;
+}
+
+
+.resultsList {
+width: 100%;
+  background: #ffffff;
+  display: flex;
+  flex-direction: column;
+  /* box-shadow: 0px 0px 8px #ddd; */
+  border-radius: 10px;
+  margin-top: 5px;
+  max-height: 400px;
+  overflow-y: scroll;
+  color: #000;
+  /* position: absolute; */
+  /* left: 0; */
+  z-index: 2;
+
+}
+
+.resultsList .loadingMessage {  
+  padding: 00px 20px;
+ justify-content: flex-start;
+  color: #000;}
+
+.searchResult {
+
+  padding: 10px 20px;
+  border-bottom: 1px solid #ffffff18;
+
+}
+
+.searchResult:hover{
+  background-color: #fff;
+}
+.resultItemTitle {
+  font-size: 14px;
+}
+
+
+.resultRestaurantInfo
+  {
+    padding-left: 10px;
+  font-size: 12px;
+  color: #b0b0b0;
+  /* font-style: italic; */
+}
+.resultsList {
+  display: none; /* Hide by default */
+}
+
+.resultsList.open {
+  display: block; /* Show when open class is applied */
+}
+
+
+.clearButton {
+  display: flex;
+  background-color: #fff;
+  align-items: center;
+
+}
+
+.clearButton i{
+  padding: 5px;
+  color: hsla(0, 0%, 0%, 0.5);
+}
+
+.clearButton i:hover{
+  color: rgba(255, 0, 0, 0.5);
 }

@@ -1,10 +1,12 @@
 import fetch from 'node-fetch';
+import dotenv from 'dotenv';
 
+dotenv.config(); // Load environment variables from .env file
 
 // Fetch data from the specified API URL
 async function fetchData() {
   try {
-    const apiUrl = '/api/getMenu'; // Set the API URL
+    const apiUrl = 'https://disney-world-dashboard.vercel.app/api/getMenu'; // Set the API URL
 
     const response = await fetch(apiUrl);
     if (!response.ok) {
@@ -31,8 +33,11 @@ function extractData(jsonData) {
       mealPeriods.forEach(meal => {
         meal.groups.forEach(group => {
           group.items.forEach(item => {
+            const location = restaurant.location || 'Location Not Available';
+            const [mainLocation, subLocation] = location.split(',').map(part => part.trim()); // Split by comma and trim whitespace
             const extractedItem = {
-              restaurantLocation: restaurant.location || 'Location Not Available',
+              restaurantLocation: mainLocation,
+              subLocation: subLocation || 'Sub Location Not Available', // If there's no sub-location, set a default value
               restaurantName: restaurant.name || 'Name Not Available',
               itemTitle: item.title || 'Title Not Available',
               itemPrice: item.priceValue || 0,
@@ -50,6 +55,7 @@ function extractData(jsonData) {
     return [];
   }
 }
+
 
 // Handler function to fetch and return menu data
 export default async function handler(req, res) {

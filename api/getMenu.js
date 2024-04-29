@@ -284,12 +284,13 @@ async function fetchAndCompileMenuData() {
       'tangerine',
       'stir',
     ];
+    
 
     if (!slugs || !Array.isArray(slugs) || slugs.length === 0) {
       throw new Error('No slugs provided');
     }
 
-    const dataPromises = slugs.map(slug => fetchMenuDataWithRetry(slug));
+    const dataPromises = slugs.map(slug => fetchMenuData(slug));
     const dataArray = await Promise.all(dataPromises);
     const compiledData = {};
     dataArray.forEach(item => {
@@ -303,23 +304,6 @@ async function fetchAndCompileMenuData() {
     console.error('Error fetching and compiling menu data:', error);
     return null;
   }
-}
-
-async function fetchMenuDataWithRetry(slug, maxRetries = 3) {
-  let retries = 0;
-  while (retries < maxRetries) {
-    try {
-      const response = await fetchMenuData(slug);
-      if (response !== null) {
-        return response;
-      }
-    } catch (error) {
-      console.error(`Error fetching menu data for slug ${slug}, retrying...`);
-    }
-    retries++;
-  }
-  console.error(`Failed to fetch menu data for slug ${slug} after ${maxRetries} retries`);
-  return null;
 }
 
 async function fetchMenuData(slug) {

@@ -17,6 +17,7 @@ const SnacksList = () => {
   const [location, setLocation] = useState("");
   const [description, setDescription] = useState("");
   const [park, setPark] = useState("");
+  const [land, setLand] = useState("");
   const [snacks, setSnacks] = useState([]);
   const [editMode, setEditMode] = useState(false);
   const [dropdownLoading, setDropdownLoading] = useState(true);
@@ -172,6 +173,8 @@ const SnacksList = () => {
             location,
             description,
             park,
+            // Change subLocation to land
+            land, // Use the value of land state
           }),
         });
         if (!response.ok) {
@@ -187,7 +190,9 @@ const SnacksList = () => {
                   price: updatedSnack.price,
                   location: updatedSnack.location,
                   description: updatedSnack.description,
-                  park: updatedSnack.restaurantLocation, // Include park
+                  park: updatedSnack.restaurantLocation,
+                  // Change subLocation to land
+                  land: updatedSnack.subLocation, // Use the value of subLocation
                 }
               : snack
           )
@@ -205,6 +210,7 @@ const SnacksList = () => {
         setLocation("");
         setDescription("");
         setPark("");
+        setLand("");
         setDropdownOpen(false);
       }
     } else {
@@ -214,7 +220,15 @@ const SnacksList = () => {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ title, price, location, description, park }),
+          body: JSON.stringify({
+            title,
+            price,
+            location,
+            description,
+            park,
+            // Change subLocation to land
+            land, // Use the value of land state
+          }),
         });
         if (!response.ok) {
           throw new Error("Error adding snack");
@@ -232,6 +246,7 @@ const SnacksList = () => {
         setLocation("");
         setDescription("");
         setPark("");
+        setLand("");
         setFetchEnabled(true);
       }
     }
@@ -292,6 +307,7 @@ const SnacksList = () => {
             location: snack.location, // Retain the original location
             itemDescription: snack.description, // Include item description
             restaurantLocation: snack.restaurantLocation, // Include restaurant location
+            subLocation: snack.subLocation, // Include restaurant location
           }
         : snack
     );
@@ -361,6 +377,7 @@ const SnacksList = () => {
     setLocation(item.restaurantName);
     setDescription(item.itemDescription);
     setPark(item.restaurantLocation);
+    setLand(item.subLocation);
 
     // Clear any existing timeout and search state
     clearTimeout(searchTimeout); // Clear the search timeout
@@ -451,7 +468,10 @@ const SnacksList = () => {
             <div className={styles.searchResult} key={item.id}>
               <span className={styles.resultItemTitle}>{item.itemTitle}</span>
               <span className={styles.resultRestaurantInfo}>
-                {item.restaurantName}
+                {item.restaurantName},
+              </span>
+              <span className={styles.resultRestaurantInfo}>
+                {item.restaurantLocation}
               </span>
             </div>
           </div>

@@ -54,8 +54,9 @@ const Snacks = ({ snacks, handleComplete, handleEdit, handleDelete }) => {
                     <span className={styles.snackPrice}>${snack.price}</span>
                     <span> - </span>
                     <span className={styles.snackLocation}>
-                      {snack.location}
+                      {snack.location},
                     </span>
+                    <span className={styles.snackLocation}> {snack.park}</span>
                   </div>
                 </div>
                 <span className={styles.SnackButtonContainer}>

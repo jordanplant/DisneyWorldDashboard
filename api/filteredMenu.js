@@ -24,6 +24,14 @@ async function fetchData() {
 // Extract specific information from the JSON data
 function extractData(jsonData) {
   try {
+    const parkNameMapping = {
+      'Disney Springs': 'Disney Springs',
+      'Disney\'s Animal Kingdom Theme Park': 'Animal Kingdom',
+      'Disney\'s Hollywood Studios': 'Hollywood Studios',
+      'EPCOT': 'EPCOT',
+      'Magic Kingdom Park': 'Magic Kingdom'
+    };
+
     const extractedData = [];
 
     for (const key in jsonData) {
@@ -35,8 +43,12 @@ function extractData(jsonData) {
           group.items.forEach(item => {
             const location = restaurant.location || 'null';
             const [mainLocation, subLocation] = location.split(',').map(part => part.trim()); // Split by comma and trim whitespace
+            
+            // Replace park name if it exists in the mapping
+            const renamedLocation = parkNameMapping[mainLocation] || mainLocation;
+            
             const extractedItem = {
-              restaurantLocation: mainLocation,
+              restaurantLocation: renamedLocation,
               subLocation: subLocation || 'null', // If there's no sub-location, set a default value
               restaurantName: restaurant.name || 'null',
               itemTitle: item.title || 'null',
@@ -55,6 +67,7 @@ function extractData(jsonData) {
     return [];
   }
 }
+
 
 
 // Handler function to fetch and return menu data

@@ -1,5 +1,4 @@
 import fetch from 'node-fetch';
-import dotenv from 'dotenv';
 
 
 // Fetch data from the specified API URL

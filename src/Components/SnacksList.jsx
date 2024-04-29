@@ -61,7 +61,7 @@ const SnacksList = () => {
       // Set a new timeout for fetching data after 200ms delay
       setSearchTimeout(
         setTimeout(() => {
-          fetch(`${apiUrl}/filteredMenu`)
+          fetch(`https://jordanplant.github.io/Data/menu.json`)
             .then((response) => {
               if (!response.ok) {
                 throw new Error("Network response was not ok");

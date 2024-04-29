@@ -33,15 +33,15 @@ function extractData(jsonData) {
       mealPeriods.forEach(meal => {
         meal.groups.forEach(group => {
           group.items.forEach(item => {
-            const location = restaurant.location || 'Location Not Available';
+            const location = restaurant.location || 'null';
             const [mainLocation, subLocation] = location.split(',').map(part => part.trim()); // Split by comma and trim whitespace
             const extractedItem = {
               restaurantLocation: mainLocation,
-              subLocation: subLocation || 'Sub Location Not Available', // If there's no sub-location, set a default value
-              restaurantName: restaurant.name || 'Name Not Available',
-              itemTitle: item.title || 'Title Not Available',
+              subLocation: subLocation || 'null', // If there's no sub-location, set a default value
+              restaurantName: restaurant.name || 'null',
+              itemTitle: item.title || 'null',
               itemPrice: item.priceValue || 0,
-              itemDescription: item.description || 'Description Not Available',
+              itemDescription: item.description || 'null',
             };
             extractedData.push(extractedItem);
           });

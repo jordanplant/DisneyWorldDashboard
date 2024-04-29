@@ -28,47 +28,47 @@ const Snacks = ({ snacks, handleComplete, handleEdit, handleDelete }) => {
       <div>
         <ul className={styles.snacksList}>
           {renderSnacks().map((snack) => (
-            <React.Fragment key={snack.id}>
-              <button
-                className={`${styles.buttonComplete} ${
-                  snack.completed ? styles.completedButton : ""
-                }`}
-                onClick={() => handleCompleteWithLoading(snack.id)}
-                disabled={loadingSnackId === snack.id}
-              >
-                {loadingSnackId === snack.id ? (
-                  <i className="fa-solid fa-spinner fa-spin-pulse"></i>
-                ) : (
-                  <i className="far fa-check-circle fa-xs"></i>
-                )}
-              </button>
-              <li
-                key={snack.id}
-                className={`${styles.snack} ${
-                  snack.completed ? styles.completed : ""
-                }`}
-              >
+            <li
+              key={snack.id}
+              className={`${styles.snack} ${
+                snack.completed ? styles.completed : ""
+              }`}
+            >
+              <div className={styles.leftContent}>
+                <button
+                  className={`${styles.buttonComplete} ${
+                    snack.completed ? styles.completedButton : ""
+                  }`}
+                  onClick={() => handleCompleteWithLoading(snack.id)}
+                  disabled={loadingSnackId === snack.id}
+                >
+                  {loadingSnackId === snack.id ? (
+                    <i className="fa-solid fa-spinner fa-spin-pulse"></i>
+                  ) : (
+                    <i className="far fa-check-circle fa-xs"></i>
+                  )}
+                </button>
                 <div className={styles.snackContainer}>
                   <span className={styles.snackTitle}>{snack.title}</span>
                   <div className={styles.snacksInfo}>
                     <span className={styles.snackPrice}>${snack.price}</span>
                     <span> - </span>
                     <span className={styles.snackLocation}>
-                      {snack.location},
+                      {snack.location}
                     </span>
-                    <span className={styles.snackLocation}> {snack.park}</span>
+                    {/* <span className={styles.snackLocation}> {snack.park}</span> */}
                   </div>
                 </div>
-                <span className={styles.SnackButtonContainer}>
-                  <ButtonContainer
-                    snack={snack}
-                    handleComplete={handleComplete}
-                    handleEdit={handleEdit}
-                    handleDelete={() => handleDeleteWithLoading(snack.id)}
-                  />
-                </span>
-              </li>
-            </React.Fragment>
+              </div>
+              <div className={styles.SnackButtonContainer}>
+                <ButtonContainer
+                  snack={snack}
+                  handleComplete={handleComplete}
+                  handleEdit={handleEdit}
+                  handleDelete={() => handleDeleteWithLoading(snack.id)}
+                />
+              </div>
+            </li>
           ))}
         </ul>
       </div>

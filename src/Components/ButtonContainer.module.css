@@ -1,7 +1,9 @@
+
 .buttonContainer {
   display: flex;
   justify-content: center;
   align-items: center;
+  margin: 6px;
 }
 
 .buttonEdit,
@@ -24,6 +26,7 @@
   margin-right: auto;
   z-index: 1;
   top: 0;
+
 }
 
 .buttonOption:active {

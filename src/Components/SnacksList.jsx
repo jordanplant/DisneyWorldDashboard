@@ -396,6 +396,7 @@ const SnacksList = () => {
     setPark("");
     setDropdownOpen(false);
     inputRef.current && inputRef.current.focus(); // Focus back on the input after clearing
+    setFetchEnabled(true);
   };
 
   const subInputClass = `${styles.subInput} ${
@@ -403,95 +404,111 @@ const SnacksList = () => {
   }`;
 
   return (
-    <div className={styles.formContainer}>
-      <form className={styles.formBar} onSubmit={onFormSubmit}>
-        <div className={styles.formPrimaryInputs}>
-          <input
-            type="text"
-            placeholder="Search/Add Snack"
-            className={styles.taskInput}
-            value={title}
-            required
-            onChange={onInputChange}
-            disabled={loadingAddOrEdit}
-            ref={inputRef}
-          />
-          {title && ( // Show the close button only when there's text in the input
-            <div className={styles.clearButton} onClick={() => clearInputs("")}>
-              <i className="fa-solid fa-circle-xmark"></i>
+    <>
+      <div className={styles.container}>
+        <div className={styles.formContainer}>
+          <form className={styles.formBar} onSubmit={onFormSubmit}>
+            <div className={styles.formPrimaryInputs}>
+              <input
+                type="text"
+                placeholder="Search/Add Snack"
+                className={styles.taskInput}
+                value={title}
+                required
+                onChange={onInputChange}
+                disabled={loadingAddOrEdit}
+                ref={inputRef}
+              />
+              {title && ( // Show the close button only when there's text in the input
+                <div
+                  className={styles.clearButton}
+                  onClick={() => clearInputs("")}
+                >
+                  <i className="fa-solid fa-circle-xmark"></i>
+                </div>
+              )}
+              <button
+                className={styles.buttonAdd}
+                type="submit"
+                disabled={loadingAddOrEdit}
+              >
+                {loadingAddOrEdit ? (
+                  <i className="fa-solid fa-spinner fa-spin-pulse fa-xl"></i>
+                ) : editMode ? (
+                  "Update"
+                ) : (
+                  "Add"
+                )}
+              </button>
             </div>
-          )}
-          <button
-            className={styles.buttonAdd}
-            type="submit"
-            disabled={loadingAddOrEdit}
-          >
-            {loadingAddOrEdit ? (
-              <i className="fa-solid fa-spinner fa-spin-pulse fa-xl"></i>
-            ) : editMode ? (
-              "Update"
-            ) : (
-              "Add"
-            )}
-          </button>
-        </div>
-        <div className={styles.formSecondaryInputs}>
-          <input
-            type="number"
-            placeholder="$5.00"
-            className={subInputClass}
-            value={price}
-            onChange={onPriceChange}
-            disabled={loadingAddOrEdit}
-          />
-          <input
-            type="text"
-            placeholder="Location"
-            className={subInputClass}
-            value={location}
-            onChange={onLocationChange}
-            disabled={loadingAddOrEdit}
-          />
-        </div>
-      </form>
-      <div
-        className={`${styles.resultsList} ${dropdownOpen ? styles.open : ""}`}
-        ref={dropdownRef}
-      >
-        {dropdownLoading && <p className={styles.loadingMessage}>Loading...</p>}
-        {results.map((item) => (
+            <div className={styles.formSecondaryInputs}>
+              <input
+                type="number"
+                placeholder="$5.00"
+                className={subInputClass}
+                value={price}
+                onChange={onPriceChange}
+                disabled={loadingAddOrEdit}
+              />
+              <input
+                type="text"
+                placeholder="Location"
+                className={subInputClass}
+                value={location}
+                onChange={onLocationChange}
+                disabled={loadingAddOrEdit}
+              />
+            </div>
+          </form>
           <div
-            onClick={() => onSelectItem(item)}
-            className={styles.dropdownRow}
-            key={item.id}
+            className={`${styles.resultsList} ${
+              dropdownOpen ? styles.open : ""
+            }`}
+            ref={dropdownRef}
           >
-            <div className={styles.searchResult} key={item.id}>
-              <span className={styles.resultItemTitle}>{item.itemTitle}</span>
-              <span className={styles.resultRestaurantInfo}>
-                {item.restaurantName},
-              </span>
-              <span className={styles.resultRestaurantInfo}>
-                {item.restaurantLocation}
-              </span>
-            </div>
+            {dropdownLoading && (
+              <p className={styles.loadingMessage}>Loading...</p>
+            )}
+            {results.map((item) => (
+              <div
+                onClick={() => onSelectItem(item)}
+                className={styles.dropdownRow}
+                key={item.id}
+              >
+                <div className={styles.searchResult} key={item.id}>
+                  <span className={styles.resultItemTitle}>
+                    {item.itemTitle}
+                  </span>
+                  <span className={styles.resultRestaurantInfo}>
+                    {item.restaurantName},
+                  </span>
+                  <span className={styles.resultRestaurantInfo}>
+                    {item.restaurantLocation}
+                  </span>
+                </div>
+              </div>
+            ))}
           </div>
-        ))}
+        </div>
+        <div className={styles.snacksContainer}>
+          {listLoading ? (
+            <p className={styles.loadingMessage}>
+              <i className="fa-solid fa-cookie-bite fa-2xl"></i> Loading
+              snacks...
+            </p>
+          ) : snacks.length === 0 ? (
+            noSnacksMessage
+          ) : (
+            <Snacks
+              snacks={snacks}
+              handleComplete={handleComplete}
+              handleEdit={handleEdit}
+              handleDelete={handleDelete}
+            />
+          )}
+        </div>
       </div>
-      {listLoading ? (
-        <p className={styles.loadingMessage}>
-          <i className="fa-solid fa-cookie-bite fa-2xl"></i> Loading snacks...
-        </p>
-      ) : snacks.length === 0 ? (
-        noSnacksMessage
-      ) : (
-        <Snacks
-          snacks={snacks}
-          handleComplete={handleComplete}
-          handleEdit={handleEdit}
-          handleDelete={handleDelete}
-        />
-      )}
-    </div>
+    </>
   );
 };
 

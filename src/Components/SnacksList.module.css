@@ -11,6 +11,13 @@
 button {
   all: unset;
 }
+
+
+.container {
+  position: relative; /* Set the container to relative positioning */
+}
+
+
 .formBar {
   display: flex;
   flex-direction: column;
@@ -89,9 +96,10 @@ margin-right: 30%;
 
 }
 
+
 .snacksList {
-  overflow: hidden;
-}
+padding: 0px;
+} 
 
 
 
@@ -101,19 +109,20 @@ margin-right: 30%;
   align-items: center;
   width: 25px;
   height: 25px;
-  margin: 2px 2px;
+  /* margin: 2px 2px; */
+  margin: 0px 10px;
   border-radius: 50%;
 }
 
 
 .buttonComplete {
   display: flex;
-  position: absolute;
+  /* position: absolute; */
 
   color: #fff;
 
   border: 3px solid #00fee5;
-  transform: translateY(45%) translateX(-120%);
+  /* transform: translateY(45%) translateX(-120%); */
 
 }
 .buttonComplete:active {
@@ -125,31 +134,43 @@ margin-right: 30%;
 .snackContainer{
   display: flex;
   flex-direction: column;
+  text-align: left;
 }
 
 .snack {
-  position:static;
   display: flex;
   justify-content: space-between;
-
+  align-items: center;
   color: #fff;
-  flex-direction: row;
-  flex-wrap: wrap;
-  margin: 0;
-  padding: 10px;
-  padding-left: 10px;
-  z-index: 0;
-  border-bottom: 1px solid #ffffff18;
+  padding: 10px 0px;
   list-style: none;
+  border-bottom: 1px solid #ffffff18;
 }
 
+.leftContent {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 10px;
+}
+
+.SnackButtonContainer {
+  /* margin-left: auto; */
+  margin: 0px 10px;
+}
+
+
+
+
+
 .snackTitle{
-/* font-weight: bold; */
+max-width: 30ch;
 }
 
 .snacksInfo
   {
   font-size: 12px;
+  max-width: 30ch;
   color: #cccccc;
   font-style: italic;
 }
@@ -160,12 +181,13 @@ margin-right: 30%;
 }
 
 .SnackButtonContainer{
+  width: auto;
   position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-left: -8%;
+  padding: 6px;
+ 
+/* left: -8%; */
 }
+
 
 .completed {
   text-decoration: line-through;
@@ -203,14 +225,17 @@ left: -8%;
 
 
 .resultsList {
+  position: absolute;
 width: 100%;
+left: 0;
+
   background: #ffffff;
   display: flex;
   flex-direction: column;
   /* box-shadow: 0px 0px 8px #ddd; */
   border-radius: 10px;
   margin-top: 5px;
-  max-height: 400px;
+  max-height: 300px;
   overflow-y: scroll;
   color: #000;
   /* position: absolute; */
@@ -218,6 +243,15 @@ width: 100%;
   z-index: 2;
 
 }
+
+
+.snacksContainer {
+  /* margin-top: 10px; */
+  min-height: 400px;
+  max-height: 500px;
+  overflow: scroll;
+}
+
 
 .resultsList .loadingMessage {  
   padding: 00px 20px;
@@ -232,8 +266,15 @@ width: 100%;
 }
 
 .searchResult:hover{
-  background-color: #fff;
+  background-color: #ececec;
 }
+
+.searchResult:active{
+  background-color: #4f4f4f;
+  color: #fff;
+}
+
+
 .resultItemTitle {
   font-size: 14px;
 }
@@ -270,3 +311,4 @@ width: 100%;
 .clearButton i:hover{
   color: rgba(255, 0, 0, 0.5);
 }
+

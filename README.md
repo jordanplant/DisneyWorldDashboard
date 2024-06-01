@@ -30,7 +30,6 @@
 
 ---
 
-
 ## Credits
 
 This project wouldn't have been possible without the following resources:
@@ -51,12 +50,15 @@ This project wouldn't have been possible without the following resources:
 
 - **V1.2**
 - Implemented a Weather Carousel feature to split the data, enhancing readability.
+
 ---
+
 - **V1.3**
 - Updated Snack list to include prices and locations
+- Opportunity to rate snacks when they are marked as Complete
+
 ---
 
 ## Feedback and Support
 
 Feedback and contributions are welcome!
-

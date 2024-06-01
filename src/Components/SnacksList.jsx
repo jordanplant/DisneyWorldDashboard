@@ -3,11 +3,6 @@ import { v4 as uuidv4 } from "uuid";
 import Snacks from "./Snacks";
 import styles from "./SnacksList.module.css";
 
-// const isDevelopment = process.env.NODE_ENV === "development";
-// const apiUrl = isDevelopment
-//   ? "http://localhost:3000/api"
-//   : "https://disney-world-dashboard.vercel.app/api";
-
 const apiUrl = "/api";
 
 const SnacksList = () => {
@@ -29,6 +24,7 @@ const SnacksList = () => {
   const [fetchEnabled, setFetchEnabled] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
   const [searchTimeout, setSearchTimeout] = useState(null);
+  const [loadingSnackId, setLoadingSnackId] = useState(null);
 
   const inputRef = useRef(null);
   const dropdownRef = useRef(null);
@@ -87,7 +83,6 @@ const SnacksList = () => {
             })
             .catch((error) => {
               console.error("Error fetching data:", error);
-              setError(error.message);
               setDropdownLoading(false); // Clear loading indicator on error
             });
         }, 200)
@@ -173,7 +168,6 @@ const SnacksList = () => {
             location,
             description,
             park,
-            // Change subLocation to land
             land, // Use the value of land state
           }),
         });
@@ -191,8 +185,7 @@ const SnacksList = () => {
                   location: updatedSnack.location,
                   description: updatedSnack.description,
                   park: updatedSnack.restaurantLocation,
-                  // Change subLocation to land
-                  land: updatedSnack.subLocation, // Use the value of subLocation
+                  land: updatedSnack.subLocation,
                 }
               : snack
           )
@@ -202,7 +195,6 @@ const SnacksList = () => {
         setEditedSnack(null);
       } catch (error) {
         console.error("Failed to update snack:", error);
-        // Handle error state or display error message to the user
       } finally {
         setLoadingAddOrEdit(false);
         setTitle(""); // Clear form fields once done
@@ -226,7 +218,6 @@ const SnacksList = () => {
             location,
             description,
             park,
-            // Change subLocation to land
             land, // Use the value of land state
           }),
         });
@@ -254,6 +245,12 @@ const SnacksList = () => {
 
   const handleDelete = async (id) => {
     try {
+      // Update the title of the snack to indicate deletion
+      const updatedSnacks = snacks.map((snack) =>
+        snack.id === id ? { ...snack, title: "Deleting..." } : snack
+      );
+      setSnacks(updatedSnacks); // Update local state with the modified snack list
+
       const response = await fetch(`${apiUrl}/deleteSnack`, {
         method: "DELETE",
         headers: {
@@ -266,11 +263,11 @@ const SnacksList = () => {
       }
 
       // Filter out the snack to delete
-      const updatedSnacks = snacks.filter((snack) => snack.id !== id);
-      setSnacks(updatedSnacks); // Update local state with the filtered list
+      const filteredSnacks = snacks.filter((snack) => snack.id !== id);
+      setSnacks(filteredSnacks); // Update local state with the filtered snack list
 
       // Update JSONBin with the new list (including handling the case where the list is now empty)
-      await updateJsonBin(updatedSnacks);
+      await updateJsonBin(filteredSnacks);
     } catch (error) {
       console.error("Failed to delete snack:", error);
     }
@@ -291,58 +288,120 @@ const SnacksList = () => {
   );
 
   const handleComplete = async (id) => {
-    const snackToUpdate = snacks.find((snack) => snack.id === id);
-    if (!snackToUpdate) {
-      console.error("Snack to update not found.");
-      return;
-    }
+    setLoadingSnackId(id);
 
-    // Toggle the completion status locally for immediate UI update
-    const updatedSnacks = snacks.map((snack) =>
-      snack.id === id
-        ? {
-            ...snack,
-            completed: !snack.completed,
-            price: snack.price, // Retain the original price
-            location: snack.location, // Retain the original location
-            itemDescription: snack.description, // Include item description
-            restaurantLocation: snack.restaurantLocation, // Include restaurant location
-            subLocation: snack.subLocation, // Include restaurant location
-          }
-        : snack
-    );
-    setSnacks(updatedSnacks);
-
-    // Update the completion status on the server
     try {
-      const response = await fetch(`${apiUrl}/updateSnack`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          id: snackToUpdate.id,
-          title: snackToUpdate.title,
-          completed: !snackToUpdate.completed,
-          price: snackToUpdate.price, // Include price in the update
-          location: snackToUpdate.location, // Include location in the update
-        }),
-      });
-
-      if (!response.ok) {
-        throw new Error(
-          "Failed to update snack completion status on the server."
-        );
+      const snackToUpdate = snacks.find((snack) => snack.id === id);
+      if (!snackToUpdate) {
+        console.error("Snack to update not found.");
+        return;
       }
 
-      // console.log(
-      //   "Snack completion status updated successfully on the server."
-      // );
-    } catch (error) {
-      console.error(
-        "Failed to update snack completion status in JSONBin:",
-        error
+      const updatedSnacks = snacks.map((snack) =>
+        snack.id === id
+          ? {
+              ...snack,
+              completed: !snack.completed,
+            }
+          : snack
       );
+
+      setSnacks(updatedSnacks);
+
+      // Update the completion status on the server
+      try {
+        const response = await fetch(`${apiUrl}/updateSnack`, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            id: snackToUpdate.id,
+            title: snackToUpdate.title,
+            completed: !snackToUpdate.completed,
+            price: snackToUpdate.price, // Include price in the update
+            location: snackToUpdate.location, // Include location in the update
+          }),
+        });
+
+        if (!response.ok) {
+          throw new Error(
+            "Failed to update snack completion status on the server."
+          );
+        }
+
+        // console.log(
+        //   "Snack completion status updated successfully on the server."
+        // );
+      } catch (error) {
+        console.error(
+          "Failed to update snack completion status in JSONBin:",
+          error
+        );
+      }
+    } catch (error) {
+      console.error("Failed to complete snack:", error);
+    } finally {
+      setLoadingSnackId(null);
+    }
+  };
+
+  const handleUndocomplete = async (id) => {
+    try {
+      setLoadingSnackId(id); // Set loading state to indicate undo operation
+
+      const snackToUpdate = snacks.find((snack) => snack.id === id);
+      if (!snackToUpdate) {
+        console.error("Snack to update not found.");
+        return;
+      }
+
+      const updatedSnacks = snacks.map((snack) =>
+        snack.id === id
+          ? {
+              ...snack,
+              completed: false, // Mark snack as incomplete
+            }
+          : snack
+      );
+
+      setSnacks(updatedSnacks);
+
+      // Update the completion status on the server
+      try {
+        const response = await fetch(`${apiUrl}/updateSnack`, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            id: snackToUpdate.id,
+            title: snackToUpdate.title,
+            completed: false, // Mark snack as incomplete
+            price: snackToUpdate.price, // Include price in the update
+            location: snackToUpdate.location, // Include location in the update
+          }),
+        });
+
+        if (!response.ok) {
+          throw new Error(
+            "Failed to update snack completion status on the server."
+          );
+        }
+
+        // console.log(
+        //   "Snack completion status updated successfully on the server."
+        // );
+      } catch (error) {
+        console.error(
+          "Failed to update snack completion status in JSONBin:",
+          error
+        );
+      }
+    } catch (error) {
+      console.error("Failed to mark snack as incomplete:", error);
+    } finally {
+      setLoadingSnackId(null); // Reset loading state after the operation
     }
   };
 
@@ -482,7 +541,7 @@ const SnacksList = () => {
                   <span className={styles.resultRestaurantInfo}>
                     {item.restaurantName},
                   </span>
-                  <span className={styles.resultRestaurantInfo}>
+                  <span className={styles.resultParkInfo}>
                     {item.restaurantLocation}
                   </span>
                 </div>
@@ -501,9 +560,11 @@ const SnacksList = () => {
           ) : (
             <Snacks
               snacks={snacks}
+              setSnacks={setSnacks}
               handleComplete={handleComplete}
               handleEdit={handleEdit}
               handleDelete={handleDelete}
+              handleUndocomplete={handleUndocomplete}
             />
           )}
         </div>

@@ -287,6 +287,13 @@ left: 0;
   color: #b0b0b0;
   /* font-style: italic; */
 }
+
+.resultParkInfo {
+  padding-left: 5px;
+  font-size: 12px;
+  color: #b0b0b0;
+}
+
 .resultsList {
   display: none; /* Hide by default */
 }
@@ -311,4 +318,98 @@ left: 0;
 .clearButton i:hover{
   color: rgba(255, 0, 0, 0.5);
 }
+
+.filters{
+  display: flex;
+  align-items: center;}
+
+
+.checkbox {
+  display: flex;
+  cursor: pointer;
+  
+}
+
+.checkbox {
+  display: flex;
+
+  align-items: center;
+  padding: 5px 5px;
+
+}
+.checkbox > * {
+padding: 5px;
+
+}
+
+.checkbox input {
+
+  cursor: pointer;
+  height: 25px;
+  width: 25px;
+  border: 0px;
+
+  accent-color: #2196F3;
+
+}
+
+
+
+.ratingContainer {
+  display: flex;
+  justify-content: flex-start;
+}
+
+
+.ratingContainer p {
+  margin: 0;
+  font-size: 14px;
+}
+
+.ratingLeft {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  margin-right: 5em;
+}
+
+.ratingRight{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+
+.stars {
+margin-top: .25em;
+color: #FFD43B;
+
+}
+
+.submitButton {
+  border: 3px solid #ffd53d;
+  font-weight: bold;
+  padding:.2em 1em;
+  border-radius: 20px;
+font-size: 14px;
+color: #fff;
+/* background-color: hsla(47, 100%, 62%, 0.8); */
+}
+
+.submitButton:active {
+  background-color: #ffd53d;
+  color: #393939;
+}
+
+.skipButton {
+  margin-top: .25em;
+font-size: 12px;
+color: #daefda;
+}
+
+
+
+
 

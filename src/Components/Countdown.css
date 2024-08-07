@@ -1,10 +1,23 @@
-.countdown-bar p {
-  font-family: "poppins", sans-serif;
-  font-size: 50px;
-  font-weight: 500;
-  color: var(--light-color);
+.countdown-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   text-align: center;
-  text-transform: uppercase;
-  margin: 0px;
-  /* padding: 0px 0px 00px 0px; */
+  color: #ffffff;
+
+}
+
+.countdownNumber {
+  font-weight: bold;
+  font-size: 4em;
+  margin: auto 0;
+
+  /* margin-right: 0.5em; */
+}
+
+.countdownMessage {
+
+  color: #ffffff;
+  font-size: 1em;
+  margin: auto 0;
 }

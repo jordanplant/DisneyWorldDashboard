@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./WeatherApp.css";
 
-function WeatherApp() {
+function WeatherApp({ city }) {
   const [weatherData, setWeatherData] = useState({
     temp: "",
     humidity: "",
@@ -9,13 +9,10 @@ function WeatherApp() {
     sunset: "",
     weatherIcon: "",
   });
-
   const [currentPage, setCurrentPage] = useState(1);
 
   const apiKey = "dea94289dbb3a89081f073f4f8e0d0a0";
-  const apiUrl =
-    "https://api.openweathermap.org/data/2.5/weather?units=metric&q=Orlando,&appid=" +
-    apiKey;
+  const apiUrl = `https://api.openweathermap.org/data/2.5/weather?units=metric&q=${city}&appid=${apiKey}`;
 
   useEffect(() => {
     async function fetchWeatherData() {
@@ -24,9 +21,14 @@ function WeatherApp() {
         if (response.ok) {
           const data = await response.json();
           const sunsetTimeUTC = new Date(data.sys.sunset * 1000); // Convert UNIX timestamp to milliseconds
-          const formatter = new Intl.DateTimeFormat('en-US', { timeZone: 'America/New_York', hour: '2-digit', minute: '2-digit', hour12: false });
+          const formatter = new Intl.DateTimeFormat("en-US", {
+            timeZone: "America/New_York",
+            hour: "2-digit",
+            minute: "2-digit",
+            hour12: false,
+          });
           const formattedSunsetTime = formatter.format(sunsetTimeUTC);
-    
+
           const newWeatherData = {
             temp: Math.round(data.main.temp) + "°C",
             humidity: data.main.humidity + "%",
@@ -42,12 +44,9 @@ function WeatherApp() {
         console.error("Error fetching weather data:", error);
       }
     }
-    
-    
-    
 
     fetchWeatherData();
-  }, []);
+  }, [city]); // Fetch data whenever city changes
 
   function updateWeatherIcon(weatherCondition) {
     switch (weatherCondition) {
@@ -137,7 +136,7 @@ function WeatherApp() {
           <div className="weather-text">
             <div className="weather-icon">{weatherData.weatherIcon}</div>
             <h3 className="temp">{weatherData.temp}</h3>
-            <h4 className="city">Orlando</h4>
+            <h4 className="city">{city}</h4>
           </div>
         ) : (
           <div className="details">
@@ -168,9 +167,13 @@ function WeatherApp() {
               </div>
             </div>
             <div className="col">
-              <svg className="sunset" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512">
-                <path d="M223.5 32C100 32 0 132.3 0 256S100 480 223.5 480c60.6 0 115.5-24.2 155.8-63.4c5-4.9 6.3-12.5 3.1-18.7s-10.1-9.7-17-8.5c-9.8 1.7-19.8 2.6-30.1 2.6c-96.9 0-175.5-78.8-175.5-176c0-65.8 36-123.1 89.3-153.3c6.1-3.5 9.2-10.5 7.7-17.3s-7.3-11.9-14.3-12.5c-6.3-.5-12.6-.8-19-.8z"/>
-                </svg>
+              <svg
+                className="sunset"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 384 512"
+              >
+                <path d="M223.5 32C100 32 0 132.3 0 256S100 480 223.5 480c60.6 0 115.5-24.2 155.8-63.4c5-4.9 6.3-12.5 3.1-18.7s-10.1-9.7-17-8.5c-9.8 1.7-19.8 2.6-30.1 2.6c-96.9 0-175.5-78.8-175.5-176c0-65.8 36-123.1 89.3-153.3c6.1-3.5 9.2-10.5 7.7-17.3s-7.3-11.9-14.3-12.5c-6.3-.5-12.6-.8-19-.8z" />
+              </svg>
               <div>
                 <p className="sunset">{weatherData.sunset}</p>
                 <p>Sunset</p>

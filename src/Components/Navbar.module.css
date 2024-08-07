@@ -1,0 +1,122 @@
+.navbar {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    background-color: #333;
+    padding: 10px 20px;
+  }
+
+  .profileImage {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+  }
+  
+ 
+ 
+  .navbarLinks {
+    list-style-type: none;
+    display: flex;
+    color: #fff;
+    text-decoration: none;
+    cursor: pointer;
+  }
+  
+  .navbarLinks li {
+    margin: 0 15px;
+    position: relative; /* Ensure the li is positioned correctly */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+  }
+
+  .navbarLinks li i {     
+    transition: animation 5s ease-out;
+    padding: 10px;}
+
+  .navbarLinks li i:hover {
+    animation: cogRotate 2s linear infinite;    
+  }
+  
+  @keyframes cogRotate {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+
+  .navbar {
+    transition: all 0.3s ease;
+  }
+  
+  .navbar.expand {
+    height: 50px; /* Full height */
+    padding: 10px;
+  }
+  
+  .navbar.shrink {
+    height: 10px; /* Shrunk height */
+    padding: 10px;
+  }
+  
+  .navbarLinks {
+    list-style-type: none;
+    display: flex;
+    align-items: center;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .navbarLinks li {
+    margin: 0 15px;
+    position: relative;
+  }
+  
+  .navbarLinks li:hover {
+    cursor: pointer;
+  }
+  
+  .profileContainer {
+    display: flex;
+    align-items: center;
+    position: relative;
+  }
+  
+  .profilePicture {
+    border-radius: 50%;
+    overflow: hidden;
+    width: 60px;
+  }
+  
+  .profilePicture img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  
+  .dropdown {
+    position: absolute;
+    /* margin-top: 15em; */
+    top: 5em;
+    /* right: 0; */
+    background-color: #333;
+    border: 1px solid #ddd;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .dropdown p {
+    padding: 10px;
+    margin: 0;
+    cursor: pointer;
+  }
+  
+  .dropdown p:hover {
+    background-color: #f0f0f0;
+  }
+  

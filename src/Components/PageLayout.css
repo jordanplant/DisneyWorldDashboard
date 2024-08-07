@@ -11,8 +11,52 @@ body {
 }
 
 main {
-  max-width: 640px;
+  /* max-width: 640px; */
   padding: var(--main-padding);
+}
+
+
+
+.no-trips {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  grid-column: span 2;
+  margin: 0 auto;
+
+  text-align: center;
+  /* padding: 200px; */
+}
+
+.start-trip-button {
+  padding: 10px 20px;
+  /* margin-top: 20px; */
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.start-trip-button:hover {
+  background-color: #0056b3;
+}
+
+.just-looking-button{
+  margin-top: .3em;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+
+.just-looking-button:hover{
+  color: rgba(255, 255, 255, 1);
+  cursor: pointer;
+}
+
+.setupModal {
+  position: a;
+  z-index: 1;
 }
 
 .card {
@@ -109,3 +153,4 @@ h1 {
   justify-content: space-between;
   align-items: center;
 }
+

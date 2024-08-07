@@ -1,122 +1,137 @@
 .navbar {
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    background-color: #333;
-    padding: 10px 20px;
-  }
+  position: -webkit-sticky; /* For Safari */
+  position: sticky;
+  top: 0;
+  z-index: 1000; /* Ensures the navbar is above other content */
+  background-color: #333; /* Background color for the navbar */
+  transition: all 0.3s ease;
+  padding: 10px 20px; /* Adjust padding as needed */
+  border-radius: 0px 0 20px 20px;
+  background: rgba(255, 255, 255, 0.3); 
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  -webkit-box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
 
-  .profileImage {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-  }
-  
- 
- 
-  .navbarLinks {
-    list-style-type: none;
-    display: flex;
-    color: #fff;
-    text-decoration: none;
-    cursor: pointer;
-  }
-  
-  .navbarLinks li {
-    margin: 0 15px;
-    position: relative; /* Ensure the li is positioned correctly */
-    display: flex;
-    justify-content: center;
-    align-items: center;
+.navbarLinks {
+  list-style-type: none;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  margin: 0;
+  padding: 0;
+  color: #000; /* Ensure text color is visible */
+  cursor: pointer;
+}
 
-  }
+.navbarLinks li {
+  position: relative;
+  margin: 0 15px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
 
-  .navbarLinks li i {     
-    transition: animation 5s ease-out;
-    padding: 10px;}
+.navbarLinks li i {
+  transition: animation 5s ease-out;
+  padding: 10px;
+}
 
-  .navbarLinks li i:hover {
-    animation: cogRotate 2s linear infinite;    
-  }
-  
-  @keyframes cogRotate {
-    0% {
-      transform: rotate(0deg);
-    }
-    100% {
-      transform: rotate(360deg);
-    }
-  }
+.navbarLinks li i:hover {
+  animation: cogRotate 2s linear infinite;
+}
 
-  .navbar {
-    transition: all 0.3s ease;
+@keyframes cogRotate {
+  0% {
+    transform: rotate(0deg);
   }
-  
-  .navbar.expand {
-    height: 50px; /* Full height */
-    padding: 10px;
+  100% {
+    transform: rotate(360deg);
   }
+}
+
+.navbar.expand {
+  height: 50px; /* Full height */
+  padding: 10px 20px; /* Adjust padding as needed */
+}
+
+.navbar.shrink {
+  height: 20px; /* Shrunk height */
+  padding: 5px 20px; /* Adjust padding as needed */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Optional: Add a shadow when scrolled */
+}
+
+.profileContainer {
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.profilePicture {
+  border-radius: 50%;
+  overflow: hidden;
+  transition: width 0.3s ease, height 0.3s ease; /* Smooth transition for resizing */
+}
+
+.navbar.expand .profilePicture {
+  width: 40px;
+}
+
+.navbar.shrink .profilePicture {
+  width: 20px; /* Smaller size when navbar is shrunk */
+}
+
+.profilePicture img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.dropdown {
+  position: absolute;
+top: 100%; 
+right: 0px;
+  background: rgba(78, 8, 95, 0.95);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  -webkit-box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+  white-space: nowrap; 
+}
+
+
+.dropdown p {
+  padding: 10px 15px;
+  margin:  0 auto;
+  cursor: pointer;
+
+
+}
+
+.dropdown p:not(:last-child) {
+  border-bottom: 1px solid #ffffff18;
+}
+
+.dropdown p:hover {
+  background-color: rgba(21, 54, 119, 0.7);
   
-  .navbar.shrink {
-    height: 10px; /* Shrunk height */
-    padding: 10px;
-  }
-  
-  .navbarLinks {
-    list-style-type: none;
-    display: flex;
-    align-items: center;
-    margin: 0;
-    padding: 0;
-  }
-  
-  .navbarLinks li {
-    margin: 0 15px;
-    position: relative;
-  }
-  
-  .navbarLinks li:hover {
-    cursor: pointer;
-  }
-  
-  .profileContainer {
-    display: flex;
-    align-items: center;
-    position: relative;
-  }
-  
-  .profilePicture {
-    border-radius: 50%;
-    overflow: hidden;
-    width: 60px;
-  }
-  
-  .profilePicture img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-  
-  .dropdown {
-    position: absolute;
-    /* margin-top: 15em; */
-    top: 5em;
-    /* right: 0; */
-    background-color: #333;
-    border: 1px solid #ddd;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    z-index: 1000;
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .dropdown p {
-    padding: 10px;
-    margin: 0;
-    cursor: pointer;
-  }
-  
-  .dropdown p:hover {
-    background-color: #f0f0f0;
-  }
-  
+}
+
+.icon {
+  transition: font-size 0.3s ease; /* Smooth transition for resizing */
+  color: #fff;
+}
+
+.navbar.expand .icon {
+  font-size: 1.5em; /* Full size */
+}
+
+.navbar.shrink .icon {
+  font-size: 1em; /* Smaller size when navbar is shrunk */
+}

@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import styles from "./Navbar.module.css";
 
 const Navbar = ({ user, setUser }) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(null);
+  const dropdownRef = useRef(null); // Ref for the dropdown container
 
   const handleScroll = () => {
     if (window.scrollY > 50) {
@@ -14,7 +15,6 @@ const Navbar = ({ user, setUser }) => {
   };
 
   const handleLogin = async () => {
-    // Simulate login functionality
     const fakeUser = {
       displayName: "John Doe",
       photoURL:
@@ -24,7 +24,6 @@ const Navbar = ({ user, setUser }) => {
   };
 
   const handleLogout = async () => {
-    // Simulate logout functionality
     setUser(null);
   };
 
@@ -32,9 +31,20 @@ const Navbar = ({ user, setUser }) => {
     setDropdownOpen(dropdownOpen === option ? null : option);
   };
 
+  // Handle clicks outside of the dropdown
+  const handleClickOutside = (event) => {
+    if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+      setDropdownOpen(null);
+    }
+  };
+
   useEffect(() => {
     window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
   }, []);
 
   return (
@@ -48,7 +58,19 @@ const Navbar = ({ user, setUser }) => {
           className={styles.settings}
           onClick={() => toggleDropdown("settings")}
         >
-          <i className="fa-solid fa-gear fa-xl"></i>
+          <i className={`fa-solid fa-gear ${styles.icon}`}></i>
+          {/* Add dropdownRef here if necessary */}
+          {dropdownOpen === "settings" && (
+            <div
+              className={`${styles.dropdown} ${styles.dropdownOpen}`}
+              ref={dropdownRef}
+            >
+              <div className={styles.settingsDropdown}>
+                <p>App Settings</p>
+                <p>Trip Settings</p>
+              </div>
+            </div>
+          )}
         </li>
         {user ? (
           <div className={styles.profileContainer}>
@@ -57,28 +79,23 @@ const Navbar = ({ user, setUser }) => {
               onClick={() => toggleDropdown("user")}
             >
               <img src={user.photoURL} alt="Profile" />
+              {dropdownOpen === "user" && (
+                <div
+                  className={`${styles.dropdown} ${styles.dropdownOpen}`}
+                  ref={dropdownRef}
+                >
+                  <div className={styles.userDropdown}>
+                    <p>Profile</p>
+                    <p onClick={handleLogout}>Logout</p>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         ) : (
           <li onClick={handleLogin}>Login</li>
         )}
       </ul>
-      {dropdownOpen && (
-        <div className={`${styles.dropdown} ${styles.dropdownOpen}`}>
-          {dropdownOpen === "settings" && (
-            <div className={styles.settingsDropdown}>
-              <p>App Settings</p>
-              <p>Trip Settings</p>
-            </div>
-          )}
-          {dropdownOpen === "user" && (
-            <div className={styles.userDropdown}>
-              {/* <p>Profile</p> */}
-              <p onClick={handleLogout}>Logout</p>
-            </div>
-          )}
-        </div>
-      )}
     </nav>
   );
 };

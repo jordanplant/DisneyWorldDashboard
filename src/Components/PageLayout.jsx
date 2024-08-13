@@ -6,6 +6,7 @@ import SnacksList from "./SnacksList";
 import WaitTimes from "./WaitTimes";
 import TripSetupModal from "./TripSetupModal";
 import Navbar from "./Navbar";
+import WaitTimesV2 from "./WaitTimesV2";
 
 function PageLayout() {
   const [user, setUser] = useState(null);
@@ -92,7 +93,8 @@ function PageLayout() {
 
           <div className="waitTimes-bar card">
             <h2 className="text-gradient">Wait Times</h2>
-            <WaitTimes />
+            {/* <WaitTimes /> */}
+            <WaitTimesV2/>
           </div>
         </div>
         <div className="footer">

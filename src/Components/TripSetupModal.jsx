@@ -46,7 +46,9 @@ const TripSetupModal = ({ onClose, onSave, onCityChange }) => {
   return (
     <div className={styles.modalOverlay} onClick={onClose}>
       <div className={styles.setupModal} onClick={(e) => e.stopPropagation()}>
+        <div className={styles.modalTopSection}>
         <h1 className={styles.textGradient}>Create new trip</h1>
+        </div>
         <form
           onSubmit={(e) => {
             e.preventDefault();

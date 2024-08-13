@@ -20,14 +20,20 @@ function WeatherApp({ city }) {
         const response = await fetch(apiUrl);
         if (response.ok) {
           const data = await response.json();
+
+          // Calculate the local sunset time using the correct timezone
           const sunsetTimeUTC = new Date(data.sys.sunset * 1000); // Convert UNIX timestamp to milliseconds
-          const formatter = new Intl.DateTimeFormat("en-US", {
-            timeZone: "America/New_York",
-            hour: "2-digit",
-            minute: "2-digit",
+
+          // Determine the city's timezone (this assumes the city matches its timezone identifier)
+          const timezone = `Etc/GMT${data.timezone < 0 ? "+" : "-"}${Math.abs(data.timezone) / 3600}`;
+
+          // Format the local sunset time using Intl.DateTimeFormat, which handles DST
+          const formattedSunsetTime = new Intl.DateTimeFormat('en-US', {
+            hour: '2-digit',
+            minute: '2-digit',
             hour12: false,
-          });
-          const formattedSunsetTime = formatter.format(sunsetTimeUTC);
+            timeZone: timezone,
+          }).format(sunsetTimeUTC);
 
           const newWeatherData = {
             temp: Math.round(data.main.temp) + "°C",
@@ -46,7 +52,7 @@ function WeatherApp({ city }) {
     }
 
     fetchWeatherData();
-  }, [city]); // Fetch data whenever city changes
+  }, [city]);
 
   function updateWeatherIcon(weatherCondition) {
     switch (weatherCondition) {

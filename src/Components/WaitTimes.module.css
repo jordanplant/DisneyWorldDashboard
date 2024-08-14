@@ -36,11 +36,36 @@ p {
   font-weight: bold;
   text-align: center;
 }
-
-.waitRow{
+.refurbishment {
+  font-size: .5em;
+  padding: 2px 5px;
+  border-radius: 20px;
+  background: orange;
+  color: #000;
+  text-transform: uppercase;
+  font-weight: bold;
   text-align: center;
 }
 
+.virtualQueue {
+display: block;
+  font-size: .6em;
+  padding: 5px 5px;
+  border-radius: 20px;
+  background: rgb(24,202,230);
+  color: #000;
+  text-transform: uppercase;
+  font-weight: bold;
+  text-align: center;
+  white-space: normal;
+  line-height: 1.2;
+}
+
+.waitRow {
+  text-align: center;
+
+
+}
 
 
 .waitTimes {

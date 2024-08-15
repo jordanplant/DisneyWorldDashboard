@@ -4,6 +4,8 @@
   --epcotGradient: linear-gradient(135deg, #d8d8d8, #4682b4);
   --hsGradient: linear-gradient(135deg, #ec506a, #f3cc56);
   --akGradient: linear-gradient(135deg, #228b22, #d6c98e);
+  --dlpGradient: linear-gradient(135deg, #1c63f1, #8e0cae);
+  --wdsGradient: linear-gradient(135deg, #228b22, #d6c98e);
 }
 
 
@@ -116,10 +118,11 @@ td {
 
 .parkIcons {
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
   cursor: pointer;
-  margin: 0px;
-  width: 100%;
+  margin: 0 auto;
+  gap:1em;
+  /* width: 100%; */
 }
 
 .parkIcon {
@@ -133,13 +136,17 @@ td {
 
 
 .parkName {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   text-align: center;
-  font-size: 12px;
+  font-size: 14px;
   line-height: 15px;
   transition: opacity 0.5s ease, transform 0.5s ease;
   opacity: 1;
   transform: translateY(0);
   color: rgba(255, 255, 255, 0.95);
+  white-space:normal;
 }
 
 /* Initial state for the button */
@@ -152,9 +159,17 @@ button {
 
 /* Style for when the paragraph is moved and faded out */
 button.active .parkName {
-  opacity: 0;
-  transform: translateY(20px);
+  /* font-size: 1em; */
+font-weight: bolder;
+  opacity: 1;
+  /* transform: translateY(5px); */
 }
+
+button:not(.active) .parkName {
+transform: scale(80%);
+opacity: .8;
+}
+
 
 .activeSvg {
   transform: scale(1.5);
@@ -162,8 +177,6 @@ button.active .parkName {
 }
 
 .fadeOut {
-  opacity: 0;
-  transform: translateY(20px);
   transition: opacity 0.5s ease, transform 0.5s ease;
 }
 

@@ -18,11 +18,13 @@ function PageLayout() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [justLooking, setJustLooking] = useState(false);
   const [selectedCity, setSelectedCity] = useState("Orlando"); // Add state for selected city
+  const [selectedPark, setSelectedPark] = useState("Walt Disney World");
 
   const handleAddTrip = (newTrip) => {
     setTrips([...trips, newTrip]);
     setCurrentTrip(newTrip);
-    setSelectedCity(newTrip.city); // Update city based on trip
+    setSelectedCity(newTrip.city);
+    setSelectedPark(newTrip.park); // Add this line
     setIsModalOpen(false);
     setJustLooking(false);
   };
@@ -94,7 +96,8 @@ function PageLayout() {
           <div className="waitTimes-bar card">
             <h2 className="text-gradient">Wait Times</h2>
             {/* <WaitTimes /> */}
-            <WaitTimesV2/>
+            <WaitTimesV2 selectedPark={selectedPark} />
+
           </div>
         </div>
         <div className="footer">
@@ -110,10 +113,13 @@ function PageLayout() {
       </main>
       {isModalOpen && !justLooking && (
         <TripSetupModal
-          onClose={() => setIsModalOpen(false)}
-          onSave={handleAddTrip} // Pass handleAddTrip directly
-          onCityChange={setSelectedCity} // Pass setSelectedCity directly
-        />
+  onClose={() => setIsModalOpen(false)}
+  onSave={handleAddTrip}
+  onCityChange={(city, park) => {
+    setSelectedCity(city);
+    setSelectedPark(park);
+  }}
+/>
       )}
     </>
   );

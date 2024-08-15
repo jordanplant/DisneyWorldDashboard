@@ -10,6 +10,8 @@ const TripSetupModal = ({ onClose, onSave, onCityChange }) => {
   const [tripStartDate, setTripStartDate] = useState(defaultStartDate);
   const [tripEndDate, setTripEndDate] = useState(defaultEndDate);
 
+  
+
   // Calculate the minimum date (one month before today's date)
   const today = new Date();
   const minDate = new Date(today.setMonth(today.getMonth() - 1))
@@ -26,22 +28,35 @@ const TripSetupModal = ({ onClose, onSave, onCityChange }) => {
     "Hong Kong Disneyland": "Hong Kong",
   };
 
+  const handleAddTrip = (newTrip) => {
+    setTrips([...trips, newTrip]);
+    setCurrentTrip(newTrip);
+    setSelectedCity(newTrip.city);
+    setSelectedPark(newTrip.park); // Ensure this line sets the selected park
+    setIsModalOpen(false);
+    setJustLooking(false);
+  };
+  
+
   const handleSave = () => {
     const city = parkToCityMap[tripName] || "Unknown City";
-    onCityChange(city); // Pass the city to the parent component
-
+    const park = tripName;
     const newTrip = {
       id: Date.now(),
       name: tripName,
       startDate: tripStartDate,
       endDate: tripEndDate,
-      city, // Use the city determined from the map
+      city,
+      park, // Include the park in the new trip object
     };
     onSave(newTrip);
-    setTripName(""); // Reset fields after saving
+    onCityChange(city, park); // Pass both city and park
+    // Reset fields after saving
+    setTripName("");
     setTripStartDate(defaultStartDate);
     setTripEndDate(defaultEndDate);
   };
+  
 
   return (
     <div className={styles.modalOverlay} onClick={onClose}>

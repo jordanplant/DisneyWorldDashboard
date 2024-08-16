@@ -38,6 +38,16 @@ p {
   font-weight: bold;
   text-align: center;
 }
+.down {
+  padding: 2px 5px;
+  border-radius: 20px;
+  background: yellow;
+  color: #000;
+  text-transform: uppercase;
+  font-weight: bold;
+  text-align: center;
+}
+
 .refurbishment {
   font-size: .5em;
   padding: 2px 5px;

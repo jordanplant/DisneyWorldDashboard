@@ -83,31 +83,31 @@ function WaitTimesV2({ selectedPark }) {
 
   const sortedData = useMemo(() => {
     return [...attractionsData].sort((a, b) => {
-      const statusOrder = { "OPERATING": 0, "BOARDING_GROUP": 1, "CLOSED": 2, "REFURBISHMENT": 3 };
-      const statusA = a.queue?.BOARDING_GROUP ? "BOARDING_GROUP" : a.status || "CLOSED";
-      const statusB = b.queue?.BOARDING_GROUP ? "BOARDING_GROUP" : b.status || "CLOSED";
-
+      const statusOrder = { "OPERATING": 0, "BOARDING_GROUP": 1, "DOWN": 2, "CLOSED": 3, "REFURBISHMENT": 4 };
+      const statusA = a.status || "CLOSED";
+      const statusB = b.status || "CLOSED";
+  
       if (statusA !== statusB) {
         return statusOrder[statusA] - statusOrder[statusB];
       }
-
+  
       if (statusA === "OPERATING" || statusA === "BOARDING_GROUP") {
         let waitTimeA, waitTimeB;
-
+  
         if (statusA === "OPERATING") {
           waitTimeA = a.queue?.STANDBY?.waitTime ? parseInt(a.queue.STANDBY.waitTime, 10) : Infinity;
           waitTimeB = b.queue?.STANDBY?.waitTime ? parseInt(b.queue.STANDBY.waitTime, 10) : Infinity;
         } else {
           return 0;
         }
-
+  
         return (waitTimeA - waitTimeB) * (sortConfig.direction === 'ascending' ? 1 : -1);
       }
-
+  
       return 0;
     });
   }, [attractionsData, sortConfig]);
-
+  
   const sortedField = (key) => {
     if (key === 'wait_time') {
       setSortConfig((prevConfig) => {
@@ -195,52 +195,52 @@ function WaitTimesV2({ selectedPark }) {
                   </th>
                 </tr>
               </thead>
-              <tbody>
-                {sortedData.length === 0 ? (
-                  <tr>
-                    <td colSpan="2">Magic needs to rest too. Try again later</td>
-                  </tr>
+<tbody>
+  {sortedData.length === 0 ? (
+    <tr>
+      <td colSpan="2">Magic needs to rest too. Try again later</td>
+    </tr>
+  ) : (
+    sortedData.map((ride) => (
+      <tr key={ride.id}>
+        <td className={styles.rideName}>
+          {ride.name.includes(' - ')
+            ? ride.name.split(' - ').map((part, index, array) =>
+                index < array.length - 1 ? (
+                  <React.Fragment key={index}>
+                    {part}
+                    <br />-{' '}
+                  </React.Fragment>
                 ) : (
-                  sortedData.map((ride) => (
-                    <tr key={ride.id}>
-                      <td className={styles.rideName}>
-                        {ride.name.includes(' - ')
-                          ? ride.name.split(' - ').map((part, index, array) =>
-                              index < array.length - 1 ? (
-                                <React.Fragment key={index}>
-                                  {part}
-                                  <br />-{' '}
-                                </React.Fragment>
-                              ) : (
-                                part
-                              )
-                            )
-                          : ride.name}
-                      </td>
-                      <td className={styles.waitRow}>
-                        {ride.status === "OPERATING" && (ride.operatingHours?.length || 0) > 0 ? (
-                          ride.queue?.BOARDING_GROUP ? (
-                            <div className={styles.virtualQueue}>Virtual Queue</div>
-                          ) : ride.queue?.STANDBY?.waitTime !== null && ride.queue?.STANDBY?.waitTime !== undefined ? (
-                            <React.Fragment>
-                              <span className={styles.bold}>{ride.queue.STANDBY.waitTime}</span>{" "}
-                              mins
-                            </React.Fragment>
-                          ) : (
-                            'N/A'
-                          )
-                        ) : (
-                          ride.status === "REFURBISHMENT" ? (
-                            <span className={styles.refurbishment}>REFURBISHMENT</span>
-                          ) : (
-                            <span className={styles.closed}>CLOSED</span>
-                          )
-                        )}
-                      </td>
-                    </tr>
-                  ))
-                )}
-              </tbody>
+                  part
+                )
+              )
+            : ride.name}
+        </td>
+        <td className={styles.waitRow}>
+          {ride.status === "OPERATING" ? (
+            ride.queue?.BOARDING_GROUP ? (
+              <div className={styles.virtualQueue}>Virtual Queue</div>
+            ) : ride.queue?.STANDBY?.waitTime !== null && ride.queue?.STANDBY?.waitTime !== undefined ? (
+              <React.Fragment>
+                <span className={styles.bold}>{ride.queue.STANDBY.waitTime}</span> mins
+              </React.Fragment>
+            ) : (
+              'N/A'
+            )
+          ) : ride.status === "REFURBISHMENT" ? (
+            <span className={styles.refurbishment}>REFURBISHMENT</span>
+          ) : ride.status === "DOWN" ? (
+            <span className={styles.down}>DOWN</span>
+          ) : (
+            <span className={styles.closed}>CLOSED</span>
+          )}
+        </td>
+      </tr>
+    ))
+  )}
+</tbody>
+
             </table>
           </div>
         )}

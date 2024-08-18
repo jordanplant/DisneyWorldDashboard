@@ -1,50 +1,24 @@
 import React, { useState, useEffect, useMemo } from "react";
 import styles from "./WaitTimes.module.css";
-import ParkIcons from "./ParkIcons";
 
 const apiUrl = "/api/waitTimesV2";
 const parkIdMapping = {
-  // Disney World
-  "Walt Disney World": {
-    MagicKingdom: "75ea578a-adc8-4116-a54d-dccb60765ef9",
-    Epcot: "47f90d2c-e191-4239-a466-5892ef59a88b",
-    HollywoodStudios: "288747d1-8b4f-4a64-867e-ea7c9b27bad8",
-    AnimalKingdom: "1c84a229-8862-4648-9c71-378ddd2c7693",
-  },
-  // Disneyland Paris
-  "Disneyland Paris": {
-    DisneylandParkParis: "dae968d5-630d-4719-8b06-3d107e944401",
-    WaltDisneyStudiosParis: "ca888437-ebb4-4d50-aed2-d227f7096968",
-  },
+  MagicKingdom: "75ea578a-adc8-4116-a54d-dccb60765ef9",
+  Epcot: "47f90d2c-e191-4239-a466-5892ef59a88b",
+  HollywoodStudios: "288747d1-8b4f-4a64-867e-ea7c9b27bad8",
+  AnimalKingdom: "1c84a229-8862-4648-9c71-378ddd2c7693",
+  DisneylandParkParis: "dae968d5-630d-4719-8b06-3d107e944401",
+  WaltDisneyStudiosParis: "ca888437-ebb4-4d50-aed2-d227f7096968",
 };
 
-const parkNames = {
-  MagicKingdom: ["Magic", "Kingdom"],
-  Epcot: ["Epcot"],
-  HollywoodStudios: ["Hollywood", "Studios"],
-  AnimalKingdom: ["Animal", "Kingdom"],
-  DisneylandParkParis: ["Disneyland", "Park"],
-  WaltDisneyStudiosParis: ["Walt Disney", "Studios Park"],
-};
-
-
-
-function WaitTimesV2({ selectedPark }) { 
+function WaitTimesAttractions({ selectedPark }) { 
   const [attractionsData, setAttractionsData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [activeButton, setActiveButton] = useState("MagicKingdom");
   const [sortConfig, setSortConfig] = useState({ key: "wait_time", direction: "ascending" });
-  const ParkIconComponent = ParkIcons[selectedPark] || null; // Get the icon component based on the selected park
-  
-  const handleParkClick = (park) => {
-    setActiveButton(park);
-    // Fetch wait times or perform other actions
-  };
 
   useEffect(() => {
-    const defaultPark = Object.keys(parkIdMapping[selectedPark])[0];
-    setActiveButton(defaultPark);
-    fetchAndDisplayAttractions(parkIdMapping[selectedPark][defaultPark]);
+    const parkId = parkIdMapping[selectedPark];
+    fetchAndDisplayAttractions(parkId);
   }, [selectedPark]);
 
   const fetchAndDisplayAttractions = async (parkId) => {
@@ -74,11 +48,6 @@ function WaitTimesV2({ selectedPark }) {
     } finally {
       setIsLoading(false);
     }
-  };
-
-  const handleButtonClick = (parkName) => {
-    setActiveButton(parkName);
-    fetchAndDisplayAttractions(parkIdMapping[selectedPark][parkName]);
   };
 
   const sortedData = useMemo(() => {
@@ -121,53 +90,6 @@ function WaitTimesV2({ selectedPark }) {
 
   return (
     <div className={styles.waitTimes}>
-      {/* Park Icons Section */}
-      <div className={styles.parkIcons}>
-        {selectedPark && parkIdMapping[selectedPark] ? (
-          Object.entries(parkIdMapping[selectedPark]).map(([parkName, parkId]) => {
-            const ParkIcon = ParkIcons[parkName]; // Dynamically select the icon based on parkName
-            const nameParts = parkNames[parkName] || [parkName]; // Get name parts
-  
-            if (!ParkIcon) {
-              // Handle the case where ParkIcon is not found
-              return null;
-            }
-  
-            return (
-              <button
-                key={parkName}
-                className={`${styles.parkButton} ${
-                  activeButton === parkName ? styles.active : ""
-                }`}
-                onClick={() => handleButtonClick(parkName)}
-              >
-                <ParkIcon
-                  className={`${styles.parkIcon} ${
-                    activeButton === parkName ? styles.activeSvg : ""
-                  }`}
-                  active={activeButton === parkName} // Pass the active state
-                />
-              
-                <p  
-                  className={`${styles.parkName} ${
-                    activeButton === parkName ? styles.fadeOut : ""
-                  }`}
-                >
-                  {nameParts.map((part, index) => (
-                    <React.Fragment key={index}>
-                      {part}
-                      {index < nameParts.length - 1 && <br />} {/* Add line break except after the last part */}
-                    </React.Fragment>
-                  ))}
-                </p>
-              </button>
-            );
-          })
-        ) : (
-          <p>No park selected or invalid park selection.</p>
-        )}
-      </div>
-  
       {/* Wait Times Table Section */}
       <div className={styles.fixedHeightTable}>
         {isLoading ? (
@@ -218,24 +140,25 @@ function WaitTimesV2({ selectedPark }) {
             : ride.name}
         </td>
         <td className={styles.waitRow}>
-          {ride.status === "OPERATING" ? (
-            ride.queue?.BOARDING_GROUP ? (
-              <div className={styles.virtualQueue}>Virtual Queue</div>
-            ) : ride.queue?.STANDBY?.waitTime !== null && ride.queue?.STANDBY?.waitTime !== undefined ? (
-              <React.Fragment>
-                <span className={styles.bold}>{ride.queue.STANDBY.waitTime}</span> mins
-              </React.Fragment>
-            ) : (
-              'N/A'
-            )
-          ) : ride.status === "REFURBISHMENT" ? (
-            <span className={styles.refurbishment}>REFURBISHMENT</span>
-          ) : ride.status === "DOWN" ? (
-            <span className={styles.down}>DOWN</span>
-          ) : (
-            <span className={styles.closed}>CLOSED</span>
-          )}
-        </td>
+  {ride.status === "OPERATING" ? (
+    ride.queue?.BOARDING_GROUP ? (
+      <div className={styles.virtualQueue}>Virtual Queue</div>
+    ) : ride.queue?.STANDBY?.waitTime !== null && ride.queue?.STANDBY?.waitTime !== undefined ? (
+      <React.Fragment>
+        <span className={styles.bold}>{ride.queue.STANDBY.waitTime}</span> mins
+      </React.Fragment>
+    ) : (
+      <span className={styles.open}>OPEN</span>
+    )
+  ) : ride.status === "REFURBISHMENT" ? (
+    <span className={styles.refurbishment}>REFURBISHMENT</span>
+  ) : ride.status === "DOWN" ? (
+    <span className={styles.down}>DOWN</span>
+  ) : (
+    <span className={styles.closed}>CLOSED</span>
+  )}
+</td>
+
       </tr>
     ))
   )}
@@ -247,7 +170,6 @@ function WaitTimesV2({ selectedPark }) {
       </div>
     </div>
   );
-  
 }  
 
-export default WaitTimesV2;
+export default WaitTimesAttractions;

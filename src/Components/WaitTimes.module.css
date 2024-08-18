@@ -22,56 +22,47 @@ p {
 }
 
 
-.open {
-  color: #04f104;
+.open, .closed, .down, .refurbishment, .virtualQueue {
+  display: inline-block;
+  padding: 2px 10px; /* Consistent padding */
+  border-radius: 20px;
   text-transform: uppercase;
   font-weight: bold;
   text-align: center;
+  width: 60px; /* Set a fixed width */
+  color: #fff; /* Default color, override for specific classes as needed */
+}
+
+/* Individual background color overrides */
+.open {
+  background: #2fb52f;
 }
 
 .closed {
-  padding: 2px 5px;
-  border-radius: 20px;
   background: red;
-  color: #fff;
-  text-transform: uppercase;
-  font-weight: bold;
-  text-align: center;
 }
+
 .down {
-  padding: 2px 5px;
-  border-radius: 20px;
   background: yellow;
   color: #000;
-  text-transform: uppercase;
-  font-weight: bold;
-  text-align: center;
 }
 
 .refurbishment {
-  font-size: .5em;
-  padding: 2px 5px;
-  border-radius: 20px;
   background: orange;
   color: #000;
-  text-transform: uppercase;
-  font-weight: bold;
-  text-align: center;
+  font-size: 0.5em;
+  /* padding: 1px !important; */
+
 }
 
 .virtualQueue {
-display: block;
-  font-size: .6em;
-  padding: 5px 5px;
-  border-radius: 20px;
   background: rgb(24,202,230);
   color: #000;
-  text-transform: uppercase;
-  font-weight: bold;
-  text-align: center;
+  font-size: 0.6em;
   white-space: normal;
   line-height: 1.2;
 }
+
 
 .waitRow {
   text-align: center;
@@ -128,7 +119,7 @@ td {
 
 .parkIcons {
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
   cursor: pointer;
   margin: 0 auto;
   gap:1em;

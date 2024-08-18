@@ -3,10 +3,11 @@ import "./PageLayout.css";
 import Countdown from "./Countdown";
 import WeatherApp from "./WeatherApp";
 import SnacksList from "./SnacksList";
-import WaitTimes from "./WaitTimes";
+import WaitTimesAttractions from "./WaitTimesAttractions";
 import TripSetupModal from "./TripSetupModal";
 import Navbar from "./Navbar";
-import WaitTimesV2 from "./WaitTimesV2";
+import ParkSelect from "./ParkSelect";
+import WaitTimesShows from "./WaitTimesShows";
 
 function PageLayout() {
   const [user, setUser] = useState(null);
@@ -17,14 +18,15 @@ function PageLayout() {
   const [currentTrip, setCurrentTrip] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [justLooking, setJustLooking] = useState(false);
-  const [selectedCity, setSelectedCity] = useState("Orlando"); // Add state for selected city
+  const [selectedCity, setSelectedCity] = useState("Orlando");
   const [selectedPark, setSelectedPark] = useState("Walt Disney World");
+  const [activePark, setActivePark] = useState(null);
 
   const handleAddTrip = (newTrip) => {
     setTrips([...trips, newTrip]);
     setCurrentTrip(newTrip);
     setSelectedCity(newTrip.city);
-    setSelectedPark(newTrip.park); // Add this line
+    setSelectedPark(newTrip.park);
     setIsModalOpen(false);
     setJustLooking(false);
   };
@@ -33,6 +35,10 @@ function PageLayout() {
     setJustLooking(true);
     setIsModalOpen(false);
     setCurrentTrip(null);
+  };
+
+  const handleParkChange = (parkName) => {
+    setActivePark(parkName);
   };
 
   return (
@@ -77,8 +83,7 @@ function PageLayout() {
           </div>
 
           <div className="weather-bar card">
-            <WeatherApp city={selectedCity} />{" "}
-            {/* Pass selected city to WeatherApp */}
+            <WeatherApp city={selectedCity} />
           </div>
 
           <div className="snacks-bar card">
@@ -95,9 +100,14 @@ function PageLayout() {
 
           <div className="waitTimes-bar card">
             <h2 className="text-gradient">Wait Times</h2>
-            {/* <WaitTimes /> */}
-            <WaitTimesV2 selectedPark={selectedPark} />
-
+            <ParkSelect
+              selectedPark={selectedPark}
+              onParkChange={handleParkChange}
+              activePark={activePark} // Add this line
+            />
+            <WaitTimesAttractions selectedPark={activePark} />
+            <h2 className="text-gradient">Today's Shows</h2>
+            <WaitTimesShows selectedPark={activePark} />
           </div>
         </div>
         <div className="footer">
@@ -113,13 +123,13 @@ function PageLayout() {
       </main>
       {isModalOpen && !justLooking && (
         <TripSetupModal
-  onClose={() => setIsModalOpen(false)}
-  onSave={handleAddTrip}
-  onCityChange={(city, park) => {
-    setSelectedCity(city);
-    setSelectedPark(park);
-  }}
-/>
+          onClose={() => setIsModalOpen(false)}
+          onSave={handleAddTrip}
+          onCityChange={(city, park) => {
+            setSelectedCity(city);
+            setSelectedPark(park);
+          }}
+        />
       )}
     </>
   );

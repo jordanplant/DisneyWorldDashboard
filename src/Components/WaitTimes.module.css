@@ -199,3 +199,50 @@ opacity: .8;
   align-items: center;
 }
 
+.waitTable {
+  width: 100%;
+}
+
+.expandedShowtimes {
+  display: flex;
+  justify-content: space-around;
+}
+
+.waitDropdown {
+  display: flex;
+  justify-content: space-between;
+  gap: 5px;
+  flex-direction: row;
+  align-items: center;
+  margin: 0 auto;
+}
+
+.waitDropdown i {
+  font-size: 1.2em;
+}
+
+.waitDropdownText {
+  font-size: .5em;
+  font-style: italic;
+}
+
+.rideNameContainer {
+  display: flex;
+  align-items: center;
+}
+
+.rideName span{
+  /* white-space: nowrap; */
+}
+
+
+
+.dropdownButton {
+  background: none;
+  border: none;
+  padding-left: 8px; /* Adjust spacing between the text and the button */
+  vertical-align: middle; /* Align the button with the text */
+}
+
+
+

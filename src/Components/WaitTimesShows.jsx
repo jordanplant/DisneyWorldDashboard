@@ -23,8 +23,8 @@ const parkTimezoneMapping = {
 function WaitTimesShows({ selectedPark }) {
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [sortConfig, setSortConfig] = useState({ key: "wait_time", direction: "ascending" });
   const [timezone, setTimezone] = useState('America/New_York'); // Default timezone
+  const [expandedRows, setExpandedRows] = useState([]); // Manage expanded rows
 
   useEffect(() => {
     const parkId = parkIdMapping[selectedPark];
@@ -44,9 +44,19 @@ function WaitTimesShows({ selectedPark }) {
       }
       const data = await response.json();
 
-      const filteredData = (data.liveData || []).filter(
-        (item) => item.entityType === "SHOW" && !/(Meet)/i.test(item.name)
-      );
+      const filteredData = (data.liveData || [])
+        .filter((item) => item.entityType === "SHOW" && !/(Meet)/i.test(item.name))
+        .map((item) => {
+          // Filter showtimes to include only those later in the day
+          const currentTime = new Date();
+          const futureShowtimes = (item.showtimes || []).filter(showtime =>
+            new Date(showtime.startTime) > currentTime
+          );
+
+          // Return item with updated showtimes if future showtimes exist
+          return futureShowtimes.length > 0 ? { ...item, showtimes: futureShowtimes } : null;
+        })
+        .filter(item => item !== null); // Remove shows with no future showtimes
 
       setData(filteredData);
     } catch (error) {
@@ -58,39 +68,16 @@ function WaitTimesShows({ selectedPark }) {
 
   const getTimeInMinutes = (time) => {
     const date = new Date(time);
-    return date.getHours() * 60 + date.getMinutes();
+    return date.getTime();
   };
 
   const sortedData = useMemo(() => {
     return [...data].sort((a, b) => {
-      const statusOrder = { "OPERATING": 0, "BOARDING_GROUP": 1, "DOWN": 2, "CLOSED": 3, "REFURBISHMENT": 4 };
-      const statusA = a.status || "CLOSED";
-      const statusB = b.status || "CLOSED";
-
-      if (statusA !== statusB) {
-        return statusOrder[statusA] - statusOrder[statusB];
-      }
-
-      if (sortConfig.key === 'wait_time' && sortConfig.direction === 'ascending') {
-        const timeA = a.showtimes?.[0]?.startTime ? getTimeInMinutes(a.showtimes[0].startTime) : Infinity;
-        const timeB = b.showtimes?.[0]?.startTime ? getTimeInMinutes(b.showtimes[0].startTime) : Infinity;
-        return timeA - timeB;
-      }
-
-      return 0;
+      const timeA = a.showtimes?.[0]?.startTime ? getTimeInMinutes(a.showtimes[0].startTime) : Infinity;
+      const timeB = b.showtimes?.[0]?.startTime ? getTimeInMinutes(b.showtimes[0].startTime) : Infinity;
+      return timeA - timeB;
     });
-  }, [data, sortConfig]);
-
-  const sortedField = (key) => {
-    if (key === 'wait_time') {
-      setSortConfig((prevConfig) => {
-        const direction = prevConfig.key === key && prevConfig.direction === "ascending"
-          ? "descending"
-          : "ascending";
-        return { key, direction };
-      });
-    }
-  };
+  }, [data]);
 
   const formatTime = (time) => {
     return new Intl.DateTimeFormat('en-US', {
@@ -101,6 +88,34 @@ function WaitTimesShows({ selectedPark }) {
     }).format(new Date(time));
   };
 
+  const toggleRowExpansion = (id) => {
+    setExpandedRows((prevExpandedRows) =>
+      prevExpandedRows.includes(id)
+        ? prevExpandedRows.filter((rowId) => rowId !== id)
+        : [...prevExpandedRows, id]
+    );
+  };
+
+  const DropdownButton = ({ itemId, isExpanded }) => (
+    <button
+      className={styles.dropdownButton}
+      onClick={() => toggleRowExpansion(itemId)}
+    >
+      {isExpanded ? (
+        <div className={styles.waitDropdown}>
+          <i className="fa-solid fa-caret-up"></i>
+          <span className={styles.waitDropdownText}>Hide Times</span>
+        </div>
+      ) : (
+        <div className={styles.waitDropdown}>
+          <i className="fa-solid fa-caret-down"></i>
+          <span className={styles.waitDropdownText}>View More Times</span>
+        </div>
+      )}
+    </button>
+  );
+  
+
   return (
     <div className={styles.waitTimes}>
       <div className={styles.fixedHeightTable}>
@@ -109,22 +124,16 @@ function WaitTimesShows({ selectedPark }) {
             <i className="fa-solid fa-wand-magic-sparkles fa-2xl"></i> Conjuring Magic...
           </p>
         ) : data.length === 0 ? (
-          <p>Magic needs to rest too. Try again later</p>
+          <p>No Shows scheduled for today</p>
         ) : (
           <div className={styles.scrollableContainer}>
-            <table id="dataTable">
+            <table className={styles.waitTable} id="dataTable">
               <thead>
                 <tr>
-                  <th
-                    className={`${styles.sortable} ${styles.attraction}`}
-                    onClick={() => sortedField('name')}
-                  >
-                    
+                  <th className={`${styles.sortable} ${styles.attraction}`}>
+        
                   </th>
-                  <th
-                    className={`${styles.sortable} ${styles.waitTime}`}
-                    onClick={() => sortedField('wait_time')}
-                  >
+                  <th className={`${styles.sortable} ${styles.waitTime}`}>
                     Next Show
                   </th>
                 </tr>
@@ -132,39 +141,50 @@ function WaitTimesShows({ selectedPark }) {
               <tbody>
                 {sortedData.length === 0 ? (
                   <tr>
-                    <td colSpan="2">Magic needs to rest too. Try again later</td>
+                    <td colSpan="2">No Shows scheduled for today</td>
                   </tr>
                 ) : (
                   sortedData.map((item) => (
-                    <tr key={item.id}>
+                    <React.Fragment key={item.id}>
+                      <tr key={item.id}>
                       <td className={styles.rideName}>
-                        {item.name.includes(' - ')
-                          ? item.name.split(' - ').map((part, index, array) =>
-                              index < array.length - 1 ? (
-                                <React.Fragment key={index}>
-                                  {part}
-                                  <br />-{' '}
-                                </React.Fragment>
-                              ) : (
-                                part
-                              )
-                            )
-                          : item.name}
-                      </td>
-                      <td className={styles.waitRow}>
-                        {item.entityType === "SHOW" ? (
-                          item.showtimes?.length > 0 ? (
-                            item.showtimes.map((showtime, index) => (
-                              <div key={index} className={styles.showtime}>
-                                {formatTime(showtime.startTime)}
+                         <span>
+    {item.name}
+    {item.showtimes?.length > 1 && (
+      <DropdownButton itemId={item.id} isExpanded={expandedRows.includes(item.id)} />
+    )}
+  </span>
+</td>
+
+
+
+
+                        <td className={styles.waitRow}>
+                          {item.entityType === "SHOW" && item.showtimes?.length > 0 ? (
+                            <>
+                              <div className={styles.showtime}>
+                                {formatTime(item.showtimes[0].startTime)}
                               </div>
-                            ))
+                            </>
                           ) : (
                             <span className={styles.noShowtimes}>No Showtimes</span>
-                          )
-                        ) : null}
-                      </td>
-                    </tr>
+                          )}
+                        </td>
+                      </tr>
+                      {expandedRows.includes(item.id) && (
+                        <tr>
+                          <td colSpan="2">
+                            <div className={styles.expandedShowtimes}>
+                              {item.showtimes.slice(1).map((showtime, index) => (
+                                <div key={index} className={styles.showtime}>
+                                  {formatTime(showtime.startTime)}
+                                </div>
+                              ))}
+                            </div>
+                          </td>
+                        </tr>
+                      )}
+                    </React.Fragment>
                   ))
                 )}
               </tbody>
@@ -175,7 +195,5 @@ function WaitTimesShows({ selectedPark }) {
     </div>
   );
 }
-
-// TO ADD: only show the next show time on the right, have a dropdown to view more times today (only remaning and only if more than one show)
 
 export default WaitTimesShows;

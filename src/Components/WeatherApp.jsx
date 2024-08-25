@@ -6,6 +6,7 @@ import "./WeatherApp.css";
 function WeatherApp({ city }) {
   const [weatherData, setWeatherData] = useState({
     temp: "",
+    feels_like: "",
     humidity: "",
     windSpeed: "",
     sunset: "",
@@ -35,6 +36,7 @@ function WeatherApp({ city }) {
 
           const newWeatherData = {
             temp: Math.round(data.main.temp) + "°C",
+            feels_like: Math.round(data.main.feels_like) + "°C",
             humidity: data.main.humidity + "%",
             windSpeed: data.wind.speed + " km/h",
             sunset: formattedSunsetTime,
@@ -149,7 +151,10 @@ function WeatherApp({ city }) {
         <div className="weather-text">
           <div className="weather-icon">{weatherData.weatherIcon}</div>
           <h3 className="temp">{weatherData.temp}</h3>
-          <h4 className="city">{city}</h4>
+          <span className="feelsLikeContainer">
+          <h5 className="feelsLike">Feels like</h5>
+          <h5 className="feelsLikeTemp">{weatherData.feels_like}</h5></span>
+          {/* <h4 className="city">{city}</h4> */}
         </div>
       ),
     },
@@ -186,15 +191,15 @@ function WeatherApp({ city }) {
         </div>
       ),
     },
-    {
-      content: (
-        <div className="weather-text">
-          <div className="weather-icon">{weatherData.weatherIcon}</div>
-          <h3 className="temp">{weatherData.temp}</h3>
-          <h4 className="city">{city}</h4>
-        </div>
-      ),
-    },
+    // {
+    //   content: (
+    //     <div className="weather-text">
+    //       <div className="weather-icon">{weatherData.weatherIcon}</div>
+    //       <h3 className="temp">{weatherData.temp}</h3>
+    //       <h4 className="city">{city}</h4>
+    //     </div>
+    //   ),
+    // },
   ];
 
   return (
@@ -204,7 +209,7 @@ function WeatherApp({ city }) {
       </div>
       <div className="dots-container">
         {pages.map((_, index) => (
-          <div
+          <div 
             key={index}
             className={`dot ${currentPage === index + 1 ? "active" : ""}`}
             onClick={() => setCurrentPage(index + 1)}

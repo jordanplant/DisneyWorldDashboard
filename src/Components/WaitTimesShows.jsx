@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect, useMemo } from 'react';  // <-- Ensure React is imported here
 import styles from "./WaitTimes.module.css";
 
 const apiUrl = "/api/waitTimesV2";
@@ -23,20 +23,19 @@ const parkTimezoneMapping = {
 function WaitTimesShows({ selectedPark }) {
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [timezone, setTimezone] = useState('America/New_York'); // Default timezone
-  const [expandedRows, setExpandedRows] = useState([]); // Manage expanded rows
+  const [timezone, setTimezone] = useState('America/New_York');
+  const [expandedRows, setExpandedRows] = useState([]);
 
   useEffect(() => {
     const parkId = parkIdMapping[selectedPark];
     if (parkId) {
-      setTimezone(parkTimezoneMapping[selectedPark] || 'America/New_York'); // Set timezone based on park
+      setTimezone(parkTimezoneMapping[selectedPark] || 'America/New_York');
       fetchAndDisplayData(parkId);
     }
   }, [selectedPark]);
 
   const fetchAndDisplayData = async (parkId) => {
     setIsLoading(true);
-
     try {
       const response = await fetch(`${apiUrl}?parkId=${parkId}`);
       if (!response.ok) {
@@ -47,16 +46,13 @@ function WaitTimesShows({ selectedPark }) {
       const filteredData = (data.liveData || [])
         .filter((item) => item.entityType === "SHOW" && !/(Meet)/i.test(item.name))
         .map((item) => {
-          // Filter showtimes to include only those later in the day
           const currentTime = new Date();
           const futureShowtimes = (item.showtimes || []).filter(showtime =>
             new Date(showtime.startTime) > currentTime
           );
-
-          // Return item with updated showtimes if future showtimes exist
           return futureShowtimes.length > 0 ? { ...item, showtimes: futureShowtimes } : null;
         })
-        .filter(item => item !== null); // Remove shows with no future showtimes
+        .filter(item => item !== null);
 
       setData(filteredData);
     } catch (error) {
@@ -96,25 +92,29 @@ function WaitTimesShows({ selectedPark }) {
     );
   };
 
-  const DropdownButton = ({ itemId, isExpanded }) => (
-    <button
-      className={styles.dropdownButton}
-      onClick={() => toggleRowExpansion(itemId)}
-    >
-      {isExpanded ? (
-        <div className={styles.waitDropdown}>
-          <i className="fa-solid fa-caret-up"></i>
-          <span className={styles.waitDropdownText}>Hide Times</span>
-        </div>
-      ) : (
-        <div className={styles.waitDropdown}>
-          <i className="fa-solid fa-caret-down"></i>
-          <span className={styles.waitDropdownText}>View More Times</span>
-        </div>
-      )}
-    </button>
+  const DropdownButton = ({ itemId, isExpanded, toggleRowExpansion }) => (
+    <>
+      <button
+        className={styles.dropdownButton}
+        onClick={() => toggleRowExpansion(itemId)}
+      >
+        {isExpanded ? (
+          <div className={styles.waitDropdown}>
+            <i className="fa-solid fa-caret-up"></i>
+            <span className={styles.waitDropdownText}>Hide Times</span>
+          </div>
+        ) : (
+          <div className={styles.waitDropdown}>
+            <i className="fa-solid fa-caret-down"></i>
+            <span className={styles.waitDropdownText}>View More Times</span>
+          </div>
+        )}
+      </button>
+      <div className={`${styles.dropdownContent} ${isExpanded ? styles.expanded : ''}`}>
+        {/* Additional content related to the dropdown can go here */}
+      </div>
+    </>
   );
-  
 
   return (
     <div className={styles.waitTimes}>
@@ -130,9 +130,7 @@ function WaitTimesShows({ selectedPark }) {
             <table className={styles.waitTable} id="dataTable">
               <thead>
                 <tr>
-                  <th className={`${styles.sortable} ${styles.attraction}`}>
-        
-                  </th>
+                  <th className={`${styles.sortable} ${styles.attraction}`}></th>
                   <th className={`${styles.sortable} ${styles.waitTime}`}>
                     Next Show
                   </th>
@@ -146,19 +144,19 @@ function WaitTimesShows({ selectedPark }) {
                 ) : (
                   sortedData.map((item) => (
                     <React.Fragment key={item.id}>
-                      <tr key={item.id}>
-                      <td className={styles.rideName}>
-                         <span>
-    {item.name}
-    {item.showtimes?.length > 1 && (
-      <DropdownButton itemId={item.id} isExpanded={expandedRows.includes(item.id)} />
-    )}
-  </span>
-</td>
-
-
-
-
+                      <tr>
+                        <td className={styles.rideName}>
+                          <span>
+                            {item.name}
+                            {item.showtimes?.length > 1 && (
+                              <DropdownButton
+                                itemId={item.id}
+                                isExpanded={expandedRows.includes(item.id)}
+                                toggleRowExpansion={toggleRowExpansion}
+                              />
+                            )}
+                          </span>
+                        </td>
                         <td className={styles.waitRow}>
                           {item.entityType === "SHOW" && item.showtimes?.length > 0 ? (
                             <>

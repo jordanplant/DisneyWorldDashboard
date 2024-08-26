@@ -120,10 +120,12 @@
   fill: #20cd06;
 }
 
-.sunset {
+.sunsetIMG {
+  color: #153677;
   fill: #153677;
 }
 .clearDay {
+  color: #e8ce08;
   fill: #e8ce08;
 }
 

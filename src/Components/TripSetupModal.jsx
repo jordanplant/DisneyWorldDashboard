@@ -1,42 +1,29 @@
 import React, { useState } from "react";
 import styles from "./TripSetupModal.module.css";
 
-const TripSetupModal = ({ onClose, onSave, onCityChange }) => {
-  // Initialize default dates for testing
-  const defaultStartDate = "2024-08-01";
-  const defaultEndDate = "2024-08-10";
+const today = new Date();
+const minDate = new Date(today);
+minDate.setMonth(minDate.getMonth() - 1);
+const formattedMinDate = minDate.toISOString().split("T")[0];
 
+const futureDate = new Date(today);
+futureDate.setDate(futureDate.getDate() + 14);
+const defaultEndDate = futureDate.toISOString().split('T')[0];
+const defaultStartDate = today.toISOString().split('T')[0]; // Default start date is today
+
+const parkToCityMap = {
+  "Walt Disney World": "Orlando",
+  "Disneyland California": "Anaheim",
+  "Disneyland Paris": "Paris",
+  "Tokyo Disneyland": "Tokyo",
+  "Shanghai Disneyland": "Shanghai",
+  "Hong Kong Disneyland": "Hong Kong",
+};
+
+const TripSetupModal = ({ onClose, onSave, onCityChange }) => {
   const [tripName, setTripName] = useState("");
   const [tripStartDate, setTripStartDate] = useState(defaultStartDate);
   const [tripEndDate, setTripEndDate] = useState(defaultEndDate);
-
-  
-
-  // Calculate the minimum date (one month before today's date)
-  const today = new Date();
-  const minDate = new Date(today.setMonth(today.getMonth() - 1))
-    .toISOString()
-    .split("T")[0];
-
-  // Map parks to cities
-  const parkToCityMap = {
-    "Walt Disney World": "Orlando",
-    "Disneyland California": "Anaheim",
-    "Disneyland Paris": "Paris",
-    "Tokyo Disneyland": "Tokyo",
-    "Shanghai Disneyland": "Shanghai",
-    "Hong Kong Disneyland": "Hong Kong",
-  };
-
-  const handleAddTrip = (newTrip) => {
-    setTrips([...trips, newTrip]);
-    setCurrentTrip(newTrip);
-    setSelectedCity(newTrip.city);
-    setSelectedPark(newTrip.park); // Ensure this line sets the selected park
-    setIsModalOpen(false);
-    setJustLooking(false);
-  };
-  
 
   const handleSave = () => {
     const city = parkToCityMap[tripName] || "Unknown City";
@@ -47,22 +34,20 @@ const TripSetupModal = ({ onClose, onSave, onCityChange }) => {
       startDate: tripStartDate,
       endDate: tripEndDate,
       city,
-      park, // Include the park in the new trip object
+      park,
     };
     onSave(newTrip);
-    onCityChange(city, park); // Pass both city and park
-    // Reset fields after saving
+    onCityChange(city, park);
     setTripName("");
     setTripStartDate(defaultStartDate);
     setTripEndDate(defaultEndDate);
   };
-  
 
   return (
     <div className={styles.modalOverlay} onClick={onClose}>
       <div className={styles.setupModal} onClick={(e) => e.stopPropagation()}>
         <div className={styles.modalTopSection}>
-        <h1 className={styles.textGradient}>Create new trip</h1>
+          <h1 className={styles.textGradient}>Create new trip</h1>
         </div>
         <form
           onSubmit={(e) => {
@@ -75,7 +60,7 @@ const TripSetupModal = ({ onClose, onSave, onCityChange }) => {
             name="location"
             id="location"
             className={styles.tripSelect}
-            value={tripName} // Ensure value is controlled
+            value={tripName}
             onChange={(e) => setTripName(e.target.value)}
             required
           >

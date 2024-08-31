@@ -8,6 +8,7 @@ import TripSetupModal from "./TripSetupModal";
 import Navbar from "./Navbar";
 import ParkSelect from "./ParkSelect";
 import WaitTimesShows from "./WaitTimesShows";
+import WaitTimesOpeningHours from './WaitTimesOpeningHours';
 
 function PageLayout() {
   const [user, setUser] = useState(null);
@@ -84,6 +85,10 @@ function PageLayout() {
 
           <div className="weather-bar card">
             <WeatherApp city={selectedCity} />
+          </div>
+          <div className="openingTimes-bar card">
+            <h2 className="text-gradient">Opening Hours</h2>
+            <WaitTimesOpeningHours selectedCity={selectedCity} />
           </div>
 
           <div className="snacks-bar card">

@@ -125,7 +125,8 @@ h1 {
   align-items: center;
   flex: 1;
 }
-.snacks-bar {
+
+.openingTimes-bar {
   grid-row: 3;
   grid-column: span 2;
   flex-direction: column;
@@ -133,15 +134,25 @@ h1 {
   align-items: center;
 }
 
-.waitTimes-bar {
+
+
+.snacks-bar {
   grid-row: 4;
+  grid-column: span 2;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.waitTimes-bar {
+  grid-row: 5;
   grid-column: span 2;
   flex-direction: column;
   justify-content: center;
   align-items: center;
 }
 .itinerary-bar {
-  grid-row: 5;
+  grid-row: 6;
   grid-column: span 2;
   flex-direction: column;
   justify-content: center;

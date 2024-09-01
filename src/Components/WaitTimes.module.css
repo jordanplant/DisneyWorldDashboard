@@ -60,6 +60,7 @@ p {
 
 .waitRow {
   text-align: center;
+  animation: slideIn 0.5s forwards;
 }
 
 .waitTimes {
@@ -80,6 +81,7 @@ th {
 
 .waitTime {
   width: 90px;
+  
 }
 
 td {
@@ -292,11 +294,11 @@ button:not(.active) .parkName {
   color: rgba(255, 255, 255, 0.95);
   background-color: #00000011;
   white-space: normal;
-  padding: 15px;
+  padding: 20px;
 
 }
 
-.dateButtonContainer p {
+.dateButtonContainer span {
 margin-top: .5em;
 margin-bottom: 0;
 }

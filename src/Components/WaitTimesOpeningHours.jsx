@@ -7,6 +7,8 @@ const locationParkMapping = {
     "47f90d2c-e191-4239-a466-5892ef59a88b", // Epcot
     "288747d1-8b4f-4a64-867e-ea7c9b27bad8", // Hollywood Studios
     "1c84a229-8862-4648-9c71-378ddd2c7693", // Animal Kingdom
+    "b070cbc5-feaa-4b87-a8c1-f94cca037a18", // Typhoon Lagoon
+    "ead53ea5-22e5-4095-9a83-8c29300d7c63", // Blizzard Beach
   ],
   "Paris": [
     "dae968d5-630d-4719-8b06-3d107e944401", // Disneyland Park Paris
@@ -16,10 +18,12 @@ const locationParkMapping = {
 };
 
 const parkNameMapping = {
-  "Disney's Hollywood Studios": "Hollywood Studios",
   "Magic Kingdom Park": "Magic Kingdom",
   "EPCOT": "Epcot",
+  "Disney's Hollywood Studios": "Hollywood Studios",
   "Disney's Animal Kingdom Theme Park": "Animal Kingdom",
+  "Disney's Typhoon Lagoon Water Park": "Typhoon Lagoon",
+  "Disney's Blizzard Beach Water Park": "Blizzard Beach",
 
   // Add any other variations you need
 };
@@ -109,15 +113,18 @@ function WaitTimesOpeningHours({ selectedCity }) {
             <div className={styles.ButtonContainer}>
               {nextDays.map(({ date, formattedDate, dayName }) => (
                 <div className={styles.dateButtonContainer}>
-                <button
-                  key={date}
-                  onClick={() => handleDateChange(date)}
-                  className={date === selectedDate ? styles.active : ""}
-                >
-                  {formattedDate}
-                </button>
-                <p className={date === selectedDate ? styles.active : ""}>{dayName}</p>
-                </div>
+  <button
+    key={date}
+    onClick={() => handleDateChange(date)}
+    className={date === selectedDate ? styles.active : ""}
+  >
+    {formattedDate}
+    <span className={date === selectedDate ? styles.active : ""}>
+      {dayName}
+    </span>
+  </button>
+</div>
+
               ))}
             </div>
             <div className={styles.TimesContainer}>

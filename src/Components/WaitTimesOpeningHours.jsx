@@ -106,15 +106,18 @@ function WaitTimesOpeningHours({ selectedCity }) {
         <>
           {/* Date selection navbar */}
           <div className={styles.openingHoursContainer}>
-            <div className={styles.dateButtonContainer}>
+            <div className={styles.ButtonContainer}>
               {nextDays.map(({ date, formattedDate, dayName }) => (
+                <div className={styles.dateButtonContainer}>
                 <button
                   key={date}
                   onClick={() => handleDateChange(date)}
                   className={date === selectedDate ? styles.active : ""}
                 >
-                  {formattedDate} <br /> {dayName}
+                  {formattedDate}
                 </button>
+                <p className={date === selectedDate ? styles.active : ""}>{dayName}</p>
+                </div>
               ))}
             </div>
             <div className={styles.TimesContainer}>
@@ -131,8 +134,8 @@ function WaitTimesOpeningHours({ selectedCity }) {
                       )
                       .map((entry) => (
                         <div key={entry.type}>
-                          <p>{entry.description}</p>
-                          <p>
+                          <p className={styles.entryDescription}>{entry.description}</p>
+                          <p className={styles.entryTime}>
                             {formatTime(entry.openingTime, parkSchedule.timezone)} -{" "}
                             {formatTime(entry.closingTime, parkSchedule.timezone)}
                           </p>
@@ -153,8 +156,8 @@ function WaitTimesOpeningHours({ selectedCity }) {
                         )
                         .map((entry) => (
                           <div key={entry.type}>
-                            <p>{entry.description}</p>
-                            <p>
+                            <p className={styles.entryDescription}>{entry.description}</p>
+                            <p className={styles.entryTime}>
                               {formatTime(entry.openingTime, parkSchedule.timezone)} -{" "}
                               {formatTime(entry.closingTime, parkSchedule.timezone)}
                             </p>
@@ -171,8 +174,8 @@ function WaitTimesOpeningHours({ selectedCity }) {
                       )
                       .map((entry) => (
                         <div key={entry.type}>
-                          <p>Park Hours</p>
-                          <p>
+                          <p className={styles.entryDescription}>Park Hours</p>
+                          <p className={styles.entryTime}>
                             {formatTime(entry.openingTime, parkSchedule.timezone)} -{" "}
                             {formatTime(entry.closingTime, parkSchedule.timezone)}
                           </p>
@@ -182,6 +185,27 @@ function WaitTimesOpeningHours({ selectedCity }) {
                       (entry) =>
                         entry.date === selectedDate && entry.type === "OPERATING"
                     ).length === 0 && <p>No data available for operating hours.</p>}
+                  </div>
+            {/* EXTENDED EVENING */}
+            <div>
+                    {parkSchedule.schedule
+                      .filter(
+                        (entry) =>
+                          entry.date === selectedDate &&
+                          entry.description === "Extended Evening"
+                      )
+                      .map((entry) => (
+                        <div key={entry.type}>
+                          <p className={styles.entryDescription}>
+                            {entry.description}
+                          </p>
+                          <p className={styles.entryTime}>
+                            {formatTime(entry.openingTime, parkSchedule.timezone)}{" "}
+                            -{" "}
+                            {formatTime(entry.closingTime, parkSchedule.timezone)}
+                          </p>
+                        </div>
+                      ))}
                   </div>
                   {/* TICKETED EVENT */}
                   <div>
@@ -193,8 +217,8 @@ function WaitTimesOpeningHours({ selectedCity }) {
                       )
                       .map((entry) => (
                         <div key={entry.type}>
-                          <p>{entry.description}</p>
-                          <p>
+                          <p className={styles.entryDescription}>{entry.description}</p>
+                          <p className={styles.entryTime}>
                             {formatTime(entry.openingTime, parkSchedule.timezone)} -{" "}
                             {formatTime(entry.closingTime, parkSchedule.timezone)}
                           </p>

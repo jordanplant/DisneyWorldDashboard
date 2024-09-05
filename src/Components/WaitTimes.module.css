@@ -266,9 +266,6 @@ button:not(.active) .parkName {
   }
 }
 
-.openingHoursContainer{
-
-}
 
 .dateButtonContainer{
   display: flex;
@@ -281,7 +278,7 @@ button:not(.active) .parkName {
 .ButtonContainer {
   display: flex;
   flex-direction: row;
-  overflow: clip;
+  overflow: none;
 }
 
 .dateButtonContainer{
@@ -295,6 +292,7 @@ button:not(.active) .parkName {
   background-color: #00000011;
   white-space: normal;
   padding: 20px;
+  overflow: auto;
 
 }
 
@@ -330,10 +328,18 @@ border-right: 1px solid #ffffff18;
   margin-top: 1em;
 }
 
+/* .parkOpeningHours{
+display: flex;
+flex-direction: column;
+justify-content: center;
+align-items: center;
+} */
+
+
 
 .gridParkName {
   text-align: center;
-  max-width: 150px; /* Adjust as needed */
+  max-width: 130px; /* Adjust as needed */
   word-break: break-word;
   overflow-wrap: break-word;
   margin: 0; /* Removes default margin */
@@ -346,16 +352,26 @@ border-right: 1px solid #ffffff18;
 }
 
 .entryDescription{
-  font-size: .9em;
+  font-size: .8em;
   margin: 0 auto;
-  color: rgba(255, 255, 255, 0.95);
+  color: rgba(255, 255, 255, 0.9);
+  max-width: 130px; /* Adjust as needed */
+  text-align: left;
+
 }
 
 .entryTime{
   font-weight: bolder;
   margin: 0 0 1em 0;
+  color: rgba(255, 255, 255);
 }
+.operatingClosed {
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
+}
 
 
 

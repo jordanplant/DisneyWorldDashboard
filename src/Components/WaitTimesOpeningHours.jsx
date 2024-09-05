@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import styles from "./WaitTimes.module.css";
+import Events from "./Events"
+
 
 const locationParkMapping = {
   "Orlando": [
@@ -27,6 +29,16 @@ const parkNameMapping = {
 
   // Add any other variations you need
 };
+
+const getEventName = (date) => {
+  if (Events.mnsshp.includes(date)) {
+    return "Mickey's Not-So-Scary Halloween Party";
+  } else if (Events.mvmp.includes(date)) {
+    return "Mickey's Very Merry Christmas Party";
+  }
+  return null; // No special event
+};
+
 
 function WaitTimesOpeningHours({ selectedCity }) {
   const [scheduleData, setScheduleData] = useState([]);
@@ -129,7 +141,7 @@ function WaitTimesOpeningHours({ selectedCity }) {
             </div>
             <div className={styles.TimesContainer}>
               {scheduleData.map((parkSchedule) => (
-                <div key={parkSchedule.id}>
+                <div className={styles.parkOpeningHours} key={parkSchedule.id}>
 <h3 className={styles.gridParkName}>{parkSchedule.name}</h3>                  
 {/* EARLY ENTRY */}
                   <div>
@@ -173,7 +185,7 @@ function WaitTimesOpeningHours({ selectedCity }) {
                     </div>
                   )}
                   {/* OPERATING HOURS */}
-                  <div>
+                  <div className={styles.operatingHours}>
                     {parkSchedule.schedule
                       .filter(
                         (entry) =>
@@ -191,7 +203,8 @@ function WaitTimesOpeningHours({ selectedCity }) {
                     {parkSchedule.schedule.filter(
                       (entry) =>
                         entry.date === selectedDate && entry.type === "OPERATING"
-                    ).length === 0 && <p>No data available for operating hours.</p>}
+                    ).length === 0 && <p className={`${styles.operatingClosed} ${styles.closed}`}
+                    >CLOSED</p>}
                   </div>
             {/* EXTENDED EVENING */}
             <div>
@@ -216,22 +229,28 @@ function WaitTimesOpeningHours({ selectedCity }) {
                   </div>
                   {/* TICKETED EVENT */}
                   <div>
-                    {parkSchedule.schedule
-                      .filter(
-                        (entry) =>
-                          entry.date === selectedDate &&
-                          entry.description === "Special Ticketed Event"
-                      )
-                      .map((entry) => (
-                        <div key={entry.type}>
-                          <p className={styles.entryDescription}>{entry.description}</p>
-                          <p className={styles.entryTime}>
-                            {formatTime(entry.openingTime, parkSchedule.timezone)} -{" "}
-                            {formatTime(entry.closingTime, parkSchedule.timezone)}
-                          </p>
-                        </div>
-                      ))}
-                  </div>
+  {parkSchedule.schedule
+    .filter(
+      (entry) =>
+        entry.date === selectedDate &&
+        entry.description === "Special Ticketed Event"
+    )
+    .map((entry) => {
+      const eventName = getEventName(entry.date);
+      return (
+        <div key={entry.type}>
+          <p className={styles.entryDescription}>
+            {eventName || entry.description}
+          </p>
+          <p className={styles.entryTime}>
+            {formatTime(entry.openingTime, parkSchedule.timezone)} -{" "}
+            {formatTime(entry.closingTime, parkSchedule.timezone)}
+          </p>
+        </div>
+      );
+    })}
+</div>
+
                 </div>
               ))}
             </div>

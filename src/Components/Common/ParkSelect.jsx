@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
-import styles from "./WaitTimes.module.css";
+import styles from "./ParkSelect.module.css";
 import ParkIcons from "./ParkIcons";
+
 
 const parkIdMapping = {
   "Walt Disney World": {

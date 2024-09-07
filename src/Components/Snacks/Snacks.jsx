@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styles from "./SnacksList.module.css";
-import ButtonContainer from "./ButtonContainer";
-import Rating from "./Rating"; // Import the Rating component
+import ButtonContainer from "../Common/ButtonContainer";
+import Rating from "./SnackRating"; // Import the Rating component
 
 const Snacks = ({
   snacks,

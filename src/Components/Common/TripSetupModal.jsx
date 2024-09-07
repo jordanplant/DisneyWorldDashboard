@@ -11,6 +11,7 @@ futureDate.setDate(futureDate.getDate() + 14);
 const defaultEndDate = futureDate.toISOString().split('T')[0];
 const defaultStartDate = today.toISOString().split('T')[0]; // Default start date is today
 
+
 const parkToCityMap = {
   "Walt Disney World": "Orlando",
   "Disneyland California": "Anaheim",
@@ -24,6 +25,17 @@ const TripSetupModal = ({ onClose, onSave, onCityChange }) => {
   const [tripName, setTripName] = useState("");
   const [tripStartDate, setTripStartDate] = useState(defaultStartDate);
   const [tripEndDate, setTripEndDate] = useState(defaultEndDate);
+  const [currentPage, setCurrentPage] = useState(1)
+
+  const goToNextPage = () => {
+    setCurrentPage((prevPage) => prevPage + 1); // Move to the next page
+  };
+  
+  const goToPreviousPage = () => {
+    setCurrentPage((prevPage) => prevPage - 1); // Move to the previous page
+  };
+  
+
 
   const handleSave = () => {
     const city = parkToCityMap[tripName] || "Unknown City";
@@ -55,6 +67,9 @@ const TripSetupModal = ({ onClose, onSave, onCityChange }) => {
             handleSave();
           }}
         >
+{currentPage === 1 && (
+  <>
+
           <label htmlFor="location">Where are you going?</label>
           <select
             name="location"
@@ -107,9 +122,13 @@ const TripSetupModal = ({ onClose, onSave, onCityChange }) => {
             required
           />
           <div className={styles.submitButtons}>
-            <button type="submit" className={styles.saveButton}>
-              Save
-            </button>
+            {/* <button type="button" onClick={goToNextPage} className={styles.saveButton}>
+              Next
+            </button> */}
+
+<button type="submit" className={styles.saveButton}>
+Save
+</button>
             <button
               type="button"
               onClick={onClose}
@@ -118,6 +137,33 @@ const TripSetupModal = ({ onClose, onSave, onCityChange }) => {
               Cancel
             </button>
           </div>
+</>
+)}
+
+{/* The page is ready for extra pages if needed */}
+         {/* {currentPage === 2 && (
+            <>
+
+<div className={styles.submitButtons}>
+<button type="submit" className={styles.saveButton}>
+Save
+</button>
+            <button
+              type="button"
+              onClick={onClose}
+              className={styles.cancelButton}
+            >
+              Cancel
+            </button>
+          </div>
+            
+            
+            
+            </>)} */}
+
+
+
+
         </form>
       </div>
     </div>
@@ -125,3 +171,5 @@ const TripSetupModal = ({ onClose, onSave, onCityChange }) => {
 };
 
 export default TripSetupModal;
+
+

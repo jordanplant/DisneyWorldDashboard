@@ -1,11 +1,12 @@
 // import { useState } from "react";
 import "./App.css";
-import PageLayout from "./Components/PageLayout";
+import Home from "./Pages/Home";
+
 
 function App() {
   return (
     <>
-      <PageLayout />
+      <Home />
     </>
   );
 }

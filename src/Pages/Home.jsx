@@ -1,16 +1,16 @@
 import React, { useState } from 'react';
-import "./PageLayout.css";
-import Countdown from "./Countdown";
-import WeatherApp from "./WeatherApp";
-import SnacksList from "./SnacksList";
-import WaitTimesAttractions from "./WaitTimesAttractions";
-import TripSetupModal from "./TripSetupModal";
-import Navbar from "./Navbar";
-import ParkSelect from "./ParkSelect";
-import WaitTimesShows from "./WaitTimesShows";
-import WaitTimesOpeningHours from './WaitTimesOpeningHours';
+import "./Home.css";
+import Countdown from "../Components/Countdown/Countdown";
+import WeatherApp from "../Components/Weather/WeatherApp";
+import SnacksList from "../Components/Snacks/SnacksList";
+import WaitTimesAttractions from "../Components/WaitTimes/WaitTimesAttractions";
+import TripSetupModal from "../Components/Common/TripSetupModal";
+import Navbar from "../Components/Navbar/Navbar";
+import ParkSelect from "../Components/Common/ParkSelect";
+import WaitTimesShows from "../Components/WaitTimes/WaitTimesShows";
+import WaitTimesOpeningHours from '../Components/WaitTimes/WaitTimesOpeningHours';
 
-function PageLayout() {
+function Home() {
   const [user, setUser] = useState(null);
   const [input, setInput] = useState("");
   const [snacks, setSnacks] = useState([]);
@@ -140,4 +140,4 @@ function PageLayout() {
   );
 }
 
-export default PageLayout;
+export default Home;

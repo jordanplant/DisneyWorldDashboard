@@ -272,54 +272,75 @@ border-right: 1px solid #ffffff18;
 
 .TimesContainer {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); /* Adjust sizes as needed */
-  gap: 1rem; /* Gap between grid items */
-  justify-items: center;
+  /* grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); */
+  gap: 0.2rem; /* Gap between grid items */
+  /* justify-items: center; */
   margin-top: 1em;
+  
 }
 
-/* .parkOpeningHours{
+.themeParkOpeningHours{
+ border-bottom: 1px solid #ffffff18;
+
+}
+
+
+.parkDetails{
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  color: rgba(255, 255, 255, 0.8);
+    padding: 5px 5px;
+  }
+
+
+.parkName {
+  margin: 0; 
+  line-height: 1.2;
+  display: flex;
+  align-items: center;
+  /* height: 3em; */
+}
+
+.ParkAndOperating {
 display: flex;
 flex-direction: column;
 justify-content: center;
-align-items: center;
-} */
-
-
-
-.gridParkName {
-  text-align: center;
-  max-width: 130px; /* Adjust as needed */
-  word-break: break-word;
-  overflow-wrap: break-word;
-  margin: 0; /* Removes default margin */
-  line-height: 1.2; /* Adjust line height for better spacing */
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  height: 3em;
+margin-left: .5em;
 }
 
 .entryDescription{
   font-size: .8em;
   margin: 0 auto;
   color: rgba(255, 255, 255, 0.9);
-  max-width: 130px; /* Adjust as needed */
   text-align: left;
 
 }
 
-.entryTime{
-  font-weight: bolder;
-  margin: 0 0 1em 0;
+.operatingEntryTime{
+  font-weight: bold;
+  margin: .2em 0 0em 0;
   color: rgba(255, 255, 255);
 }
+
+.entryTime{
+  font-weight: bold;
+  margin: 0 0 0.3em 0;
+  color: rgba(255, 255, 255);
+}
+
+.expandedHours {
+  margin-left: 4em;
+}
+
+
 .operatingClosed {
-  margin: 0 auto;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  font-weight: bold;
+  margin: .2em 0 0em 0;
+  color: rgba(255, 255, 255);
+
 
 }
+
 

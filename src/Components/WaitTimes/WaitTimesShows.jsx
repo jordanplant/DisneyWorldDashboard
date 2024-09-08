@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';  // <-- Ensure React is imported here
+import React, { useState, useEffect, useMemo } from 'react'; 
 import styles from "./WaitTimes.module.css";
 
 const apiUrl = "/api/waitTimesV2";

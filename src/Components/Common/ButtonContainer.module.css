@@ -8,7 +8,8 @@
 
 .buttonEdit,
 .buttonDelete,
-.buttonOption {
+.buttonOption,
+.expandButton {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -20,7 +21,7 @@
   transition: transform 0.3s ease, opacity 0.3s ease; /* Adding transition for smooth animation */
 }
 
-.buttonOption {
+.buttonOption, .expandButton {
   color: #393939;
   background-color: hsla(120, 40%, 90%, 0.9);
   margin-right: auto;
@@ -29,7 +30,10 @@
 
 }
 
-.buttonOption:active {
+
+
+
+.buttonOption:active,.expandButton:active {
   background-color: hsla(0, 0%, 22%, 0.765);
   color: #daefda;
 }

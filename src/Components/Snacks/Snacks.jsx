@@ -143,13 +143,24 @@ const Snacks = ({
               </div>
             </div>
             {!snack.isRating && (
-              <div className={styles.SnackButtonContainer}>
-                <ButtonContainer
-                  snack={snack}
-                  handleComplete={handleComplete}
-                  handleEdit={handleEdit}
-                  handleDelete={() => handleDeleteWithLoading(snack.id)}
-                />
+             <div className={styles.SnackButtonContainer}>
+              <ButtonContainer
+              buttons={[
+                {
+                  type: 'Edit',
+                  onClick: () => handleEdit(snack),
+                  disabled: !snack || snack.completed,
+                  icon: 'far fa-pen-to-square fa-xs'
+                 },
+                 {
+                  type: 'Delete',
+                  onClick: () => handleDeleteWithLoading(snack.id),
+                  disabled: false,
+                  icon: 'fas fa-trash fa-xs'
+                }
+                 ]}
+                 />
+                 
               </div>
             )}
           </li>

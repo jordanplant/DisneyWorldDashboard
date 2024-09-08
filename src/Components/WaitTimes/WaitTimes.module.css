@@ -71,6 +71,13 @@ p {
   align-items: center;
 }
 
+.ParkOpeningTimes{
+  margin: 0px 5px;
+  display: flex;
+  flex-direction: column;
+
+}
+
 table {
   border-collapse: collapse;
 }
@@ -288,7 +295,7 @@ border-right: 1px solid #ffffff18;
 .parkDetails{
   display: flex;
   flex-direction: row;
-  justify-content: flex-start;
+  justify-content: space-between;
   align-items: center;
   color: rgba(255, 255, 255, 0.8);
     padding: 5px 5px;
@@ -303,12 +310,23 @@ border-right: 1px solid #ffffff18;
   /* height: 3em; */
 }
 
-.ParkAndOperating {
+.parkAndOperating {
 display: flex;
 flex-direction: column;
 justify-content: center;
-margin-left: .5em;
+
 }
+
+.iconAndPark{
+  display: flex;
+  flex-direction: row;
+}
+
+.parkAndHours{
+  margin-left: .5em;
+
+}
+
 
 .entryDescription{
   font-size: .8em;
@@ -329,6 +347,10 @@ margin-left: .5em;
   margin: 0 0 0.3em 0;
   color: rgba(255, 255, 255);
 }
+.operatingHours {
+  display: flex;
+}
+
 
 .expandedHours {
   margin-left: 4em;
@@ -343,4 +365,13 @@ margin-left: .5em;
 
 }
 
+
+.dropdownButtonContainer{
+  width: auto;
+  position: relative;
+  padding: 6px;
+  margin: 0px 12px;
+left: -5%;
+top:-10px;
+}
 

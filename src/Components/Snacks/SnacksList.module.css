@@ -154,10 +154,6 @@ padding: 0px;
   gap: 10px;
 }
 
-.SnackButtonContainer {
-  /* margin-left: auto; */
-  margin: 0px 10px;
-}
 
 
 
@@ -184,7 +180,7 @@ max-width: 30ch;
   width: auto;
   position: relative;
   padding: 6px;
- 
+  margin: 0px 10px;
 /* left: -8%; */
 }
 

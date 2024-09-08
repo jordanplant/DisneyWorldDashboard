@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import styles from "./WaitTimes.module.css";
 import Events from "../Services/Events";
 import ParkIcons from "../Common/ParkIcons";
+import ButtonContainer from "../Common/ButtonContainer";
 
 // Mapping configurations
 const locationParkMapping = {
@@ -131,10 +132,22 @@ function WaitTimesOpeningHours({ selectedCity }) {
     }));
   };
 
+  const hasAdditionalTimes = (parkSchedule, selectedDate) => {
+    return parkSchedule.schedule.some(
+      entry =>
+        entry.date === selectedDate &&
+        (entry.description === "Early Entry" ||
+         entry.type === "EXTRA_HOURS" ||
+         entry.description === "Extended Evening" ||
+         entry.description === "Special Ticketed Event")
+    );
+  };
+
   // Generate next days for date buttons
   const nextDays = calculateNextDays();
 
   return (
+
     <div className={styles.ParkOpeningTimes}>
       {loadingSchedule ? (
         <p>Loading park information...</p>
@@ -159,11 +172,15 @@ function WaitTimesOpeningHours({ selectedCity }) {
             {scheduleData.map((parkSchedule) => {
               const ParkIcon = parkIconMapping[parkSchedule.name];
               const isExpanded = expandedParkIds[parkSchedule.id] || false;
+              const showExpandButton = hasAdditionalTimes(parkSchedule, selectedDate);
               return (
                 <div className={styles.themeParkOpeningHours} key={parkSchedule.id}>
                   <div className={styles.parkDetails}>
+
+                    <div className={styles.parkAndOperating}>
+                      <div className={styles.iconAndPark}>
                     {ParkIcon && <ParkIcon active={false} />}
-                    <div className={styles.ParkAndOperating}>
+                    <div className={styles.parkAndHours}>
                       <h3 className={styles.parkName}>{parkSchedule.name}</h3>
                       <div className={styles.operatingHours}>
                         {parkSchedule.schedule
@@ -184,13 +201,17 @@ function WaitTimesOpeningHours({ selectedCity }) {
                             entry.date === selectedDate && entry.type === "OPERATING"
                         ) && <p className={`${styles.operatingClosed}`}>Closed Today</p>}
                       </div>
+                      </div>
+                      </div>
                     </div>
-                    <button
-                      className={styles.expandButton}
-                      onClick={() => toggleExpanded(parkSchedule.id)}
-                    >
-                      {isExpanded ? "-" : "+"}
-                    </button>
+                    {showExpandButton && (
+  <div className={styles.dropdownButtonContainer}>
+    <ButtonContainer
+      onClick={() => toggleExpanded(parkSchedule.id)}
+      isExpanded={isExpanded}
+    />
+  </div>
+)}
                   </div>
 
                   {isExpanded && (

@@ -1,19 +1,14 @@
 import React, { useState, useEffect, useRef } from "react";
 import styles from "./ButtonContainer.module.css";
 
-const ButtonContainer = ({ snack, handleEdit, handleDelete }) => {
-  const [showEditButton, setShowEditButton] = useState(false);
-  const [showDeleteButton, setShowDeleteButton] = useState(false);
+const ButtonContainer = ({ buttons, defaultIcon, onClick, isExpanded }) => {
+  const [showButtons, setShowButtons] = useState(false);
   const containerRef = useRef(null);
 
   useEffect(() => {
     const handleClickOutside = (event) => {
-      if (
-        containerRef.current &&
-        !containerRef.current.contains(event.target)
-      ) {
-        setShowEditButton(false);
-        setShowDeleteButton(false);
+      if (containerRef.current && !containerRef.current.contains(event.target)) {
+        setShowButtons(false);
       }
     };
 
@@ -24,42 +19,40 @@ const ButtonContainer = ({ snack, handleEdit, handleDelete }) => {
     };
   }, []);
 
-  const handleMoreClick = () => {
-    setShowEditButton((prevState) => !prevState);
-    setShowDeleteButton((prevState) => !prevState);
+  const toggleButtons = () => {
+    if (buttons && buttons.length > 0) {
+      setShowButtons((prevState) => !prevState);
+    } else if (onClick) {
+      onClick();
+    }
   };
 
-  const handleEditClick = () => {
-    handleEdit(snack);
-  };
+  // If it's being used as a single button (expand/collapse)
+  if (!buttons || buttons.length === 0) {
+    return (
+      <button className={styles.expandButton} onClick={onClick}>
+        <i className={defaultIcon || (isExpanded ? "fa-solid fa-minus" : "fa-solid fa-plus")}></i>
+      </button>
+    );
+  }
 
-  const handleDeleteClick = () => {
-    handleDelete(snack.id);
-  };
-
+  // If it's being used as a multi-button container
   return (
     <div className={styles.buttonContainer} ref={containerRef}>
-      <button
-        className={`${styles.buttonEdit} ${
-          showEditButton ? styles.showEdit : ""
-        }`}
-        onClick={handleEditClick}
-        disabled={!snack || snack.completed}
-      >
-        <i className="far fa-pen-to-square fa-xs"></i>
-      </button>
-
-      <button
-        className={`${styles.buttonDelete} ${
-          showDeleteButton ? styles.showDelete : ""
-        }`}
-        onClick={handleDeleteClick}
-      >
-        <i className="fas fa-trash fa-xs"></i>
-      </button>
-
-      <button className={styles.buttonOption} onClick={handleMoreClick}>
-        <i className="fa-solid fa-ellipsis"></i>
+      {buttons.map((button, index) => (
+        <button
+          key={index}
+          className={`${styles[`button${button.type}`]} ${
+            showButtons ? styles[`show${button.type}`] : ""
+          }`}
+          onClick={button.onClick}
+          disabled={button.disabled}
+        >
+          <i className={button.icon}></i>
+        </button>
+      ))}
+      <button className={styles.buttonOption} onClick={toggleButtons}>
+        <i className={defaultIcon || "fa-solid fa-ellipsis"}></i>
       </button>
     </div>
   );

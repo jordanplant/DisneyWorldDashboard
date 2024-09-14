@@ -107,6 +107,14 @@ function WaitTimesAttractions({ selectedPark }) {
     }
   };
 
+  const isVirtualQueueActive = (boardingGroup) => {
+    return (
+      boardingGroup &&
+      (boardingGroup.allocationStatus === "OPEN" ||
+        boardingGroup.currentGroupEnd !== null)
+    );
+  };
+
   return (
     <div className={styles.waitTimes}>
       {/* Wait Times Table Section */}
@@ -160,18 +168,18 @@ function WaitTimesAttractions({ selectedPark }) {
                       </td>
                       <td className={styles.waitRow}>
                         {ride.status === "OPERATING" ? (
-                          ride.queue?.STANDBY?.waitTime !== null &&
-                          ride.queue?.STANDBY?.waitTime !== undefined ? (
+                          isVirtualQueueActive(ride.queue?.BOARDING_GROUP) ? (
+                            <div className={styles.virtualQueue}>
+                              Virtual Queue
+                            </div>
+                          ) : ride.queue?.STANDBY?.waitTime !== null &&
+                            ride.queue?.STANDBY?.waitTime !== undefined ? (
                             <React.Fragment>
                               <span className={styles.bold}>
                                 {ride.queue.STANDBY.waitTime}
                               </span>{" "}
                               mins
                             </React.Fragment>
-                          ) : ride.queue?.BOARDING_GROUP ? (
-                            <div className={styles.virtualQueue}>
-                              Virtual Queue
-                            </div>
                           ) : (
                             <span className={styles.open}>OPEN</span>
                           )

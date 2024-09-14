@@ -105,7 +105,7 @@ td {
 
 .fixedHeightTable {
   height: 400px;
-  width: 330px;
+  /* width: 330px; */
   overflow-y: auto;
 }
 

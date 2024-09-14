@@ -2,7 +2,6 @@ import React, { useEffect } from "react";
 import styles from "./ParkSelect.module.css";
 import Icons from "./Icons";
 
-
 const parkIdMapping = {
   "Walt Disney World": {
     MagicKingdom: "75ea578a-adc8-4116-a54d-dccb60765ef9",
@@ -28,7 +27,10 @@ const parkNames = {
 function ParkSelect({ selectedPark, onParkChange, activePark }) {
   useEffect(() => {
     // Check if activePark is valid for the current selectedPark, if not set to default park
-    if (!activePark || !Object.keys(parkIdMapping[selectedPark]).includes(activePark)) {
+    if (
+      !activePark ||
+      !Object.keys(parkIdMapping[selectedPark]).includes(activePark)
+    ) {
       const defaultPark = Object.keys(parkIdMapping[selectedPark])[0];
       onParkChange(defaultPark); // Notify the parent of the default park selection
     }
@@ -37,35 +39,45 @@ function ParkSelect({ selectedPark, onParkChange, activePark }) {
   return (
     <div className={styles.parkIcons}>
       {selectedPark && parkIdMapping[selectedPark] ? (
-        Object.entries(parkIdMapping[selectedPark]).map(([parkName, parkId]) => {
-          const ParkIcon = Icons[parkName];
-          const nameParts = parkNames[parkName] || [parkName];
+        Object.entries(parkIdMapping[selectedPark]).map(
+          ([parkName, parkId]) => {
+            const ParkIcon = Icons[parkName];
+            const nameParts = parkNames[parkName] || [parkName];
 
-          if (!ParkIcon) {
-            return null;
+            if (!ParkIcon) {
+              return null;
+            }
+
+            return (
+              <button
+                key={parkName}
+                className={`${styles.parkButton} ${
+                  activePark === parkName ? styles.active : ""
+                }`}
+                onClick={() => onParkChange(parkName)}
+              >
+                <ParkIcon
+                  className={`${styles.parkIcon} ${
+                    activePark === parkName ? styles.activeSvg : ""
+                  }`}
+                  active={activePark === parkName}
+                />
+                <p
+                  className={`${styles.parkName} ${
+                    activePark === parkName ? styles.fadeOut : ""
+                  }`}
+                >
+                  {nameParts.map((part, index) => (
+                    <React.Fragment key={index}>
+                      {part}
+                      {index < nameParts.length - 1 && <br />}
+                    </React.Fragment>
+                  ))}
+                </p>
+              </button>
+            );
           }
-
-          return (
-            <button
-              key={parkName}
-              className={`${styles.parkButton} ${activePark === parkName ? styles.active : ""}`}
-              onClick={() => onParkChange(parkName)}
-            >
-              <ParkIcon
-                className={`${styles.parkIcon} ${activePark === parkName ? styles.activeSvg : ""}`}
-                active={activePark === parkName}
-              />
-              <p className={`${styles.parkName} ${activePark === parkName ? styles.fadeOut : ""}`}>
-                {nameParts.map((part, index) => (
-                  <React.Fragment key={index}>
-                    {part}
-                    {index < nameParts.length - 1 && <br />}
-                  </React.Fragment>
-                ))}
-              </p>
-            </button>
-          );
-        })
+        )
       ) : (
         <p>No park selected or invalid park selection.</p>
       )}

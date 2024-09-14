@@ -39,13 +39,13 @@ const parkIconMapping = {
   "Disneyland Park": ParkIcons.DisneylandParkParis,
   "Walt Disney Studios Park": ParkIcons.WaltDisneyStudiosParis,
   "Typhoon Lagoon Water Park": ParkIcons.TypoonLagoon,
-  "Blizzard Beach Water Park": ParkIcons.BlizzardBeach
-
+  "Blizzard Beach Water Park": ParkIcons.BlizzardBeach,
 };
 
 // Get event name based on date
 const getEventName = (date) => {
-  if (Events.mnsshp.includes(date)) return "Mickey's Not-So-Scary Halloween Party";
+  if (Events.mnsshp.includes(date))
+    return "Mickey's Not-So-Scary Halloween Party";
   if (Events.mvmp.includes(date)) return "Mickey's Very Merry Christmas Party";
   return null; // No special event
 };
@@ -54,7 +54,9 @@ const getEventName = (date) => {
 function WaitTimesOpeningHours({ selectedCity }) {
   const [scheduleData, setScheduleData] = useState([]);
   const [loadingSchedule, setLoadingSchedule] = useState(true);
-  const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split("T")[0]);
+  const [selectedDate, setSelectedDate] = useState(
+    new Date().toISOString().split("T")[0]
+  );
   const [expandedParkIds, setExpandedParkIds] = useState({});
 
   // Fetch and display opening hours when selectedCity changes
@@ -74,15 +76,17 @@ function WaitTimesOpeningHours({ selectedCity }) {
 
     try {
       const fetchPromises = parkIds.map((parkId) =>
-        fetch(`https://api.themeparks.wiki/v1/entity/${parkId}/schedule`).then((response) => response.json())
+        fetch(`https://api.themeparks.wiki/v1/entity/${parkId}/schedule`).then(
+          (response) => response.json()
+        )
       );
       const data = await Promise.all(fetchPromises);
 
       // Rename park names
-      const renamedData = data.map(parkSchedule => ({
+      const renamedData = data.map((parkSchedule) => ({
         ...parkSchedule,
-        name: parkNameMapping[parkSchedule.name] || parkSchedule.name
-      })); 
+        name: parkNameMapping[parkSchedule.name] || parkSchedule.name,
+      }));
 
       setScheduleData(renamedData);
     } catch (error) {
@@ -100,8 +104,11 @@ function WaitTimesOpeningHours({ selectedCity }) {
       date.setDate(date.getDate() + i);
       nextDays.push({
         date: date.toISOString().split("T")[0],
-        formattedDate: date.toLocaleDateString("en-GB", { day: "2-digit", month: "short" }),
-        dayName: date.toLocaleDateString("en-GB", { weekday: "short" })
+        formattedDate: date.toLocaleDateString("en-GB", {
+          day: "2-digit",
+          month: "short",
+        }),
+        dayName: date.toLocaleDateString("en-GB", { weekday: "short" }),
       });
     }
     return nextDays;
@@ -126,20 +133,20 @@ function WaitTimesOpeningHours({ selectedCity }) {
 
   // Toggle expanded view for park details
   const toggleExpanded = (parkId) => {
-    setExpandedParkIds(prevState => ({
+    setExpandedParkIds((prevState) => ({
       ...prevState,
-      [parkId]: !prevState[parkId]
+      [parkId]: !prevState[parkId],
     }));
   };
 
   const hasAdditionalTimes = (parkSchedule, selectedDate) => {
     return parkSchedule.schedule.some(
-      entry =>
+      (entry) =>
         entry.date === selectedDate &&
         (entry.description === "Early Entry" ||
-         entry.type === "EXTRA_HOURS" ||
-         entry.description === "Extended Evening" ||
-         entry.description === "Special Ticketed Event")
+          entry.type === "EXTRA_HOURS" ||
+          entry.description === "Extended Evening" ||
+          entry.description === "Special Ticketed Event")
     );
   };
 
@@ -147,7 +154,6 @@ function WaitTimesOpeningHours({ selectedCity }) {
   const nextDays = calculateNextDays();
 
   return (
-
     <div className={styles.ParkOpeningTimes}>
       {loadingSchedule ? (
         <p>Loading park information...</p>
@@ -172,46 +178,66 @@ function WaitTimesOpeningHours({ selectedCity }) {
             {scheduleData.map((parkSchedule) => {
               const ParkIcon = parkIconMapping[parkSchedule.name];
               const isExpanded = expandedParkIds[parkSchedule.id] || false;
-              const showExpandButton = hasAdditionalTimes(parkSchedule, selectedDate);
+              const showExpandButton = hasAdditionalTimes(
+                parkSchedule,
+                selectedDate
+              );
               return (
-                <div className={styles.themeParkOpeningHours} key={parkSchedule.id}>
+                <div
+                  className={styles.themeParkOpeningHours}
+                  key={parkSchedule.id}
+                >
                   <div className={styles.parkDetails}>
-
                     <div className={styles.parkAndOperating}>
                       <div className={styles.iconAndPark}>
-                    {ParkIcon && <ParkIcon active={false} />}
-                    <div className={styles.parkAndHours}>
-                      <h3 className={styles.parkName}>{parkSchedule.name}</h3>
-                      <div className={styles.operatingHours}>
-                        {parkSchedule.schedule
-                          .filter(
-                            (entry) =>
-                              entry.date === selectedDate && entry.type === "OPERATING"
-                          )
-                          .map((entry) => (
-                            <div key={entry.type}>
-                              <p className={styles.operatingEntryTime}>
-                                {formatTime(entry.openingTime, parkSchedule.timezone)} -{" "}
-                                {formatTime(entry.closingTime, parkSchedule.timezone)}
+                        {ParkIcon && <ParkIcon active={false} />}
+                        <div className={styles.parkAndHours}>
+                          <h3 className={styles.parkName}>
+                            {parkSchedule.name}
+                          </h3>
+                          <div className={styles.operatingHours}>
+                            {parkSchedule.schedule
+                              .filter(
+                                (entry) =>
+                                  entry.date === selectedDate &&
+                                  entry.type === "OPERATING"
+                              )
+                              .map((entry) => (
+                                <div key={entry.type}>
+                                  <p className={styles.operatingEntryTime}>
+                                    {formatTime(
+                                      entry.openingTime,
+                                      parkSchedule.timezone
+                                    )}{" "}
+                                    -{" "}
+                                    {formatTime(
+                                      entry.closingTime,
+                                      parkSchedule.timezone
+                                    )}
+                                  </p>
+                                </div>
+                              ))}
+                            {!parkSchedule.schedule.some(
+                              (entry) =>
+                                entry.date === selectedDate &&
+                                entry.type === "OPERATING"
+                            ) && (
+                              <p className={`${styles.operatingClosed}`}>
+                                Closed Today
                               </p>
-                            </div>
-                          ))}
-                        {!parkSchedule.schedule.some(
-                          (entry) =>
-                            entry.date === selectedDate && entry.type === "OPERATING"
-                        ) && <p className={`${styles.operatingClosed}`}>Closed Today</p>}
-                      </div>
-                      </div>
+                            )}
+                          </div>
+                        </div>
                       </div>
                     </div>
                     {showExpandButton && (
-  <div className={styles.dropdownButtonContainer}>
-    <ButtonContainer
-      onClick={() => toggleExpanded(parkSchedule.id)}
-      isExpanded={isExpanded}
-    />
-  </div>
-)}
+                      <div className={styles.dropdownButtonContainer}>
+                        <ButtonContainer
+                          onClick={() => toggleExpanded(parkSchedule.id)}
+                          isExpanded={isExpanded}
+                        />
+                      </div>
+                    )}
                   </div>
 
                   {isExpanded && (
@@ -225,17 +251,27 @@ function WaitTimesOpeningHours({ selectedCity }) {
                         )
                         .map((entry) => (
                           <div key={entry.type}>
-                            <p className={styles.entryDescription}>{entry.description}</p>
+                            <p className={styles.entryDescription}>
+                              {entry.description}
+                            </p>
                             <p className={styles.entryTime}>
-                              {formatTime(entry.openingTime, parkSchedule.timezone)} -{" "}
-                              {formatTime(entry.closingTime, parkSchedule.timezone)}
+                              {formatTime(
+                                entry.openingTime,
+                                parkSchedule.timezone
+                              )}{" "}
+                              -{" "}
+                              {formatTime(
+                                entry.closingTime,
+                                parkSchedule.timezone
+                              )}
                             </p>
                           </div>
                         ))}
                       {/* EXTRA HOURS */}
                       {parkSchedule.schedule.some(
                         (entry) =>
-                          entry.date === selectedDate && entry.type === "EXTRA_HOURS"
+                          entry.date === selectedDate &&
+                          entry.type === "EXTRA_HOURS"
                       ) && (
                         <div>
                           {parkSchedule.schedule
@@ -246,10 +282,19 @@ function WaitTimesOpeningHours({ selectedCity }) {
                             )
                             .map((entry) => (
                               <div key={entry.type}>
-                                <p className={styles.entryDescription}>{entry.description}</p>
+                                <p className={styles.entryDescription}>
+                                  {entry.description}
+                                </p>
                                 <p className={styles.entryTime}>
-                                  {formatTime(entry.openingTime, parkSchedule.timezone)} -{" "}
-                                  {formatTime(entry.closingTime, parkSchedule.timezone)}
+                                  {formatTime(
+                                    entry.openingTime,
+                                    parkSchedule.timezone
+                                  )}{" "}
+                                  -{" "}
+                                  {formatTime(
+                                    entry.closingTime,
+                                    parkSchedule.timezone
+                                  )}
                                 </p>
                               </div>
                             ))}
@@ -269,9 +314,15 @@ function WaitTimesOpeningHours({ selectedCity }) {
                                 {entry.description}
                               </p>
                               <p className={styles.entryTime}>
-                                {formatTime(entry.openingTime, parkSchedule.timezone)}{" "}
+                                {formatTime(
+                                  entry.openingTime,
+                                  parkSchedule.timezone
+                                )}{" "}
                                 -{" "}
-                                {formatTime(entry.closingTime, parkSchedule.timezone)}
+                                {formatTime(
+                                  entry.closingTime,
+                                  parkSchedule.timezone
+                                )}
                               </p>
                             </div>
                           ))}
@@ -292,8 +343,15 @@ function WaitTimesOpeningHours({ selectedCity }) {
                                   {eventName || entry.description}
                                 </p>
                                 <p className={styles.entryTime}>
-                                  {formatTime(entry.openingTime, parkSchedule.timezone)} -{" "}
-                                  {formatTime(entry.closingTime, parkSchedule.timezone)}
+                                  {formatTime(
+                                    entry.openingTime,
+                                    parkSchedule.timezone
+                                  )}{" "}
+                                  -{" "}
+                                  {formatTime(
+                                    entry.closingTime,
+                                    parkSchedule.timezone
+                                  )}
                                 </p>
                               </div>
                             );

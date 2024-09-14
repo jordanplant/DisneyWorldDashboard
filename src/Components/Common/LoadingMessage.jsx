@@ -1,19 +1,18 @@
-import React from 'react'
+import React from "react";
 import styles from "./ParkSelect.module.css";
-import { MagicWandIcon } from './Icons';
+import { MagicWandIcon } from "./Icons";
 
 const LoadingMessage = () => {
   return (
     <>
-        <p className={styles.loadingMessage}>
-          <>
-          <MagicWandIcon
-          />
-          </>
-           Conjuring Magic...
-          </p>
+      <p className={styles.loadingMessage}>
+        <>
+          <MagicWandIcon />
+        </>
+        Conjuring Magic...
+      </p>
     </>
-  )
-}
+  );
+};
 
-export default LoadingMessage
+export default LoadingMessage;

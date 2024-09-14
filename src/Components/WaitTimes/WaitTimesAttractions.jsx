@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useMemo } from "react";
 import styles from "./WaitTimes.module.css";
-import { MagicWandIcon } from "../Common/Icons";
 import LoadingMessage from "../Common/LoadingMessage";
 
 const apiUrl = "/api/waitTimesV2";

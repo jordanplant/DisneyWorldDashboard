@@ -9,6 +9,7 @@ import Navbar from "../Components/Navbar/Navbar";
 import ParkSelect from "../Components/Common/ParkSelect";
 import WaitTimesShows from "../Components/WaitTimes/WaitTimesShows";
 import WaitTimesOpeningHours from '../Components/WaitTimes/WaitTimesOpeningHours';
+import WaitTimesNav from '../Components/WaitTimes/WaitTimesNav';
 
 function Home() {
   const [user, setUser] = useState(null);
@@ -22,6 +23,7 @@ function Home() {
   const [selectedCity, setSelectedCity] = useState("Orlando");
   const [selectedPark, setSelectedPark] = useState("Walt Disney World");
   const [activePark, setActivePark] = useState(null);
+  const [activeWaitTimeTab, setActiveWaitTimeTab] = useState('attractions');
 
   const handleAddTrip = (newTrip) => {
     setTrips([...trips, newTrip]);
@@ -40,6 +42,10 @@ function Home() {
 
   const handleParkChange = (parkName) => {
     setActivePark(parkName);
+  };
+
+  const handleWaitTimeTabChange = (tab) => {
+    setActiveWaitTimeTab(tab);
   };
 
   return (
@@ -108,12 +114,18 @@ function Home() {
             <ParkSelect
               selectedPark={selectedPark}
               onParkChange={handleParkChange}
-              activePark={activePark} // Add this line
+              activePark={activePark} 
             />
-            <WaitTimesAttractions selectedPark={activePark} />
-            <h2 className="text-gradient">Today's Shows</h2>
+        <WaitTimesNav activeTab={activeWaitTimeTab} onTabChange={handleWaitTimeTabChange} />
+        {activeWaitTimeTab === 'attractions' && (
+          <WaitTimesAttractions selectedPark={activePark} />
+        )}
+        {activeWaitTimeTab === 'shows' && (
+          <>
             <WaitTimesShows selectedPark={activePark} />
-          </div>
+          </>
+        )}
+      </div>
         </div>
         <div className="footer">
           <a

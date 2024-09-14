@@ -357,3 +357,23 @@ left: -5%;
 top:-10px;
 }
 
+.waitTimeCategories{
+  display: flex;
+  justify-content: space-around;
+  padding: 0;
+  margin: .5em 0;
+
+}
+
+.WaitTimeOption{
+  list-style: none;
+  padding: .5em 1em;
+
+}
+
+.WaitTimeOption.active {
+  /* Add styles for the active tab, e.g.: */
+  font-weight: bold;
+  border: 2px solid currentColor;
+  border-radius: 50px;
+}

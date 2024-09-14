@@ -82,7 +82,7 @@ function WaitTimesOpeningHours({ selectedCity }) {
       const renamedData = data.map(parkSchedule => ({
         ...parkSchedule,
         name: parkNameMapping[parkSchedule.name] || parkSchedule.name
-      }));
+      })); 
 
       setScheduleData(renamedData);
     } catch (error) {

@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react'; 
 import styles from "./WaitTimes.module.css";
+import LoadingMessage from '../Common/LoadingMessage';
 
 const apiUrl = "/api/waitTimesV2";
 const parkIdMapping = {
@@ -120,9 +121,7 @@ function WaitTimesShows({ selectedPark }) {
     <div className={styles.waitTimes}>
       <div className={styles.fixedHeightTable}>
         {isLoading ? (
-          <p className={styles.loadingMessage}>
-            <i className="fa-solid fa-wand-magic-sparkles fa-2xl"></i> Conjuring Magic...
-          </p>
+          <LoadingMessage/>
         ) : data.length === 0 ? (
           <p>No Shows scheduled for today</p>
         ) : (

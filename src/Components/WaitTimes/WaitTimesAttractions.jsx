@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useMemo } from "react";
 import styles from "./WaitTimes.module.css";
+import { MagicWandIcon } from "../Common/Icons";
+import LoadingMessage from "../Common/LoadingMessage";
 
 const apiUrl = "/api/waitTimesV2";
 const parkIdMapping = {
@@ -46,7 +48,7 @@ function WaitTimesAttractions({ selectedPark }) {
     } catch (error) {
       console.error("An error occurred:", error);
     } finally {
-      setIsLoading(false);
+      setIsLoading(false); // TURN OFF HERE TO TEST LOADING
     }
   };
 
@@ -93,9 +95,10 @@ function WaitTimesAttractions({ selectedPark }) {
       {/* Wait Times Table Section */}
       <div className={styles.fixedHeightTable}>
         {isLoading ? (
-          <p className={styles.loadingMessage}>
-            <i className="fa-solid fa-wand-magic-sparkles fa-2xl"></i> Conjuring Magic...
-          </p>
+          <LoadingMessage/>
+
+
+
         ) : attractionsData.length === 0 ? (
           <p>Magic needs to rest too. Try again later</p>
         ) : (

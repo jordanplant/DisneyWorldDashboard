@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import styles from "./WaitTimes.module.css";
 import Events from "../Services/Events";
-import ParkIcons from "../Common/ParkIcons";
+import ParkIcons from "../Common/Icons";
 import ButtonContainer from "../Common/ButtonContainer";
 
 // Mapping configurations

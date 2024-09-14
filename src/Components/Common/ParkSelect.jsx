@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import styles from "./ParkSelect.module.css";
-import ParkIcons from "./ParkIcons";
+import Icons from "./Icons";
 
 
 const parkIdMapping = {
@@ -38,7 +38,7 @@ function ParkSelect({ selectedPark, onParkChange, activePark }) {
     <div className={styles.parkIcons}>
       {selectedPark && parkIdMapping[selectedPark] ? (
         Object.entries(parkIdMapping[selectedPark]).map(([parkName, parkId]) => {
-          const ParkIcon = ParkIcons[parkName];
+          const ParkIcon = Icons[parkName];
           const nameParts = parkNames[parkName] || [parkName];
 
           if (!ParkIcon) {

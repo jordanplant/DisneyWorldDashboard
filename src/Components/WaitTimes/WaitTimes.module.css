@@ -114,16 +114,7 @@ td {
   overflow-y: auto;
 }
 
-.loadingMessage {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  padding: 20px;
-  font-size: 1.2em;
-  /* color: #555; */
-  animation: pulse 1.5s infinite;
-}
+
 
 .waitTable {
   width: 100%;
@@ -211,17 +202,7 @@ td {
   }
 }
 
-@keyframes pulse {
-  0% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.5;
-  }
-  100% {
-    opacity: 1;
-  }
-}
+
 
 
 .dateButtonContainer{
@@ -354,6 +335,7 @@ justify-content: center;
 
 .expandedHours {
   margin-left: 4em;
+ 
 }
 
 

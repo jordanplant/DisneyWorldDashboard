@@ -9,7 +9,7 @@
   }
   
   .parkIcon {
-    display: block;
+    display: bck;
     width: 50px;
     height: 50px;
     transition: transform 0.5s ease;
@@ -50,4 +50,58 @@
   
   .fadeOut {
     transition: opacity 0.5s ease, transform 0.5s ease;
+  }
+  .sparkleOne, .sparkleTwo, .circle {
+    transform-origin: center;
+    transform-box: fill-box;
+  }
+
+  .sparkleOne {
+    animation: sparklePulse 2s ease-in-out infinite;
+    fill: gold;
+    
+  }
+
+  .sparkleTwo {
+    animation: sparklePulse 2s ease-in-out infinite .2s;
+    fill: gold;
+  
+    
+  }
+
+  .circle {
+    animation: sparklePulse 2s ease-in-out infinite 0.5s;
+    fill: gold;
+  
+  }
+  @keyframes sparklePulse {
+    0%, 100% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.4);
+    }
+  }
+
+  .loadingMessage {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 20px;
+    font-size: 1.2em;
+    /* color: #555; */
+    animation: pulse 1.5s infinite;
+  }
+
+  @keyframes pulse {
+    0% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.5;
+    }
+    100% {
+      opacity: 1;
+    }
   }

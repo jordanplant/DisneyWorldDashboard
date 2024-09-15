@@ -42,13 +42,59 @@ const parkIconMapping = {
   "Blizzard Beach Water Park": ParkIcons.BlizzardBeach,
 };
 
-// Get event name based on date
-const getEventName = (date) => {
-  if (Events.mnsshp.includes(date))
-    return "Mickey's Not-So-Scary Halloween Party";
-  if (Events.mvmp.includes(date)) return "Mickey's Very Merry Christmas Party";
-  return null; // No special event
+const getEventDetails = (date, park) => {
+  const findEvent = (eventData) => {
+    if (eventData && eventData.dates && eventData.dates.includes(date) && eventData.park === park) {
+      return {
+        eventName: eventData.eventName,
+        park: eventData.park,
+      };
+    }
+    return null;
+  };
+
+  const events = [
+    {
+      dates: Events.mnsshp?.dates || [],
+      eventName: "Mickey's Not-So-Scary Halloween Party",
+      park: Events.mnsshp?.park,
+    },
+    {
+      dates: Events.mvmp?.dates || [],
+      eventName: "Mickey's Very Merry Christmas Party",
+      park: Events.mvmp?.park,
+    },
+    {
+      dates: Events.djn?.dates || [],
+      eventName: "Disney Jollywood Nights",
+      park: Events.djn?.park,
+    },
+    {
+      dates: Events.mkafterhours?.dates || [],
+      eventName: "Disney After Hours",
+      park: Events.mkafterhours?.park,
+    },
+    {
+      dates: Events.epcotafterhours?.dates || [],
+      eventName: "Disney After Hours",
+      park: Events.epcotafterhours?.park,
+    },
+    {
+      dates: Events.hsafterhours?.dates || [],
+      eventName: "Disney After Hours",
+      park: Events.hsafterhours?.park,
+    },
+  ];
+
+  for (const event of events) {
+    const details = findEvent(event);
+    if (details) return details;
+  }
+
+  return null;
 };
+
+
 
 // Component definition
 function WaitTimesOpeningHours({ selectedCity }) {
@@ -65,7 +111,6 @@ function WaitTimesOpeningHours({ selectedCity }) {
     if (parkIds) fetchAndDisplayOpeningHours(parkIds);
   }, [selectedCity]);
 
-  // Fetch park schedules from API
   const fetchAndDisplayOpeningHours = async (parkIds) => {
     setLoadingSchedule(true);
     if (!parkIds.length) {
@@ -82,12 +127,13 @@ function WaitTimesOpeningHours({ selectedCity }) {
       );
       const data = await Promise.all(fetchPromises);
 
-      // Rename park names
+      // Rename park names and log for verification
       const renamedData = data.map((parkSchedule) => ({
         ...parkSchedule,
         name: parkNameMapping[parkSchedule.name] || parkSchedule.name,
       }));
 
+      console.log("Renamed Park Data:", renamedData);
       setScheduleData(renamedData);
     } catch (error) {
       console.error("An error occurred:", error);
@@ -239,7 +285,7 @@ function WaitTimesOpeningHours({ selectedCity }) {
                       </div>
                     )}
                   </div>
-
+  
                   {isExpanded && (
                     <div className={styles.expandedHours}>
                       {/* EARLY ENTRY */}
@@ -336,22 +382,16 @@ function WaitTimesOpeningHours({ selectedCity }) {
                               entry.description === "Special Ticketed Event"
                           )
                           .map((entry) => {
-                            const eventName = getEventName(entry.date);
+                            const eventDetails = getEventDetails(entry.date, parkSchedule.name);
+                            const eventName = eventDetails?.eventName || entry.description;
+  
                             return (
                               <div key={entry.type}>
                                 <p className={styles.entryDescription}>
-                                  {eventName || entry.description}
+                                  {eventName}
                                 </p>
                                 <p className={styles.entryTime}>
-                                  {formatTime(
-                                    entry.openingTime,
-                                    parkSchedule.timezone
-                                  )}{" "}
-                                  -{" "}
-                                  {formatTime(
-                                    entry.closingTime,
-                                    parkSchedule.timezone
-                                  )}
+                                  {formatTime(entry.openingTime, parkSchedule.timezone)} - {formatTime(entry.closingTime, parkSchedule.timezone)}
                                 </p>
                               </div>
                             );
@@ -367,6 +407,6 @@ function WaitTimesOpeningHours({ selectedCity }) {
       )}
     </div>
   );
-}
+}  
 
 export default WaitTimesOpeningHours;

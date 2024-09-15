@@ -10,6 +10,7 @@ import ParkSelect from "../Components/Common/ParkSelect";
 import WaitTimesShows from "../Components/WaitTimes/WaitTimesShows";
 import WaitTimesOpeningHours from '../Components/WaitTimes/WaitTimesOpeningHours';
 import WaitTimesNav from '../Components/WaitTimes/WaitTimesNav';
+import WaitTimesCharacters from '../Components/WaitTimes/WaitTimesCharacters';
 
 function Home() {
   const [user, setUser] = useState(null);
@@ -123,6 +124,12 @@ function Home() {
         {activeWaitTimeTab === 'shows' && (
           <>
             <WaitTimesShows selectedPark={activePark} />
+          </>
+        )}
+        {activeWaitTimeTab === 'characters' && (
+          <>
+          <WaitTimesCharacters selectedPark={activePark}/>
+            {/* <WaitTimesShows selectedPark={activePark} /> */}
           </>
         )}
       </div>

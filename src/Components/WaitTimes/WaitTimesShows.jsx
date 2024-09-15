@@ -48,6 +48,7 @@ function WaitTimesShows({ selectedPark }) {
         .filter(
           (item) => item.entityType === "SHOW" && !/(Meet)/i.test(item.name)
         )
+        
         .map((item) => {
           const currentTime = new Date();
           const futureShowtimes = (item.showtimes || []).filter(
@@ -58,6 +59,7 @@ function WaitTimesShows({ selectedPark }) {
             : null;
         })
         .filter((item) => item !== null);
+        console.log("Filtered shows data:", filteredData);
 
       setData(filteredData);
     } catch (error) {

@@ -1,17 +1,32 @@
-import React, { useState } from "react";
-import styles from "./SnacksList.module.css";
-import ButtonContainer from "../Common/ButtonContainer";
-import Rating from "./SnackRating"; // Import the Rating component
+import React, { useState, useEffect } from 'react';
+import styles from './SnacksList.module.css';
+import ButtonContainer from '../Common/ButtonContainer';
+import Rating from './SnackRating';
 
 const Snacks = ({
-  snacks,
-  setSnacks,
   handleComplete,
   handleEdit,
   handleDelete,
   handleUndocomplete,
+  activeTab
 }) => {
+  const [snacks, setSnacks] = useState([]);
   const [loadingSnackId, setLoadingSnackId] = useState(null);
+
+  useEffect(() => {
+    const fetchSnacks = async () => {
+      try {
+        const response = await fetch('/snacks.json');
+        if (!response.ok) throw new Error('Failed to fetch snacks data.');
+        const data = await response.json();
+        setSnacks(data);
+      } catch (error) {
+        console.error('Error fetching snacks data:', error);
+      }
+    };
+
+    fetchSnacks();
+  }, []);
 
   const handleShowRating = (id) => {
     const updatedSnacks = snacks.map((snack) =>
@@ -29,27 +44,6 @@ const Snacks = ({
   ) => {
     setLoadingSnackId(id);
     try {
-      // Update JSON data with rating and mark as completed
-      const response = await fetch(`/api/updateSnack`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          id,
-          rating,
-          completed: true,
-          title,
-          price,
-          location,
-        }),
-      });
-
-      if (!response.ok) {
-        throw new Error("Failed to update snack rating on the server.");
-      }
-
-      // Complete the snack locally
       const updatedSnacks = snacks.map((snack) =>
         snack.id === id
           ? { ...snack, rating, completed: true, isRating: false }
@@ -57,7 +51,7 @@ const Snacks = ({
       );
       setSnacks(updatedSnacks);
     } catch (error) {
-      console.error("Failed to update snack rating:", error);
+      console.error('Failed to update snack rating:', error);
     } finally {
       setLoadingSnackId(null);
     }
@@ -75,47 +69,44 @@ const Snacks = ({
   };
 
   const handleUndocompleteWithLoading = async (id) => {
-    setLoadingSnackId(id); // Set loading state while uncompleting
-
+    setLoadingSnackId(id);
     try {
-      await handleUndocomplete(id); // Call handleUndocomplete
+      await handleUndocomplete(id);
     } catch (error) {
-      console.error("Failed to uncomplete snack:", error);
+      console.error('Failed to uncomplete snack:', error);
     } finally {
-      setLoadingSnackId(null); // Reset loading state after operation
+      setLoadingSnackId(null);
     }
   };
 
-  const renderSnacks = () => {
-    const completedSnacks = snacks.filter((snack) => snack.completed);
-    const nonCompletedSnacks = snacks.filter((snack) => !snack.completed);
-    return [...nonCompletedSnacks, ...completedSnacks];
-  };
+  const filteredSnacks = snacks.filter((snack) =>
+    activeTab === 'outstandingSnacks' ? !snack.completed : snack.completed
+  );
 
   return (
     <div>
       <ul className={styles.snacksList}>
-        {renderSnacks().map((snack) => (
+        {filteredSnacks.map((snack) => (
           <li
             key={snack.id}
             className={`${styles.snack} ${
-              snack.completed ? styles.completed : ""
+              snack.completed ? styles.completed : ''
             }`}
           >
             <div className={styles.leftContent}>
               <button
                 className={`${styles.buttonComplete} ${
-                  snack.completed ? styles.completedButton : ""
+                  snack.completed ? styles.completedButton : ''
                 }`}
                 onClick={() => {
                   snack.completed
-                    ? handleUndocompleteWithLoading(snack.id) // Call handleUndocompleteWithLoading instead of handleUndocomplete directly
+                    ? handleUndocompleteWithLoading(snack.id)
                     : handleShowRating(snack.id);
                 }}
-                disabled={loadingSnackId === snack.id} // Check if the snack is loading
+                disabled={loadingSnackId === snack.id}
               >
                 {loadingSnackId === snack.id ? (
-                  <i className="fa-solid fa-spinner fa-spin-pulse"></i> // Show spinner if loading
+                  <i className="fa-solid fa-spinner fa-spin-pulse"></i>
                 ) : (
                   <i className="far fa-check-circle fa-xs"></i>
                 )}
@@ -143,24 +134,23 @@ const Snacks = ({
               </div>
             </div>
             {!snack.isRating && (
-             <div className={styles.SnackButtonContainer}>
-              <ButtonContainer
-              buttons={[
-                {
-                  type: 'Edit',
-                  onClick: () => handleEdit(snack),
-                  disabled: !snack || snack.completed,
-                  icon: 'far fa-pen-to-square fa-xs'
-                 },
-                 {
-                  type: 'Delete',
-                  onClick: () => handleDeleteWithLoading(snack.id),
-                  disabled: false,
-                  icon: 'fas fa-trash fa-xs'
-                }
-                 ]}
-                 />
-                 
+              <div className={styles.SnackButtonContainer}>
+                <ButtonContainer
+                  buttons={[
+                    {
+                      type: 'Edit',
+                      onClick: () => handleEdit(snack),
+                      disabled: !snack || snack.completed,
+                      icon: 'far fa-pen-to-square fa-xs'
+                    },
+                    {
+                      type: 'Delete',
+                      onClick: () => handleDeleteWithLoading(snack.id),
+                      disabled: false,
+                      icon: 'fas fa-trash fa-xs'
+                    }
+                  ]}
+                />
               </div>
             )}
           </li>

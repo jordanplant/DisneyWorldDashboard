@@ -1,4 +1,3 @@
-
 .noSnacksMessage {
   margin: 0 auto;
   width: 60%;
@@ -12,11 +11,9 @@ button {
   all: unset;
 }
 
-
 .container {
   position: relative; /* Set the container to relative positioning */
 }
-
 
 .formBar {
   display: flex;
@@ -42,7 +39,7 @@ button {
   outline: none;
   background: #fff;
   color: #222222;
- 
+
   padding: 16px 0px 16px 16px;
   border-radius: 40px 0px 0px 40px;
 }
@@ -53,13 +50,11 @@ button {
   background: #ffffffcc;
   color: #222222;
   padding: 10px 16px;
-
-
 }
 .subInput:nth-child(1) {
   border-right: 1px solid hwb(0 13% 87% / 0.5);
   border-radius: 40px 0px 0px 40px;
-flex: 1;
+  flex: 1;
 }
 .subInput:nth-child(1):focus {
   background: hsla(0, 0%, 100%);
@@ -90,18 +85,13 @@ flex: 1;
   border-radius: 0px 40px 40px 00px;
 }
 .buttonAdd i {
-margin-top: 40%;
-margin-right: 30%;
-
-
+  margin-top: 40%;
+  margin-right: 30%;
 }
 
-
 .snacksList {
-padding: 0px;
-} 
-
-
+  padding: 0px;
+}
 
 .buttonComplete {
   display: flex;
@@ -114,7 +104,6 @@ padding: 0px;
   border-radius: 50%;
 }
 
-
 .buttonComplete {
   display: flex;
   /* position: absolute; */
@@ -123,7 +112,6 @@ padding: 0px;
 
   border: 3px solid #00fee5;
   /* transform: translateY(45%) translateX(-120%); */
-
 }
 .buttonComplete:active {
   background-color: #800080;
@@ -131,7 +119,7 @@ padding: 0px;
   border: 3px solid #800080;
 }
 
-.snackContainer{
+.snackContainer {
   display: flex;
   flex-direction: column;
   text-align: left;
@@ -154,41 +142,33 @@ padding: 0px;
   gap: 10px;
 }
 
-
-
-
-
-
-.snackTitle{
-max-width: 30ch;
+.snackTitle {
+  max-width: 30ch;
 }
 
-.snacksInfo
-  {
+.snacksInfo {
   font-size: 12px;
   max-width: 30ch;
   color: #cccccc;
   font-style: italic;
 }
 
-.snackPrice, .snackLocation {
-/* padding: 0px 5px; */
-
+.snackPrice,
+.snackLocation {
+  /* padding: 0px 5px; */
 }
 
-.SnackButtonContainer{
+.SnackButtonContainer {
   width: auto;
   position: relative;
   padding: 6px;
   margin: 0px 10px;
-/* left: -8%; */
+  /* left: -8%; */
 }
-
 
 .completed {
   text-decoration: line-through;
   color: #800080;
-
 }
 
 .completedButton {
@@ -196,16 +176,9 @@ max-width: 30ch;
   border: 3px solid #800080;
 }
 
-.completed .snacksInfo  {
+.completed .snacksInfo {
   color: #800080;
 }
-
-
-
-
-
-
-
 
 .loadingMessage {
   display: flex;
@@ -213,18 +186,39 @@ max-width: 30ch;
   align-items: center;
 }
 
-
-
 .loadingMessage i {
   padding: 5px;
 }
 
-
 .resultsList {
   position: absolute;
-width: 100%;
-left: 0;
+  width: 100%;
+  left: 0;
 
+  background: #ffffff;
+  display: flex;
+  flex-direction: column;
+  /* box-shadow: 0px 0px 8px #ddd; */
+  border-radius: 10px;
+  margin-top: 5px;
+  max-height: 300px;
+  overflow-y: scroll;
+  color: #000;
+  /* left: 0; */
+  z-index: 2;
+}
+
+.resultsList .loadingMessage {
+  padding: 00px 20px;
+  justify-content: flex-start;
+  color: #000;
+}
+
+.filterResultsList {
+  position: absolute;
+  top:9.5em;
+  width: 5em;
+right: 0;
   background: #ffffff;
   display: flex;
   flex-direction: column;
@@ -237,9 +231,16 @@ left: 0;
   /* position: absolute; */
   /* left: 0; */
   z-index: 2;
-
 }
 
+.filterResultsList li {
+  padding: 8px;
+  cursor: pointer;
+}
+
+.filterResultsList li:hover {
+  background-color: #f1f1f1;
+}
 
 .snacksContainer {
   /* margin-top: 10px; */
@@ -248,37 +249,26 @@ left: 0;
   overflow: scroll;
 }
 
-
-.resultsList .loadingMessage {  
-  padding: 00px 20px;
- justify-content: flex-start;
-  color: #000;}
-
 .searchResult {
-
   padding: 10px 20px;
   border-bottom: 1px solid #ffffff18;
-
 }
 
-.searchResult:hover{
+.searchResult:hover {
   background-color: #ececec;
 }
 
-.searchResult:active{
+.searchResult:active {
   background-color: #4f4f4f;
   color: #fff;
 }
-
 
 .resultItemTitle {
   font-size: 14px;
 }
 
-
-.resultRestaurantInfo
-  {
-    padding-left: 10px;
+.resultRestaurantInfo {
+  padding-left: 10px;
   font-size: 12px;
   color: #b0b0b0;
   /* font-style: italic; */
@@ -298,32 +288,29 @@ left: 0;
   display: block; /* Show when open class is applied */
 }
 
-
 .clearButton {
   display: flex;
   background-color: #fff;
   align-items: center;
-
 }
 
-.clearButton i{
+.clearButton i {
   padding: 5px;
   color: hsla(0, 0%, 0%, 0.5);
 }
 
-.clearButton i:hover{
+.clearButton i:hover {
   color: rgba(255, 0, 0, 0.5);
 }
 
-.filters{
+.filters {
   display: flex;
-  align-items: center;}
-
+  align-items: center;
+}
 
 .checkbox {
   display: flex;
   cursor: pointer;
-  
 }
 
 .checkbox {
@@ -331,31 +318,24 @@ left: 0;
 
   align-items: center;
   padding: 5px 5px;
-
 }
 .checkbox > * {
-padding: 5px;
-
+  padding: 5px;
 }
 
 .checkbox input {
-
   cursor: pointer;
   height: 25px;
   width: 25px;
   border: 0px;
 
-  accent-color: #2196F3;
-
+  accent-color: #2196f3;
 }
-
-
 
 .ratingContainer {
   display: flex;
   justify-content: flex-start;
 }
-
 
 .ratingContainer p {
   margin: 0;
@@ -370,28 +350,26 @@ padding: 5px;
   margin-right: 5em;
 }
 
-.ratingRight{
+.ratingRight {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
 }
 
-
 .stars {
-margin-top: .25em;
-color: #FFD43B;
-
+  margin-top: 0.25em;
+  color: #ffd43b;
 }
 
 .submitButton {
   border: 3px solid #ffd53d;
   font-weight: bold;
-  padding:.2em 1em;
+  padding: 0.2em 1em;
   border-radius: 20px;
-font-size: 14px;
-color: #fff;
-/* background-color: hsla(47, 100%, 62%, 0.8); */
+  font-size: 14px;
+  color: #fff;
+  /* background-color: hsla(47, 100%, 62%, 0.8); */
 }
 
 .submitButton:active {
@@ -400,12 +378,30 @@ color: #fff;
 }
 
 .skipButton {
-  margin-top: .25em;
-font-size: 12px;
-color: #daefda;
+  margin-top: 0.25em;
+  font-size: 12px;
+  color: #daefda;
 }
 
+.snacklistNav {
+  margin: 0.5em 0;
+}
 
+.snacklistCategories {
+  display: flex;
+  justify-content: center;
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
 
+.snackListOption {
+  padding: 10px 20px;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+}
 
-
+.snackListOption.active {
+  border-bottom: 2px solid #007bff;
+  font-weight: bold;
+}

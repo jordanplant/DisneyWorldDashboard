@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { v4 as uuidv4 } from "uuid";
 import Snacks from "./Snacks";
 import styles from "./SnacksList.module.css";
+import SnackListNav from "./SnackListNav";
 
 const apiUrl = "/api";
 
@@ -25,6 +26,7 @@ const SnacksList = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [searchTimeout, setSearchTimeout] = useState(null);
   const [loadingSnackId, setLoadingSnackId] = useState(null);
+  const [activeTab, setActiveTab] = useState("outstandingSnacks");
 
   const inputRef = useRef(null);
   const dropdownRef = useRef(null);
@@ -133,11 +135,12 @@ const SnacksList = () => {
 
   const fetchSnacks = async () => {
     try {
-      const response = await fetch(`${apiUrl}/getSnacks`);
+      const response = await fetch('/snacks.json');
       if (!response.ok) {
         throw new Error("Failed to fetch snacks");
       }
       const data = await response.json();
+      console.log("Fetched snacks data:", data); // Check the response data
       setSnacks(data);
     } catch (error) {
       console.error("Error fetching snacks:", error);
@@ -145,6 +148,7 @@ const SnacksList = () => {
       setListLoading(false);
     }
   };
+  
 
   useEffect(() => {
     fetchSnacks();
@@ -462,6 +466,16 @@ const SnacksList = () => {
     editMode ? styles.subInputEdit : ""
   }`;
 
+
+  const handleTabChange = (tab) => {
+    setActiveTab(tab);
+  };
+
+  const filteredSnacks = snacks.filter((snack) => 
+    activeTab === "outstandingSnacks" ? !snack.completed : snack.completed
+  );
+
+
   return (
     <>
       <div className={styles.container}>
@@ -549,14 +563,19 @@ const SnacksList = () => {
             ))}
           </div>
         </div>
+        <SnackListNav activeTab={activeTab} onTabChange={handleTabChange} />
         <div className={styles.snacksContainer}>
           {listLoading ? (
             <p className={styles.loadingMessage}>
               <i className="fa-solid fa-cookie-bite fa-2xl"></i> Loading
               snacks...
             </p>
-          ) : snacks.length === 0 ? (
-            noSnacksMessage
+          ) : filteredSnacks.length === 0 ? (
+            activeTab === "outstandingSnacks" ? noSnacksMessage : (
+              <p className={styles.noSnacksMessage}>
+                No completed snacks yet. Keep snacking! 🍪
+              </p>
+            )
           ) : (
             <Snacks
               snacks={snacks}
@@ -565,6 +584,7 @@ const SnacksList = () => {
               handleEdit={handleEdit}
               handleDelete={handleDelete}
               handleUndocomplete={handleUndocomplete}
+              activeTab={activeTab}
             />
           )}
         </div>

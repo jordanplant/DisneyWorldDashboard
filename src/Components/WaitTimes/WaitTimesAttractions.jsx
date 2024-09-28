@@ -185,7 +185,7 @@ function WaitTimesAttractions({ selectedPark }) {
                           )
                         ) : ride.status === "REFURBISHMENT" ? (
                           <span className={styles.refurbishment}>
-                            REFURBISHMENT
+                            REFURB
                           </span>
                         ) : ride.status === "DOWN" ? (
                           <span className={styles.down}>DOWN</span>

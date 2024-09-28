@@ -11,6 +11,7 @@ import WaitTimesShows from "../Components/WaitTimes/WaitTimesShows";
 import WaitTimesOpeningHours from '../Components/WaitTimes/WaitTimesOpeningHours';
 import WaitTimesNav from '../Components/WaitTimes/WaitTimesNav';
 import WaitTimesCharacters from '../Components/WaitTimes/WaitTimesCharacters';
+import SnackListNav from '../Components/Snacks/SnackListNav';
 
 function Home() {
   const [user, setUser] = useState(null);
@@ -25,6 +26,8 @@ function Home() {
   const [selectedPark, setSelectedPark] = useState("Walt Disney World");
   const [activePark, setActivePark] = useState(null);
   const [activeWaitTimeTab, setActiveWaitTimeTab] = useState('attractions');
+
+
 
   const handleAddTrip = (newTrip) => {
     setTrips([...trips, newTrip]);
@@ -100,13 +103,15 @@ function Home() {
 
           <div className="snacks-bar card">
             <h2 className="text-gradient">Snacks</h2>
-            <SnacksList
+          <SnacksList
               input={input}
               setInput={setInput}
               snacks={snacks}
               setSnacks={setSnacks}
               editSnack={editSnack}
               setEditSnack={setEditSnack}
+              selectedPark={selectedPark}
+              selectedCity={selectedCity}
             />
           </div>
 

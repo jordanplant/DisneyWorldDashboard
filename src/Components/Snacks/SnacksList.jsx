@@ -6,7 +6,7 @@ import SnackListNav from "./SnackListNav";
 
 const apiUrl = "/api";
 
-const SnacksList = () => {
+const SnacksList = ({ selectedPark, selectedCity }) => {
   // State variables
   const [title, setTitle] = useState("");
   const [price, setPrice] = useState("");
@@ -27,6 +27,9 @@ const SnacksList = () => {
   const [searchTimeout, setSearchTimeout] = useState(null);
   const [loadingSnackId, setLoadingSnackId] = useState(null);
   const [activeTab, setActiveTab] = useState("outstandingSnacks");
+  const [selectedParks, setSelectedParks] = useState([]); // Define the selectedParks state
+
+ 
 
   const inputRef = useRef(null);
   const dropdownRef = useRef(null);
@@ -39,6 +42,7 @@ const SnacksList = () => {
       }
     };
   }, [searchTimeout]);
+  
 
   useEffect(() => {
     if (title.trim() !== "") {
@@ -152,101 +156,63 @@ const SnacksList = () => {
 
   useEffect(() => {
     fetchSnacks();
-  }, []);
+  }, []);  
 
+  const resetFormFields = () => {
+    setTitle("");
+    setPrice("");
+    setLocation("");
+    setDescription("");
+    setPark("");
+    setLand("");
+  };
+  
   const onFormSubmit = async (event) => {
     event.preventDefault();
     setLoadingAddOrEdit(true);
-
+  
     if (editMode && editedSnack) {
       try {
         const response = await fetch(`${apiUrl}/updateSnack`, {
           method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            id: editedSnack.id,
-            title,
-            price,
-            location,
-            description,
-            park,
-            land, // Use the value of land state
-          }),
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ id: editedSnack.id, title, price, location, description, park, land }),
         });
-        if (!response.ok) {
-          throw new Error("Error updating snack: " + response.statusText);
-        }
+        if (!response.ok) throw new Error("Error updating snack");
+  
         const updatedSnack = await response.json();
-        setSnacks((prevSnacks) =>
-          prevSnacks.map((snack) =>
-            snack.id === updatedSnack.id
-              ? {
-                  ...snack,
-                  title: updatedSnack.title,
-                  price: updatedSnack.price,
-                  location: updatedSnack.location,
-                  description: updatedSnack.description,
-                  park: updatedSnack.restaurantLocation,
-                  land: updatedSnack.subLocation,
-                }
-              : snack
-          )
-        );
-
+        setSnacks(prevSnacks => prevSnacks.map(snack => snack.id === updatedSnack.id ? updatedSnack : snack));
+        
         setEditMode(false);
         setEditedSnack(null);
+        resetFormFields(); // Reset form
       } catch (error) {
         console.error("Failed to update snack:", error);
       } finally {
         setLoadingAddOrEdit(false);
-        setTitle(""); // Clear form fields once done
-        setPrice("");
-        setLocation("");
-        setDescription("");
-        setPark("");
-        setLand("");
         setDropdownOpen(false);
       }
     } else {
       try {
         const response = await fetch(`${apiUrl}/createSnack`, {
           method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            title,
-            price,
-            location,
-            description,
-            park,
-            land, // Use the value of land state
-          }),
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ title, price, location, description, park, land }),
         });
-        if (!response.ok) {
-          throw new Error("Error adding snack");
-        }
+        if (!response.ok) throw new Error("Error adding snack");
+  
         const newSnack = await response.json();
-        const updatedSnacks = [...snacks, newSnack];
-        setSnacks(updatedSnacks);
-        updateJsonBin(updatedSnacks);
+        setSnacks(prevSnacks => [...prevSnacks, newSnack]);
+        resetFormFields(); // Reset form after add
       } catch (error) {
         console.error("Failed to add snack:", error);
       } finally {
         setLoadingAddOrEdit(false);
-        setTitle(""); // Clear form fields once done
-        setPrice("");
-        setLocation("");
-        setDescription("");
-        setPark("");
-        setLand("");
         setFetchEnabled(true);
       }
     }
   };
-
+  
   const handleDelete = async (id) => {
     try {
       // Update the title of the snack to indicate deletion
@@ -475,6 +441,10 @@ const SnacksList = () => {
     activeTab === "outstandingSnacks" ? !snack.completed : snack.completed
   );
 
+  const handleParkSelectionChange = (selectedParks) => {
+    setSelectedParks(selectedParks); // Update the selected parks
+  };
+
 
   return (
     <>
@@ -563,7 +533,11 @@ const SnacksList = () => {
             ))}
           </div>
         </div>
-        <SnackListNav activeTab={activeTab} onTabChange={handleTabChange} />
+        <SnackListNav activeTab={activeTab} onTabChange={handleTabChange}
+                selectedPark={selectedPark}
+                selectedCity={selectedCity}
+                onParkChange={handleParkSelectionChange}
+        />
         <div className={styles.snacksContainer}>
           {listLoading ? (
             <p className={styles.loadingMessage}>
@@ -585,6 +559,7 @@ const SnacksList = () => {
               handleDelete={handleDelete}
               handleUndocomplete={handleUndocomplete}
               activeTab={activeTab}
+              selectedParks={selectedParks}
             />
           )}
         </div>

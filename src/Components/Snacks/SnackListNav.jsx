@@ -3,66 +3,86 @@ import styles from "./SnacksList.module.css";
 
 const SnackListNav = ({ activeTab, onTabChange, selectedPark, onParkChange }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [selectedParks, setSelectedParks] = useState([]);
+  const [isFilterActive, setIsFilterActive] = useState(false); // State for filter button active status
 
   const toggleDropdown = () => {
-    setIsDropdownOpen(prevState => !prevState);
+    setIsDropdownOpen(prevState => {
+      const newState = !prevState;
+      setIsFilterActive(newState); // Update filter active state based on dropdown state
+      return newState;
+    });
   };
 
-  const parkIdMapping = {
-    "Walt Disney World": {
-      MagicKingdom: "75ea578a-adc8-4116-a54d-dccb60765ef9",
-      Epcot: "47f90d2c-e191-4239-a466-5892ef59a88b",
-      HollywoodStudios: "288747d1-8b4f-4a64-867e-ea7c9b27bad8",
-      AnimalKingdom: "1c84a229-8862-4648-9c71-378ddd2c7693",
-    },
-    "Disneyland Paris": {
-      DisneylandParkParis: "dae968d5-630d-4719-8b06-3d107e944401",
-      WaltDisneyStudiosParis: "ca888437-ebb4-4d50-aed2-d227f7096968",
-    },
+  const parks = {
+    "Walt Disney World": [
+      "Magic Kingdom",
+      "EPCOT",
+      "Hollywood Studios",
+      "Animal Kingdom"
+    ],
+    "Disneyland Paris": [
+      "Disneyland Park",
+      "Walt Disney Studios"
+    ]
   };
 
-  const parks = parkIdMapping[selectedPark] || {};
+  const handleCheckboxChange = (parkName) => {
+    setSelectedParks((prevSelected) => {
+      if (prevSelected.includes(parkName)) {
+        // Remove parkName if it is already selected
+        return prevSelected.filter(park => park !== parkName);
+      } else {
+        // Add parkName to selectedParks
+        return [...prevSelected, parkName];
+      }
+    });
+  };
+
+  const handleTabClick = (tab) => {
+    onTabChange(tab);
+    // No need to close the filter dropdown
+  };
+
+  // Notify parent about the selected parks whenever they change
+  React.useEffect(() => {
+    onParkChange(selectedParks);
+  }, [selectedParks, onParkChange]);
 
   return (
     <nav className={styles.snacklistNav}>
       <ul className={styles.snacklistCategories}>
+        {["outstandingSnacks", "completedSnacks"].map((tab) => (
+          <li
+            key={tab}
+            className={`${styles.snackListOption} ${activeTab === tab ? styles.active : ""}`}
+            onClick={() => handleTabClick(tab)}
+          >
+            {tab === "outstandingSnacks" ? "Snacks" : "Completed"}
+          </li>
+        ))}
+        
         <li
-          className={`${styles.snackListOption} ${
-            activeTab === "outstandingSnacks" ? styles.active : ""
-          }`}
-          onClick={() => onTabChange("outstandingSnacks")}
-        >
-          Snacks
-        </li>
-
-        <li
-          className={`${styles.snackListOption} ${
-            activeTab === "completedSnacks" ? styles.active : ""
-          }`}
-          onClick={() => onTabChange("completedSnacks")}
-        >
-          Completed
-        </li>
-
-        <li
-          className={styles.snackListOption}
+          className={`${styles.snackListOption} ${isFilterActive ? styles.active : ""}`} // Keep active logic for filter button
           onClick={toggleDropdown}
         >
-          <i className="fa-solid fa-sliders"></i>
+          <i className={`fa-solid ${isFilterActive ? 'fa-times' : 'fa-sliders'}`}></i> {/* Change icon based on filter state */}
         </li>
 
         {isDropdownOpen && (
           <ul className={styles.filterResultsList}>
-            {Object.keys(parks).map(parkKey => (
-              <li
-                key={parks[parkKey]}
-                onClick={() => {
-                  onParkChange(parks[parkKey]);
-                  toggleDropdown();
-                }}
-                className={styles.filterOption}
-              >
-                {parkKey}
+            {parks[selectedPark]?.map(parkName => (
+              <li key={parkName}>
+                <label className={styles.filterOption}>
+                  <input
+                    id={parkName} 
+                    className={styles.parkFilterCheckbox}
+                    type="checkbox"
+                    checked={selectedParks.includes(parkName)}
+                    onChange={() => handleCheckboxChange(parkName)} // Keep this to handle checkbox state
+                  />
+                  {parkName}
+                </label>
               </li>
             ))}
           </ul>

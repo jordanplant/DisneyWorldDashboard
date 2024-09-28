@@ -104,8 +104,8 @@ function WaitTimesOpeningHours({ selectedCity }) {
     new Date().toISOString().split("T")[0]
   );
   const [expandedParkIds, setExpandedParkIds] = useState({});
+  const [error, setError] = useState(null);
 
-  // Fetch and display opening hours when selectedCity changes
   useEffect(() => {
     const parkIds = locationParkMapping[selectedCity];
     if (parkIds) fetchAndDisplayOpeningHours(parkIds);
@@ -113,6 +113,7 @@ function WaitTimesOpeningHours({ selectedCity }) {
 
   const fetchAndDisplayOpeningHours = async (parkIds) => {
     setLoadingSchedule(true);
+    setError(null);
     if (!parkIds.length) {
       console.log("No parks available for this location.");
       setLoadingSchedule(false);
@@ -120,11 +121,15 @@ function WaitTimesOpeningHours({ selectedCity }) {
     }
 
     try {
-      const fetchPromises = parkIds.map((parkId) =>
-        fetch(`https://api.themeparks.wiki/v1/entity/${parkId}/schedule`).then(
-          (response) => response.json()
-        )
-      );
+      const fetchPromises = parkIds.map(async (parkId) => {
+        const response = await fetch(`/api/OpeningTimes?parkId=${parkId}`);
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.error || `HTTP error! Status: ${response.status}`);
+        }
+        return response.json();
+      });
+
       const data = await Promise.all(fetchPromises);
 
       // Rename park names and log for verification
@@ -137,6 +142,7 @@ function WaitTimesOpeningHours({ selectedCity }) {
       setScheduleData(renamedData);
     } catch (error) {
       console.error("An error occurred:", error);
+      setError(error.message);
     } finally {
       setLoadingSchedule(false);
     }

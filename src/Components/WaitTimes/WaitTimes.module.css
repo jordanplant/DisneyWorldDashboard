@@ -80,7 +80,8 @@ p {
 }
 
 .ParkOpeningTimes {
-  margin: 0px 5px;
+  /* margin: 0px 5px; */
+  margin: auto 0;
   display: flex;
   flex-direction: column;
 }
@@ -215,7 +216,7 @@ td {
 
 .dateButtonContainer {
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   cursor: pointer;
   gap: 0px;
 }
@@ -236,8 +237,8 @@ td {
   color: rgba(255, 255, 255, 0.95);
   background-color: #00000011;
   white-space: normal;
-  padding: 20px;
-  overflow: auto;
+  padding: 15px;
+  overflow: hidden;
 }
 
 .dateButtonContainer span {
@@ -287,10 +288,9 @@ td {
 .parkName {
   margin: 0;
   line-height: 1.2;
-  display: flex;
-  align-items: center;
-  /* height: 3em; */
+  font-size: clamp(1.17rem, 4.5vw, 1.17rem); /* Sets min, preferred, and max font size */
 }
+
 
 .parkAndOperating {
   display: flex;

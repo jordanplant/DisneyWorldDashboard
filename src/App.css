@@ -12,6 +12,7 @@
 
 body {
   background: var(--gradient);
+  color: var(--light-color);
 }
 
 h2 {

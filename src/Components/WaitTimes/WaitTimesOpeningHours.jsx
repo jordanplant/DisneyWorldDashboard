@@ -23,7 +23,7 @@ const locationParkMapping = {
 
 const parkNameMapping = {
   "Magic Kingdom Park": "Magic Kingdom",
-  EPCOT: "Epcot",
+  "EPCOT": "Epcot",
   "Disney's Hollywood Studios": "Hollywood Studios",
   "Disney's Animal Kingdom Theme Park": "Animal Kingdom",
   "Disney's Typhoon Lagoon Water Park": "Typhoon Lagoon Water Park",
@@ -148,23 +148,35 @@ function WaitTimesOpeningHours({ selectedCity }) {
     }
   };
 
-  // Calculate next 5 days
-  const calculateNextDays = () => {
-    const nextDays = [];
-    for (let i = 0; i < 5; i++) {
-      const date = new Date();
-      date.setDate(date.getDate() + i);
-      nextDays.push({
-        date: date.toISOString().split("T")[0],
-        formattedDate: date.toLocaleDateString("en-GB", {
-          day: "2-digit",
-          month: "short",
-        }),
-        dayName: date.toLocaleDateString("en-GB", { weekday: "short" }),
-      });
-    }
-    return nextDays;
-  };
+// Calculate next 5 days
+const calculateNextDays = () => {
+  const nextDays = [];
+  for (let i = 0; i < 5; i++) {
+    const date = new Date();
+    date.setDate(date.getDate() + i);
+
+    // Format the date for display
+    const formattedDate = date.toLocaleDateString("en-GB", {
+      day: "2-digit",
+      month: "short",
+    });
+
+    // Ensure the month is always 3 characters long
+    const [day, month] = formattedDate.split(" ");
+    const modifiedMonth = month.slice(0, 3); // Get first 3 characters
+
+    nextDays.push({
+      date: date.toISOString().split("T")[0],
+      formattedDate: `${day} ${modifiedMonth}`, // Combine day and modified month
+      dayName: date.toLocaleDateString("en-GB", { weekday: "short" }),
+    });
+  }
+  return nextDays;
+};
+
+// Example usage
+console.log(calculateNextDays());
+
 
   const handleDateChange = (date) => setSelectedDate(date);
 

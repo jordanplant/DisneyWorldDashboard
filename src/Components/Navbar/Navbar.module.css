@@ -42,7 +42,7 @@
   padding: 10px;
 }
 
-.navbarLinks li i:hover {
+.navbarLinks .navSettings i:hover {
   animation: cogRotate 2s linear infinite;
 }
 

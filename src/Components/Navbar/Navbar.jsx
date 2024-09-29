@@ -54,8 +54,13 @@ const Navbar = ({ user, setUser }) => {
       }`}
     >
       <ul className={styles.navbarLinks}>
-        <li
-          className={styles.settings}
+        <li className={styles.navHome}>
+          <a href='/home'><i className={`fa-solid fa-house ${styles.icon}`}></i></a>
+        </li>
+        <li className={styles.navSnacks}>
+          <i className={`fa-solid fa-utensils ${styles.icon}`}></i>
+        </li>
+        <li className={styles.navSettings}
           onClick={() => toggleDropdown("settings")}
         >
           <i className={`fa-solid fa-gear ${styles.icon}`}></i>

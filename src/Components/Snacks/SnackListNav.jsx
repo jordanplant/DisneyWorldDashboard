@@ -1,53 +1,66 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styles from "./SnacksList.module.css";
+
 
 const SnackListNav = ({ activeTab, onTabChange, selectedPark, onParkChange }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [selectedParks, setSelectedParks] = useState([]);
-  const [isFilterActive, setIsFilterActive] = useState(false); // State for filter button active status
+  const [selectedParks, setSelectedParks] = useState([]); 
+  const [isFilterActive, setIsFilterActive] = useState(false); 
 
-  const toggleDropdown = () => {
-    setIsDropdownOpen(prevState => {
-      const newState = !prevState;
-      setIsFilterActive(newState); // Update filter active state based on dropdown state
-      return newState;
-    });
-  };
+
+  // currently - unselecting all parks will show you everything, including undefined park locations
 
   const parks = {
     "Walt Disney World": [
       "Magic Kingdom",
       "EPCOT",
       "Hollywood Studios",
-      "Animal Kingdom"
+      "Animal Kingdom",
+      "Disney Springs",
+      "Resorts",
     ],
     "Disneyland Paris": [
       "Disneyland Park",
-      "Walt Disney Studios"
+      "Walt Disney Studios",
+      "Disney Village"
     ]
+  };
+
+  useEffect(() => {
+    if (selectedPark) {
+      setSelectedParks(parks[selectedPark]);
+    }
+  }, [selectedPark]);
+
+  const toggleDropdown = () => {
+    setIsDropdownOpen(prevState => {
+      const newState = !prevState;
+      setIsFilterActive(newState); 
+      return newState;
+    });
   };
 
   const handleCheckboxChange = (parkName) => {
     setSelectedParks((prevSelected) => {
       if (prevSelected.includes(parkName)) {
-        // Remove parkName if it is already selected
-        return prevSelected.filter(park => park !== parkName);
+        return prevSelected.filter(park => park !== parkName); 
       } else {
-        // Add parkName to selectedParks
-        return [...prevSelected, parkName];
+        return [...prevSelected, parkName]; 
       }
     });
   };
 
   const handleTabClick = (tab) => {
-    onTabChange(tab);
-    // No need to close the filter dropdown
+    onTabChange(tab); 
   };
 
-  // Notify parent about the selected parks whenever they change
-  React.useEffect(() => {
-    onParkChange(selectedParks);
+  useEffect(() => {
+    onParkChange(selectedParks); 
   }, [selectedParks, onParkChange]);
+
+  const handleItemClick = (parkName) => {
+    handleCheckboxChange(parkName); // Trigger checkbox change when the list item is clicked
+  };
 
   return (
     <nav className={styles.snacklistNav}>
@@ -63,23 +76,27 @@ const SnackListNav = ({ activeTab, onTabChange, selectedPark, onParkChange }) =>
         ))}
         
         <li
-          className={`${styles.snackListOption} ${isFilterActive ? styles.active : ""}`} // Keep active logic for filter button
+          className={`${styles.snackListOption} ${isFilterActive ? styles.active : ""}`} 
           onClick={toggleDropdown}
         >
-          <i className={`fa-solid ${isFilterActive ? 'fa-times' : 'fa-sliders'}`}></i> {/* Change icon based on filter state */}
+          <i className={`fa-solid ${isFilterActive ? 'fa-times' : 'fa-sliders'}`}></i> 
         </li>
 
         {isDropdownOpen && (
           <ul className={styles.filterResultsList}>
             {parks[selectedPark]?.map(parkName => (
-              <li key={parkName}>
-                <label className={styles.filterOption}>
+              <li 
+                key={parkName} 
+                className={styles.filterOption} 
+                onClick={() => handleItemClick(parkName)} // Make the entire li clickable
+              >
+                <label>
                   <input
                     id={parkName} 
                     className={styles.parkFilterCheckbox}
                     type="checkbox"
-                    checked={selectedParks.includes(parkName)}
-                    onChange={() => handleCheckboxChange(parkName)} // Keep this to handle checkbox state
+                    checked={selectedParks.includes(parkName)} 
+                    onChange={() => handleCheckboxChange(parkName)} 
                   />
                   {parkName}
                 </label>

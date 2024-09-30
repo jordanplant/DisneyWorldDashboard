@@ -24,12 +24,14 @@ button {
 .formPrimaryInputs {
   display: flex;
   flex-direction: row;
+  width: 100%;
 }
 .formSecondaryInputs {
   display: flex;
   flex-direction: row;
   justify-content: center;
   margin-top: 5px;
+  width: 100%;
 }
 
 .taskInput {
@@ -41,7 +43,7 @@ button {
   color: #222222;
 
   padding: 16px 0px 16px 16px;
-  border-radius: 40px 0px 0px 40px;
+  border-radius: 15px;
 }
 .subInput {
   width: 70%;
@@ -53,14 +55,14 @@ button {
 }
 .subInput:nth-child(1) {
   border-right: 1px solid hwb(0 13% 87% / 0.5);
-  border-radius: 40px 0px 0px 40px;
+  border-radius: 15px 0px 0px 15px;
   flex: 1;
 }
 .subInput:nth-child(1):focus {
   background: hsla(0, 0%, 100%);
 }
 .subInput:nth-child(2) {
-  border-radius: 0px 40px 40px 00px;
+  border-radius: 0px 15px 15px 00px;
   flex: 4;
 }
 .subInput:nth-child(2):focus {
@@ -82,7 +84,7 @@ button {
   color: #fff;
   font-size: 16px;
   cursor: pointer;
-  border-radius: 0px 40px 40px 00px;
+  border-radius: 0px 15px 15px 00px;
 }
 .buttonAdd i {
   margin-top: 40%;
@@ -263,15 +265,29 @@ right: 0;
   color: #fff;
 }
 
+.searchManualAdd{
+border-bottom: 2px solid #4f4f4f;
+}
+
+.searchManualAdd p{
+  color: #000;
+  margin: 0 auto;
+}
+
 .resultItemTitle {
   font-size: 14px;
 }
 
-.resultRestaurantInfo {
+.resultItemPrice {
   padding-left: 10px;
   font-size: 12px;
   color: #b0b0b0;
-  /* font-style: italic; */
+}
+
+.resultRestaurantInfo {
+  padding-left: 5px;
+  font-size: 12px;
+  color: #b0b0b0;
 }
 
 .resultParkInfo {
@@ -423,4 +439,48 @@ padding: 0px;
 
 .parkFilterCheckbox{
   margin-right: .5em;
+}
+
+.popupOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.popup {
+  background-color: white;
+  padding: 20px;
+  border-radius: 5px;
+  width: 300px;
+}
+
+.popup h2 {
+  margin-top: 0;
+}
+
+.popup form {
+  display: flex;
+  flex-direction: column;
+}
+
+.popup input {
+  margin-bottom: 10px;
+  padding: 5px;
+}
+
+.popupButtons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+
+.popupButtons button {
+  padding: 5px 10px;
 }

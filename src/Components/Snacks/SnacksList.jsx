@@ -27,9 +27,9 @@ const SnacksList = ({ selectedPark, selectedCity }) => {
   const [searchTimeout, setSearchTimeout] = useState(null);
   const [loadingSnackId, setLoadingSnackId] = useState(null);
   const [activeTab, setActiveTab] = useState("outstandingSnacks");
-  const [selectedParks, setSelectedParks] = useState([]); // Define the selectedParks state
-
- 
+  const [selectedParks, setSelectedParks] = useState([]);
+  const [showManualAddPopup, setShowManualAddPopup] = useState(false);
+  
 
   const inputRef = useRef(null);
   const dropdownRef = useRef(null);
@@ -42,7 +42,6 @@ const SnacksList = ({ selectedPark, selectedCity }) => {
       }
     };
   }, [searchTimeout]);
-  
 
   useEffect(() => {
     if (title.trim() !== "") {
@@ -138,25 +137,27 @@ const SnacksList = ({ selectedPark, selectedCity }) => {
   };
 
   const fetchSnacks = async () => {
+    setListLoading(true);
     try {
-      const response = await fetch('/snacks.json');
-      if (!response.ok) {
-        throw new Error("Failed to fetch snacks");
-      }
+      const response = await fetch(`${apiUrl}/getSnacks`);
+      if (!response.ok) throw new Error("Error fetching snacks");
+
       const data = await response.json();
-      console.log("Fetched snacks data:", data); // Check the response data
-      setSnacks(data);
+
+      // Sort the snacks with null `createdAt` at the bottom
+      const sortedSnacks = sortSnacksByCreatedAt(data);
+
+      setSnacks(sortedSnacks);
     } catch (error) {
-      console.error("Error fetching snacks:", error);
+      console.error("Failed to fetch snacks:", error);
     } finally {
       setListLoading(false);
     }
   };
-  
 
   useEffect(() => {
     fetchSnacks();
-  }, []);  
+  }, []);
 
   const resetFormFields = () => {
     setTitle("");
@@ -166,26 +167,52 @@ const SnacksList = ({ selectedPark, selectedCity }) => {
     setPark("");
     setLand("");
   };
-  
-  const onFormSubmit = async (event) => {
-    event.preventDefault();
+
+  // Sorting snacks, placing snacks with `null` createdAt at the bottom
+  const sortSnacksByCreatedAt = (snacks) => {
+    return snacks.sort((a, b) => {
+      if (!a.createdAt) return 1; // If `a.createdAt` is null, move `a` to the bottom
+      if (!b.createdAt) return -1; // If `b.createdAt` is null, move `b` to the bottom
+      return new Date(b.createdAt) - new Date(a.createdAt); // Otherwise, sort by `createdAt`
+    });
+  };
+
+  const onFormSubmit = async (event, snackData = null) => {
+    if (event) event.preventDefault(); // Prevent default only if event is provided
     setLoadingAddOrEdit(true);
+  
+    const timestamp = new Date().toISOString();
+  
+    // If snackData is provided, use it; otherwise, construct it from form state
+    const dataToSubmit = snackData || {
+      title,
+      price,
+      location,
+      description,
+      park,
+      land,
+      resort: selectedPark, // Add selectedPark to the data
+    };
   
     if (editMode && editedSnack) {
       try {
         const response = await fetch(`${apiUrl}/updateSnack`, {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ id: editedSnack.id, title, price, location, description, park, land }),
+          body: JSON.stringify({
+            id: editedSnack.id,
+            ...dataToSubmit,
+            updatedAt: timestamp,
+          }),
         });
         if (!response.ok) throw new Error("Error updating snack");
   
-        const updatedSnack = await response.json();
-        setSnacks(prevSnacks => prevSnacks.map(snack => snack.id === updatedSnack.id ? updatedSnack : snack));
-        
+        await response.json();
+        await fetchSnacks();
+  
         setEditMode(false);
         setEditedSnack(null);
-        resetFormFields(); // Reset form
+        resetFormFields();
       } catch (error) {
         console.error("Failed to update snack:", error);
       } finally {
@@ -197,13 +224,17 @@ const SnacksList = ({ selectedPark, selectedCity }) => {
         const response = await fetch(`${apiUrl}/createSnack`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ title, price, location, description, park, land }),
+          body: JSON.stringify({
+            ...dataToSubmit,
+            createdAt: timestamp,
+          }),
         });
         if (!response.ok) throw new Error("Error adding snack");
   
-        const newSnack = await response.json();
-        setSnacks(prevSnacks => [...prevSnacks, newSnack]);
-        resetFormFields(); // Reset form after add
+        await response.json();
+        await fetchSnacks();
+  
+        resetFormFields();
       } catch (error) {
         console.error("Failed to add snack:", error);
       } finally {
@@ -213,6 +244,23 @@ const SnacksList = ({ selectedPark, selectedCity }) => {
     }
   };
   
+
+  const handleDeleteSnack = async (snackId) => {
+    try {
+      const response = await fetch(`${apiUrl}/deleteSnack/${snackId}`, {
+        method: "DELETE",
+      });
+      if (!response.ok) throw new Error("Error deleting snack");
+
+      await response.json();
+
+      // Fetch and refresh the snacks list
+      await fetchSnacks();
+    } catch (error) {
+      console.error("Failed to delete snack:", error);
+    }
+  };
+
   const handleDelete = async (id) => {
     try {
       // Update the title of the snack to indicate deletion
@@ -399,23 +447,7 @@ const SnacksList = ({ selectedPark, selectedCity }) => {
       console.error("Error updating JSONBin:", error);
     }
   };
-
-  const onSelectItem = (item) => {
-    setTitle(item.itemTitle);
-    setPrice(item.itemPrice);
-    setLocation(item.restaurantName);
-    setDescription(item.itemDescription);
-    setPark(item.restaurantLocation);
-    setLand(item.subLocation);
-
-    // Clear any existing timeout and search state
-    clearTimeout(searchTimeout); // Clear the search timeout
-    setDropdownOpen(false); // Close the dropdown
-    setDropdownLoading(false); // Stop the loading indicator
-
-    // Stop the fetch process
-    setFetchEnabled(false);
-  };
+  // Clear any existing timeout and search state
 
   const clearInputs = () => {
     setTitle("");
@@ -432,17 +464,47 @@ const SnacksList = ({ selectedPark, selectedCity }) => {
     editMode ? styles.subInputEdit : ""
   }`;
 
-
   const handleTabChange = (tab) => {
     setActiveTab(tab);
   };
 
-  const filteredSnacks = snacks.filter((snack) => 
+  const filteredSnacks = snacks.filter((snack) =>
     activeTab === "outstandingSnacks" ? !snack.completed : snack.completed
   );
 
   const handleParkSelectionChange = (selectedParks) => {
-    setSelectedParks(selectedParks); // Update the selected parks
+    setSelectedParks(selectedParks);
+  };
+
+  const onSelectItem = (item) => {
+    if (item === "manual") {
+      setShowManualAddPopup(true);
+      setDropdownOpen(false);
+    } else {
+      // Populate form fields with the selected item
+      setTitle(item.itemTitle);
+      setPrice(item.itemPrice);
+      setLocation(item.restaurantName);
+      setDescription(item.itemDescription);
+      setPark(item.restaurantLocation);
+      setLand(item.subLocation);
+  
+      // Call the form submission function with the selected item's data
+      onFormSubmit(null, { // Pass null for the event
+        title: item.itemTitle,
+        price: item.itemPrice,
+        location: item.restaurantName,
+        description: item.itemDescription,
+        park: item.restaurantLocation,
+        land: item.subLocation,
+        resort: selectedPark, // Include selected park if needed
+      });
+    }
+  
+    // Clear any existing timeout and search state
+    clearTimeout(searchTimeout);
+    setDropdownLoading(false);
+    setFetchEnabled(false);
   };
 
 
@@ -462,7 +524,7 @@ const SnacksList = ({ selectedPark, selectedCity }) => {
                 disabled={loadingAddOrEdit}
                 ref={inputRef}
               />
-              {title && ( // Show the close button only when there's text in the input
+              {title && (
                 <div
                   className={styles.clearButton}
                   onClick={() => clearInputs("")}
@@ -470,37 +532,6 @@ const SnacksList = ({ selectedPark, selectedCity }) => {
                   <i className="fa-solid fa-circle-xmark"></i>
                 </div>
               )}
-              <button
-                className={styles.buttonAdd}
-                type="submit"
-                disabled={loadingAddOrEdit}
-              >
-                {loadingAddOrEdit ? (
-                  <i className="fa-solid fa-spinner fa-spin-pulse fa-xl"></i>
-                ) : editMode ? (
-                  "Update"
-                ) : (
-                  "Add"
-                )}
-              </button>
-            </div>
-            <div className={styles.formSecondaryInputs}>
-              <input
-                type="number"
-                placeholder="$5.00"
-                className={subInputClass}
-                value={price}
-                onChange={onPriceChange}
-                disabled={loadingAddOrEdit}
-              />
-              <input
-                type="text"
-                placeholder="Location"
-                className={subInputClass}
-                value={location}
-                onChange={onLocationChange}
-                disabled={loadingAddOrEdit}
-              />
             </div>
           </form>
           <div
@@ -512,6 +543,12 @@ const SnacksList = ({ selectedPark, selectedCity }) => {
             {dropdownLoading && (
               <p className={styles.loadingMessage}>Loading...</p>
             )}
+            <div
+              className={`${styles.searchManualAdd} ${styles.searchResult}`}
+              onClick={() => onSelectItem("manual")}
+            >
+              <p>Add Manually</p>
+            </div>
             {results.map((item) => (
               <div
                 onClick={() => onSelectItem(item)}
@@ -521,6 +558,9 @@ const SnacksList = ({ selectedPark, selectedCity }) => {
                 <div className={styles.searchResult} key={item.id}>
                   <span className={styles.resultItemTitle}>
                     {item.itemTitle}
+                  </span>
+                  <span className={styles.resultItemPrice}>
+                    {item.itemPrice},
                   </span>
                   <span className={styles.resultRestaurantInfo}>
                     {item.restaurantName},
@@ -533,10 +573,59 @@ const SnacksList = ({ selectedPark, selectedCity }) => {
             ))}
           </div>
         </div>
-        <SnackListNav activeTab={activeTab} onTabChange={handleTabChange}
-                selectedPark={selectedPark}
-                selectedCity={selectedCity}
-                onParkChange={handleParkSelectionChange}
+        {showManualAddPopup && (
+          <div className={styles.popupOverlay}>
+            <div className={styles.popup}>
+              <h2>Add Snack Details</h2>
+              <form onSubmit={handleManualAddSubmit}>
+                <input
+                  type="text"
+                  placeholder="Snack Name"
+                  value={title}
+                  onChange={(e) => setTitle(e.target.value)}
+                  required
+                />
+                <input
+                  type="number"
+                  placeholder="Price"
+                  value={price}
+                  onChange={(e) => setPrice(e.target.value)}
+                  required
+                />
+                <input
+                  type="text"
+                  placeholder="Location"
+                  value={location}
+                  onChange={(e) => setLocation(e.target.value)}
+                  required
+                />
+                <input
+                  type="text"
+                  placeholder="Park"
+                  value={park}
+                  onChange={(e) => setPark(e.target.value)}
+                />
+
+                <div className={styles.popupButtons}>
+                  <button type="submit">Add Snack</button>
+                  <button
+                    type="button"
+                    onClick={() => setShowManualAddPopup(false)}
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        )}
+
+        <SnackListNav
+          activeTab={activeTab}
+          onTabChange={handleTabChange}
+          selectedPark={selectedPark}
+          selectedCity={selectedCity}
+          onParkChange={handleParkSelectionChange}
         />
         <div className={styles.snacksContainer}>
           {listLoading ? (
@@ -545,7 +634,9 @@ const SnacksList = ({ selectedPark, selectedCity }) => {
               snacks...
             </p>
           ) : filteredSnacks.length === 0 ? (
-            activeTab === "outstandingSnacks" ? noSnacksMessage : (
+            activeTab === "outstandingSnacks" ? (
+              noSnacksMessage
+            ) : (
               <p className={styles.noSnacksMessage}>
                 No completed snacks yet. Keep snacking! 🍪
               </p>
@@ -560,6 +651,7 @@ const SnacksList = ({ selectedPark, selectedCity }) => {
               handleUndocomplete={handleUndocomplete}
               activeTab={activeTab}
               selectedParks={selectedParks}
+              selectedPark={selectedPark}
             />
           )}
         </div>

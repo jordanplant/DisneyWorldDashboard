@@ -3,13 +3,15 @@ import styles from "./SnacksList.module.css";
 import ButtonContainer from "../Common/ButtonContainer";
 import Rating from "./SnackRating";
 
+const apiUrl = "/api";
+
 const Snacks = ({
   handleComplete,
   handleEdit,
   handleDelete,
   handleUndocomplete,
   activeTab,
-  selectedParks,
+  selectedPark,  // Changed from selectedParks to selectedPark
 }) => {
   const [snacks, setSnacks] = useState([]);
   const [loadingSnackId, setLoadingSnackId] = useState(null);
@@ -17,7 +19,7 @@ const Snacks = ({
   useEffect(() => {
     const fetchSnacks = async () => {
       try {
-        const response = await fetch("/snacks.json");
+        const response = await fetch(`${apiUrl}/getSnacks`);
         if (!response.ok) throw new Error("Failed to fetch snacks data.");
         const data = await response.json();
         setSnacks(data);
@@ -29,19 +31,26 @@ const Snacks = ({
     fetchSnacks();
   }, []);
 
-  // Filter snacks based on selected parks and active tab
+  // Filter snacks based on selected park and active tab
   const filteredSnacks = snacks.filter((snack) => {
     const isCompleted = snack.completed;
     const isActiveTabCompleted = activeTab === "completedSnacks";
-    const isParkSelected =
-      selectedParks.length === 0 || (snack.park && selectedParks.includes(snack.park));
-
-    // console.log('Filtering Snack:', snack.title, 'Completed:', isCompleted, 'Active Tab:', isActiveTabCompleted, 'Is Park Selected:', isParkSelected);
+    const isParkSelected = !selectedPark || snack.resort === selectedPark;
     
     return (
       (isActiveTabCompleted ? isCompleted : !isCompleted) && isParkSelected
     );
   });
+
+  // Group snacks by park within the selected resort
+  const groupedSnacks = filteredSnacks.reduce((acc, snack) => {
+    const park = snack.park || "Unknown Park";
+    if (!acc[park]) {
+      acc[park] = [];
+    }
+    acc[park].push(snack);
+    return acc;
+  }, {});
 
   const getNoResultsMessage = () => {
     if (activeTab === "outstandingSnacks") {
@@ -51,7 +60,6 @@ const Snacks = ({
     }
     return "Hmm, it seems like there's nothing here! 🍔 What deliciousness are you looking for?";
   };
-  
 
   const handleShowRating = (id) => {
     const updatedSnacks = snacks.map((snack) =>
@@ -103,6 +111,7 @@ const Snacks = ({
       setLoadingSnackId(null);
     }
   };
+
 
   return (
     <div>

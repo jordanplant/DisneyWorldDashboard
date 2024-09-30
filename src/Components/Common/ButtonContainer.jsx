@@ -31,7 +31,7 @@ const ButtonContainer = ({ buttons, defaultIcon, onClick, isExpanded }) => {
   if (!buttons || buttons.length === 0) {
     return (
       <button className={styles.expandButton} onClick={onClick}>
-        <i className={defaultIcon || (isExpanded ? "fa-solid fa-minus" : "fa-solid fa-plus")}></i>
+        <i className={defaultIcon || (isExpanded ? "fa-solid fa-angle-up" : "fa-solid fa-angle-down")}></i>
       </button>
     );
   }

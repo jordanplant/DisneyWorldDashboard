@@ -30,7 +30,7 @@ function WaitTimesAttractions({ selectedPark }) {
     setIsLoading(true);
 
     if (!parkId) {
-      console.log("No park selected.");
+      // console.log("No park selected.");
       setIsLoading(false);
       return;
     }

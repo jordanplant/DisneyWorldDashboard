@@ -138,7 +138,7 @@ function WaitTimesOpeningHours({ selectedCity }) {
         name: parkNameMapping[parkSchedule.name] || parkSchedule.name,
       }));
 
-      console.log("Renamed Park Data:", renamedData);
+      // console.log("Renamed Park Data:", renamedData);
       setScheduleData(renamedData);
     } catch (error) {
       console.error("An error occurred:", error);
@@ -174,8 +174,7 @@ const calculateNextDays = () => {
   return nextDays;
 };
 
-// Example usage
-console.log(calculateNextDays());
+// console.log(calculateNextDays());
 
 
   const handleDateChange = (date) => setSelectedDate(date);

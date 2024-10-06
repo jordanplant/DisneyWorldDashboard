@@ -1,89 +1,92 @@
-// ManualAddPopup.jsx
-import React from 'react';
-import PropTypes from 'prop-types';
-import styles from './SnacksList.module.css'; // Adjust the import path as necessary
+import React, { useState } from "react";
+import PropTypes from "prop-types";
+import ModalForm from "../Common/ModalForm"; // Adjust the import path as needed
 
-const SnackListManualAdd = ({
-  showManualAddPopup,
-  setShowManualAddPopup,
-  handleManualAddSubmit,
-  title,
-  setTitle,
-  price,
-  setPrice,
-  location,
-  setLocation,
-  park,
-  setPark,
-}) => {
-  if (!showManualAddPopup) return null;
+const SnackListManualAdd = ({ onClose, onSave }) => {
+  const [snackData, setSnackData] = useState({
+    title: "",
+    price: "",
+    location: "",
+    park: "",
+  });
+
+  const handleInputChange = (field, value) => {
+    setSnackData(prevData => ({
+      ...prevData,
+      [field]: value,
+    }));
+  };
+
+  const handleSave = () => {
+    const newSnack = {
+      ...snackData,
+      price: Number(snackData.price), // Convert price to number
+    };
+    onSave(newSnack);
+  };
+
+  const fields = [
+    [
+      {
+        id: "title",
+        className: "snackInput",
+        label: "Snack name",
+        type: "text",
+        value: snackData.title,
+        onChange: (e) => handleInputChange("title", e.target.value),
+        placeholder: "Mickey Pretzel",
+        required: true,
+      },
+      {
+        id: "price",
+        className: "snackInput",
+        label: "Price",
+        type: "number",
+        value: snackData.price,
+        onChange: (e) => handleInputChange("price", e.target.value),
+        placeholder: "5.00",
+        required: true,
+      },
+      {
+        id: "location",
+        className: "snackInput",
+        label: "Restaurant",
+        type: "text",
+        value: snackData.location,
+        onChange: (e) => handleInputChange("location", e.target.value),
+        placeholder: "Tomorrowland Terrace",
+        required: true,
+      },
+      {
+        id: "park",
+        className: "snackInput",
+        label: "Park",
+        type: "text",
+        value: snackData.park,
+        onChange: (e) => handleInputChange("park", e.target.value),
+        placeholder: "Magic Kingdom",
+        required: true,
+      },
+    ],
+  ];
 
   return (
-    <div className={styles.popupOverlay}>
-      <div className={styles.popup}>
-        <div className={styles.popupTopSection}>
-        <h2>Add Snack Details</h2>
-        </div>
-        <form onSubmit={handleManualAddSubmit}>
-          <input
-            type="text"
-            placeholder="Snack Name"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            required
-          />
-          <input
-            type="number"
-            placeholder="$"
-            value={price}
-            onChange={(e) => setPrice(e.target.value)}
-            required
-          />
-          <input
-            type="text"
-            placeholder="Location"
-            value={location}
-            onChange={(e) => setLocation(e.target.value)}
-            required
-          />
-          <input
-            type="text"
-            placeholder="Park"
-            value={park}
-            onChange={(e) => setPark(e.target.value)}
-          />
-
-          <div className={styles.popupButtons}>
-            <button 
-            className={styles.saveButton}
-            type="submit">Add Snack</button>
-            <button
-            className={styles.cancelButton}
-              type="button"
-              onClick={() => setShowManualAddPopup(false)}
-            >
-              Cancel
-            </button>
-          </div>
-        </form>
-      </div>
-    </div>
+    <ModalForm
+      formTitle="Add Snack Details"
+      pages={fields}
+      currentPage={0}
+      handleSave={handleSave}
+      onClose={onClose}
+      submitLabel="Add Snack"
+      goToNextPage={() => {}} // Not needed for single page
+      goToPreviousPage={() => {}} // Not needed for single page
+    />
   );
 };
 
-// Prop types for type checking
 SnackListManualAdd.propTypes = {
-  showManualAddPopup: PropTypes.bool.isRequired,
-  setShowManualAddPopup: PropTypes.func.isRequired,
-  handleManualAddSubmit: PropTypes.func.isRequired,
-  title: PropTypes.string.isRequired,
-  setTitle: PropTypes.func.isRequired,
-  price: PropTypes.number.isRequired,
-  setPrice: PropTypes.func.isRequired,
-  location: PropTypes.string.isRequired,
-  setLocation: PropTypes.func.isRequired,
-  park: PropTypes.string.isRequired,
-  setPark: PropTypes.func.isRequired,
+  onClose: PropTypes.func.isRequired,
+  onSave: PropTypes.func.isRequired,
 };
 
 export default SnackListManualAdd;

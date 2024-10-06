@@ -1,0 +1,160 @@
+:root {
+  --main-padding: 20px;
+  --modalgradient: linear-gradient(
+    135deg,
+    rgba(0, 70, 190, 0.9),
+    rgba(78, 8, 95, 0.9)
+  );
+}
+
+.setupModal {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1001;
+  background: #fff;
+  padding: var(--main-padding);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+  max-width: 400px;
+  width: 80%;
+}
+
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+}
+
+.modalTopSection {
+  background: var(--modalgradient);
+  width: calc(100% + var(--main-padding) * 2);
+  margin: -20px -20px 0 -20px;
+  padding: 10px;
+  border-radius: 10px 10px 0 0;
+  box-sizing: border-box;
+}
+
+.modalTitle {
+  color: #fff;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 1.5em;
+  text-align: left;
+  border: 0px;
+}
+
+form > *
+{width: 100%;}
+
+input,
+select,
+textarea {
+  box-sizing: border-box; /* This ensures padding and borders are included in the width */
+}
+
+
+
+form label {
+  align-self: flex-start;
+  margin: 0.2em 0em;
+  color: #000;
+}
+
+.formInput {
+  width: 100%;
+  position: relative;
+  z-index: 1;
+  padding: 10px;
+  background-color: #f4f4f4;
+  border: 2px solid transparent;
+  border-radius: 10px;
+
+  font-size: 20px;
+  text-align: center;
+}
+
+.formInput[type="text"], .formInput::placeholder {
+  text-align: left;
+}
+
+
+.inputWrapper {
+  display: flex;
+  justify-content: flex-start;
+  position: relative;
+  margin-bottom: 1em;
+}
+
+.inputWrapper::before {
+  content: "";
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  z-index: 0; /* Ensure it's behind the input */
+  background: linear-gradient(
+    135deg,
+    rgba(0, 70, 190, 0.6) 30%,
+    rgba(78, 8, 95, 0.6)
+  );
+  border-radius: 12px; /* Ensure it matches or exceeds the input radius */
+  pointer-events: none; /* Make sure it doesn't interfere with user interactions */
+}
+
+
+
+
+.submitButtons {
+  display: flex;
+  justify-content: space-between;
+  width: 80%;
+  max-width: 300px;
+  gap: 1em;
+  padding-top: 1em;
+}
+
+
+.submitButtons > * {
+  padding: 0.5em 0em;
+  font-size: 16px;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+  flex: 1;
+}
+
+.saveButton {
+  background-color: #007bff;
+  color: #ffffff;
+  margin-right: 10px;
+}
+
+.saveButton:hover {
+  background-color: #0056b3;
+}
+
+.cancelButton {
+  background-color: #ccc;
+}
+
+.cancelButton:hover {
+  background-color: #999;
+}
+
+/* NEW TRIP STYLES */
+
+
+/* SNACK FORM STYLES */
+

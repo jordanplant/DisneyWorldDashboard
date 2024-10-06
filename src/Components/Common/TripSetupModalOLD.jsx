@@ -56,21 +56,53 @@ const TripSetupModal = ({ onClose, onSave, onCityChange }) => {
     <div className={styles.modalOverlay} onClick={onClose}>
       <div className={styles.setupModal} onClick={(e) => e.stopPropagation()}>
         <div className={styles.modalTopSection}>
-          <h1 className={styles.textGradient}>Create new trip</h1>
+          <h1 className={styles.modalTitle}>Create new trip</h1>
         </div>
-        <form
-          onSubmit={(e) => {
-            e.preventDefault();
-            handleSave();
-          }}
-        >
-          {currentPage === 1 && (
-            <>
-              <label htmlFor="location">Where are you going?</label>
-              <select
+        <div className={styles.formWrapper}>
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              handleSave();
+            }}
+          >
+            {currentPage === 1 && (
+              <>
+                <label htmlFor="location">Where are you going?</label>
+                <div className={styles.tripWrapper}>
+                  {/* Options without groups */}
+                  <select
+                    name="location"
+                    id="location"
+                    className={`${styles.tripSelect} ${styles.tripInput}`}
+                    value={tripName}
+                    onChange={(e) => setTripName(e.target.value)}
+                    required
+                  >
+                    <option value="">Select a location</option>
+
+                    <option value="Walt Disney World">Walt Disney World</option>
+                    {/* <option value="Disneyland California" disabled>
+                      Disneyland California
+                    </option> */}
+
+                    <option value="Disneyland Paris">Disneyland Paris</option>
+
+                    {/* <option value="Tokyo Disneyland" disabled>
+                      Tokyo Disneyland
+                    </option> */}
+                    {/* <option value="Shanghai Disneyland" disabled>
+                      Shanghai Disneyland
+                    </option> */}
+                    {/* <option value="Hong Kong Disneyland" disabled>
+                      Hong Kong Disneyland
+                    </option> */}
+                  </select>
+                  {/* Options with groups */}
+                  {/* <select
                 name="location"
                 id="location"
-                className={styles.tripSelect}
+                className={`${styles.tripSelect} ${styles.tripInput}`}
+
                 value={tripName}
                 onChange={(e) => setTripName(e.target.value)}
                 required
@@ -96,48 +128,53 @@ const TripSetupModal = ({ onClose, onSave, onCityChange }) => {
                     Hong Kong Disneyland
                   </option>
                 </optgroup>
-              </select>
-              <label htmlFor="start">Trip Start Date</label>
-              <input
-                type="date"
-                id="start"
-                value={tripStartDate}
-                className={styles.tripDate}
-                onChange={(e) => setTripStartDate(e.target.value)}
-                min={minDate}
-                required
-              />
-              <label htmlFor="end">Trip End Date</label>
-              <input
-                type="date"
-                id="end"
-                value={tripEndDate}
-                className={styles.tripDate}
-                onChange={(e) => setTripEndDate(e.target.value)}
-                min={tripStartDate}
-                required
-              />
-              <div className={styles.submitButtons}>
-                {/* <button type="button" onClick={goToNextPage} className={styles.saveButton}>
+              </select> */}
+                </div>
+                <label htmlFor="start">Trip Start Date</label>
+                <div className={styles.tripWrapper}>
+                  <input
+                    type="date"
+                    id="start"
+                    value={tripStartDate}
+                    className={`${styles.tripDate} ${styles.tripInput}`}
+                    onChange={(e) => setTripStartDate(e.target.value)}
+                    min={minDate}
+                    required
+                  />
+                </div>
+                <label htmlFor="end">Trip End Date</label>
+                <div className={styles.tripWrapper}>
+                  <input
+                    type="date"
+                    id="end"
+                    value={tripEndDate}
+                    className={`${styles.tripDate} ${styles.tripInput}`}
+                    onChange={(e) => setTripEndDate(e.target.value)}
+                    min={tripStartDate}
+                    required
+                  />
+                </div>
+                <div className={styles.submitButtons}>
+                  {/* <button type="button" onClick={goToNextPage} className={styles.saveButton}>
               Next
             </button> */}
 
-                <button type="submit" className={styles.saveButton}>
-                  Save
-                </button>
-                <button
-                  type="button"
-                  onClick={onClose}
-                  className={styles.cancelButton}
-                >
-                  Cancel
-                </button>
-              </div>
-            </>
-          )}
+                  <button type="submit" className={styles.saveButton}>
+                    Save
+                  </button>
+                  <button
+                    type="button"
+                    onClick={onClose}
+                    className={styles.cancelButton}
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </>
+            )}
 
-          {/* The page is ready for extra pages if needed */}
-          {/* {currentPage === 2 && (
+            {/* The page is ready for extra pages if needed */}
+            {/* {currentPage === 2 && (
             <>
 
 <div className={styles.submitButtons}>
@@ -156,7 +193,8 @@ Save
             
             
             </>)} */}
-        </form>
+          </form>
+        </div>
       </div>
     </div>
   );

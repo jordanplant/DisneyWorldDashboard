@@ -1,16 +1,17 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import "./Home.css";
 import Countdown from "../Components/Countdown/Countdown";
 import WeatherApp from "../Components/Weather/WeatherApp";
 import SnacksList from "../Components/Snacks/SnacksList";
 import WaitTimesAttractions from "../Components/WaitTimes/WaitTimesAttractions";
-import TripSetupModal from "../Components/Common/TripSetupModal";
 import Navbar from "../Components/Navbar/Navbar";
 import ParkSelect from "../Components/Common/ParkSelect";
 import WaitTimesShows from "../Components/WaitTimes/WaitTimesShows";
-import WaitTimesOpeningHours from '../Components/WaitTimes/WaitTimesOpeningHours';
-import WaitTimesNav from '../Components/WaitTimes/WaitTimesNav';
-import WaitTimesCharacters from '../Components/WaitTimes/WaitTimesCharacters';
+import WaitTimesOpeningHours from "../Components/WaitTimes/WaitTimesOpeningHours";
+import WaitTimesNav from "../Components/WaitTimes/WaitTimesNav";
+import WaitTimesCharacters from "../Components/WaitTimes/WaitTimesCharacters";
+import SnackListManualAdd from "../Components/Snacks/SnackListManualAdd";
+import TripSetup from "../Components/Common/TripSetup";
 
 function Home() {
   const [user, setUser] = useState(null);
@@ -24,7 +25,7 @@ function Home() {
   const [selectedCity, setSelectedCity] = useState("Orlando");
   const [selectedPark, setSelectedPark] = useState("Walt Disney World");
   const [activePark, setActivePark] = useState(null);
-  const [activeWaitTimeTab, setActiveWaitTimeTab] = useState('attractions');
+  const [activeWaitTimeTab, setActiveWaitTimeTab] = useState("attractions");
   const [parkSchedules, setParkSchedules] = useState([]);
 
   const handleScheduleDataChange = (newScheduleData) => {
@@ -100,13 +101,15 @@ function Home() {
           </div>
           <div className="openingTimes-bar card">
             <h2 className="text-gradient">Opening Hours</h2>
-            <WaitTimesOpeningHours         selectedCity={selectedCity} 
-              onScheduleDataChange={handleScheduleDataChange} />
+            <WaitTimesOpeningHours
+              selectedCity={selectedCity}
+              onScheduleDataChange={handleScheduleDataChange}
+            />
           </div>
 
           <div className="snacks-bar card">
             <h2 className="text-gradient">Snacks</h2>
-          <SnacksList
+            <SnacksList
               input={input}
               setInput={setInput}
               snacks={snacks}
@@ -123,24 +126,27 @@ function Home() {
             <ParkSelect
               selectedPark={selectedPark}
               onParkChange={handleParkChange}
-              activePark={activePark} 
+              activePark={activePark}
             />
-        <WaitTimesNav activeTab={activeWaitTimeTab} onTabChange={handleWaitTimeTabChange} />
-        {activeWaitTimeTab === 'attractions' && (
-          <WaitTimesAttractions selectedPark={activePark} />
-        )}
-        {activeWaitTimeTab === 'shows' && (
-          <>
-            <WaitTimesShows selectedPark={activePark} />
-          </>
-        )}
-        {activeWaitTimeTab === 'characters' && (
-          <>
-          <WaitTimesCharacters selectedPark={activePark}/>
-            {/* <WaitTimesShows selectedPark={activePark} /> */}
-          </>
-        )}
-      </div>
+            <WaitTimesNav
+              activeTab={activeWaitTimeTab}
+              onTabChange={handleWaitTimeTabChange}
+            />
+            {activeWaitTimeTab === "attractions" && (
+              <WaitTimesAttractions selectedPark={activePark} />
+            )}
+            {activeWaitTimeTab === "shows" && (
+              <>
+                <WaitTimesShows selectedPark={activePark} />
+              </>
+            )}
+            {activeWaitTimeTab === "characters" && (
+              <>
+                <WaitTimesCharacters selectedPark={activePark} />
+                {/* <WaitTimesShows selectedPark={activePark} /> */}
+              </>
+            )}
+          </div>
         </div>
         <div className="footer">
           <a
@@ -154,7 +160,7 @@ function Home() {
         </div>
       </main>
       {isModalOpen && !justLooking && (
-        <TripSetupModal
+        <TripSetup
           onClose={() => setIsModalOpen(false)}
           onSave={handleAddTrip}
           onCityChange={(city, park) => {

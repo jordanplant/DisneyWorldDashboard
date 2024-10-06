@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
+import ReactDOM from "react-dom";
 import Snacks from "./Snacks";
 import styles from "./SnacksList.module.css";
 import SnackListNav from "./SnackListNav";
 import SnackSearchForm from "./SnackSearchForm";
-import SnackListManualAdd from "./SnackListManualAdd"; 
+import SnackListManualAdd from "./SnackListManualAdd";
 
 const apiUrl = "/api";
 
@@ -28,11 +29,10 @@ const SnacksList = ({ selectedPark, selectedCity }) => {
   const [loadingSnackId, setLoadingSnackId] = useState(null);
   const [activeTab, setActiveTab] = useState("outstandingSnacks");
   const [selectedParks, setSelectedParks] = useState([]);
-  const [showManualAddPopup, setShowManualAddPopup] = useState(true);
+  const [showManualAddPopup, setShowManualAddPopup] = useState(false);
   const [lastFetchTimestamp, setLastFetchTimestamp] = useState(null);
   const cachedSnacksRef = useRef(null);
   const [error, setError] = useState(null);
-  
 
   const inputRef = useRef(null);
   const dropdownRef = useRef(null);
@@ -405,7 +405,6 @@ const SnacksList = ({ selectedPark, selectedCity }) => {
     setSelectedParks(selectedParks);
   };
 
-
   const handleManualAddSubmit = (event) => {
     event.preventDefault();
     onFormSubmit();
@@ -431,8 +430,24 @@ const SnacksList = ({ selectedPark, selectedCity }) => {
     });
   };
 
+  const handleSaveSnack = (newSnack) => {
+    // handle the new snack data
+    setShowManualAddPopup(false);
+  };
+
   return (
     <>
+      {showManualAddPopup &&
+        ReactDOM.createPortal(
+          <div className={styles.popupOverlay}>
+            <SnackListManualAdd
+              onClose={() => setShowManualAddPopup(false)}
+              onSave={handleSaveSnack}
+            />
+          </div>,
+          document.body // Portal renders outside the current component tree
+        )}
+
       <div className={styles.container}>
         <SnackSearchForm
           onSubmit={handleSearchSubmit}
@@ -440,23 +455,6 @@ const SnacksList = ({ selectedPark, selectedCity }) => {
           showManualAddPopup={showManualAddPopup}
           setShowManualAddPopup={setShowManualAddPopup}
         />
-
-<SnackListManualAdd
-        showManualAddPopup={showManualAddPopup}
-        setShowManualAddPopup={setShowManualAddPopup}
-        handleManualAddSubmit={handleManualAddSubmit}
-        title={title}
-        setTitle={setTitle}
-        price={price}
-        setPrice={setPrice}
-        location={location}
-        setLocation={setLocation}
-        park={park}
-        setPark={setPark}
-        onSubmit={handleManualAddSubmit}
-            onClose={() => setShowManualAddPopup(false)} // Close function for the pop-up
-          
-      />
 
         <SnackListNav
           activeTab={activeTab}

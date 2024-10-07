@@ -135,3 +135,67 @@ right: 0px;
 .navbar.shrink .icon {
   font-size: 1em; /* Smaller size when navbar is shrunk */
 }
+
+
+/* SNACK STYLES */
+.snacklistNav {
+  margin: 0.5em 0;
+}
+
+.snacklistCategories {
+  display: flex;
+  justify-content: center;
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.snackListOption {
+  padding: 10px 20px;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+}
+
+.snackListOption.active {
+  border-bottom: 2px solid #007bff;
+  font-weight: bold;
+}
+
+.filterResultsList  {
+  width: 70%;
+padding: 0px;
+}
+
+.filterResultsList li{
+  list-style: none;
+  padding: .5em;
+
+}
+
+.filterOption {
+  padding-left: 10px;
+}
+
+.parkFilterCheckbox{
+  margin-right: .5em;
+}
+
+/* WAIT TIMES NAV STYLES */
+.waitTimeCategories {
+  display: flex;
+  justify-content: space-around;
+  padding: 0;
+  margin: 0.5em 0;
+}
+
+.WaitTimeOption {
+  list-style: none;
+  padding: 0.5em 1em;
+}
+
+.WaitTimeOption.active {
+  /* Add styles for the active tab, e.g.: */
+  font-weight: bold;
+  border: 2px solid currentColor;
+  border-radius: 50px;
+}

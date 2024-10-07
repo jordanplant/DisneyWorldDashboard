@@ -11,11 +11,12 @@ const Snacks = ({
   handleDelete,
   handleUndocomplete,
   activeTab,
-  selectedPark,  // Changed from selectedParks to selectedPark
+  selectedParks,
 }) => {
   const [snacks, setSnacks] = useState([]);
   const [loadingSnackId, setLoadingSnackId] = useState(null);
 
+  // Fetch snacks when the component loads
   useEffect(() => {
     const fetchSnacks = async () => {
       try {
@@ -31,16 +32,26 @@ const Snacks = ({
     fetchSnacks();
   }, []);
 
-  // Filter snacks based on selected park and active tab
+  // If no parks are selected, return null (i.e., display nothing)
+  if (!selectedParks || selectedParks.length === 0) {
+    return null;
+  }
+
+  // Filter snacks based on selected parks and active tab
   const filteredSnacks = snacks.filter((snack) => {
     const isCompleted = snack.completed;
     const isActiveTabCompleted = activeTab === "completedSnacks";
-    const isParkSelected = !selectedPark || snack.resort === selectedPark;
     
-    return (
-      (isActiveTabCompleted ? isCompleted : !isCompleted) && isParkSelected
-    );
+    // Check if the park of the snack is in the selectedParks array
+    const isParkSelected = selectedParks.includes(snack.park);
+
+    return (isActiveTabCompleted ? isCompleted : !isCompleted) && isParkSelected;
   });
+
+  // If no snacks match the filter, show a message
+  if (filteredSnacks.length === 0) {
+    return <p>No snacks available for the selected parks.</p>;
+  }
 
   // Group snacks by park within the selected resort
   const groupedSnacks = filteredSnacks.reduce((acc, snack) => {

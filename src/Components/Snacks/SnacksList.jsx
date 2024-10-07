@@ -397,9 +397,13 @@ const SnacksList = ({ selectedPark, selectedCity }) => {
     setActiveTab(tab);
   };
 
-  const filteredSnacks = snacks.filter((snack) =>
-    activeTab === "outstandingSnacks" ? !snack.completed : snack.completed
-  );
+  const filteredSnacks = snacks.filter((snack) => {
+    const isCompleted = snack.completed;
+    const isActiveTabCompleted = activeTab === "completedSnacks";
+    const isParkMatch = !selectedPark || snack.resort === selectedPark;
+
+    return isParkMatch && (isActiveTabCompleted ? isCompleted : !isCompleted);
+  });
 
   const handleParkSelectionChange = (selectedParks) => {
     setSelectedParks(selectedParks);

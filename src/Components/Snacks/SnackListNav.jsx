@@ -54,9 +54,9 @@ const SnackListNav = ({ activeTab, onTabChange, selectedPark, onParkChange }) =>
     onTabChange(tab); 
   };
 
-  useEffect(() => {
-    onParkChange(selectedParks); 
-  }, [selectedParks, onParkChange]);
+useEffect(() => {
+  onParkChange(selectedParks); // Propagate the selected parks to the parent component
+}, [selectedParks, onParkChange]);
 
   const handleItemClick = (parkName) => {
     handleCheckboxChange(parkName); // Trigger checkbox change when the list item is clicked

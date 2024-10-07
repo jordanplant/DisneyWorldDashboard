@@ -60,11 +60,17 @@ const Navbar = ({ user, setUser }) => {
         <li className={styles.navSnacks}>
           <i className={`fa-solid fa-utensils ${styles.icon}`}></i>
         </li>
-        <li className={styles.navSettings}
+        <li className={styles.navTrips}>
+          <i className={`fa-solid fa-suitcase ${styles.icon}`}></i>
+        </li>
+
+
+
+        {/* <li className={styles.navSettings}
           onClick={() => toggleDropdown("settings")}
         >
           <i className={`fa-solid fa-gear ${styles.icon}`}></i>
-          {/* Add dropdownRef here if necessary */}
+
           {dropdownOpen === "settings" && (
             <div
               className={`${styles.dropdown} ${styles.dropdownOpen}`}
@@ -76,7 +82,7 @@ const Navbar = ({ user, setUser }) => {
               </div>
             </div>
           )}
-        </li>
+        </li> */}
         {user ? (
           <div className={styles.profileContainer}>
             <div

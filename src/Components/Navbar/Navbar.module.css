@@ -137,7 +137,60 @@ right: 0px;
 }
 
 
-/* SNACK STYLES */
+/* SLIDER NAV STYLES */
+
+
+/* SECONDARY NAV STYLES */
+/* SecondaryNavbar.module.css */
+.secondaryNav {
+  position: relative;
+
+
+}
+
+.sliderBackground {
+  position: absolute;
+  height: 100%;
+  pointer-events: none;
+}
+
+.sliderPill {
+  position: absolute;
+  inset: 0;
+  background-color: #EEF2FF;
+  border-radius: 9999px;
+}
+
+.navCategories {
+  position: relative;
+  display: flex;
+  justify-content: space-around;
+  /* gap: 4px; */
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.navOption {
+  padding: .5em 1em;
+  cursor: pointer;
+  border-radius: 9999px;
+  color: #4B5563;
+  transition: color 0.2s ease;
+  cursor: pointer;
+
+}
+
+.navOption:hover {
+  color: #111827;
+
+}
+
+.navOption.active {
+  color: #4F46E5;
+}
+
+/* SNACK STYLES
 .snacklistNav {
   margin: 0.5em 0;
 }
@@ -180,8 +233,11 @@ padding: 0px;
   margin-right: .5em;
 }
 
+
+
+
 /* WAIT TIMES NAV STYLES */
-.waitTimeCategories {
+/* .waitTimeCategories {
   display: flex;
   justify-content: space-around;
   padding: 0;
@@ -194,8 +250,10 @@ padding: 0px;
 }
 
 .WaitTimeOption.active {
-  /* Add styles for the active tab, e.g.: */
   font-weight: bold;
   border: 2px solid currentColor;
   border-radius: 50px;
-}
+} */
+
+
+

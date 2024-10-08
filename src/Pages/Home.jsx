@@ -12,6 +12,7 @@ import WaitTimesNav from "../Components/WaitTimes/WaitTimesNav";
 import WaitTimesCharacters from "../Components/WaitTimes/WaitTimesCharacters";
 import SnackListManualAdd from "../Components/Snacks/SnackListManualAdd";
 import TripSetup from "../Components/Common/TripSetup";
+import SecondaryNavbar from "../Components/Navbar/SecondaryNavbar";
 
 function Home() {
   const [user, setUser] = useState(null);
@@ -27,6 +28,10 @@ function Home() {
   const [activePark, setActivePark] = useState(null);
   const [activeWaitTimeTab, setActiveWaitTimeTab] = useState("attractions");
   const [parkSchedules, setParkSchedules] = useState([]);
+  const [activeTab, setActiveTab] = useState("Attractions");
+  const waitTimeTabs = ["Attractions", "Shows", "Characters",        <span>
+    <i class="fa-regular fa-heart"/>
+</span>];
 
   const handleScheduleDataChange = (newScheduleData) => {
     setParkSchedules(newScheduleData);
@@ -128,10 +133,16 @@ function Home() {
               onParkChange={handleParkChange}
               activePark={activePark}
             />
-            <WaitTimesNav
+            {/* <WaitTimesNav
               activeTab={activeWaitTimeTab}
               onTabChange={handleWaitTimeTabChange}
+            /> */}
+            <SecondaryNavbar
+              tabs={waitTimeTabs}
+              activeTab={activeTab}
+              onTabChange={setActiveTab}
             />
+
             {activeWaitTimeTab === "attractions" && (
               <WaitTimesAttractions selectedPark={activePark} />
             )}
@@ -145,6 +156,9 @@ function Home() {
                 <WaitTimesCharacters selectedPark={activePark} />
                 {/* <WaitTimesShows selectedPark={activePark} /> */}
               </>
+            )}
+            {activeWaitTimeTab === "Favorites" && (
+              <WaitTimesFavourites selectedPark={activePark} />
             )}
           </div>
         </div>

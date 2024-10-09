@@ -144,10 +144,15 @@ right: 0px;
 /* SecondaryNavbar.module.css */
 .secondaryNav {
   position: relative;
-
-
+  overflow-x: scroll;
+  white-space: nowrap;
+  margin-bottom: 1em;
+  scrollbar-width: none; /* For Firefox */
 }
 
+.secondaryNav::-webkit-scrollbar {
+  display: none; /* For Chrome, Safari, and Opera */
+}
 .sliderBackground {
   position: absolute;
   height: 100%;
@@ -157,11 +162,14 @@ right: 0px;
 .sliderPill {
   position: absolute;
   inset: 0;
-  background-color: #EEF2FF;
+  /* background-color: #EEF2FF; */
+  border: 3px solid #EEF2FF;
   border-radius: 9999px;
+
 }
 
 .navCategories {
+
   position: relative;
   display: flex;
   justify-content: space-around;
@@ -171,24 +179,39 @@ right: 0px;
   list-style: none;
 }
 
+
+
 .navOption {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   padding: .5em 1em;
   cursor: pointer;
   border-radius: 9999px;
-  color: #4B5563;
+  color: #fff;
   transition: color 0.2s ease;
   cursor: pointer;
+  margin: 0em .5em;
 
 }
 
 .navOption:hover {
-  color: #111827;
+color: hsl(211, 48%, 78%);
+  transition: ease-in-out 0.1s;
 
 }
 
 .navOption.active {
-  color: #4F46E5;
+  /* color: #4F46E5; */
+  font-weight: bold;
 }
+
+
+
+.navOption:hover i , .activeIcon {
+  color: rgb(253, 75, 75); }
+
+
 
 /* SNACK STYLES
 .snacklistNav {

@@ -29,9 +29,7 @@ function Home() {
   const [activeWaitTimeTab, setActiveWaitTimeTab] = useState("attractions");
   const [parkSchedules, setParkSchedules] = useState([]);
   const [activeTab, setActiveTab] = useState("Attractions");
-  const waitTimeTabs = ["Attractions", "Shows", "Characters",        <span>
-    <i class="fa-regular fa-heart"/>
-</span>];
+  const waitTimeTabs = ["Favorites", "Attractions", "Shows", "Characters"];
 
   const handleScheduleDataChange = (newScheduleData) => {
     setParkSchedules(newScheduleData);

@@ -2,9 +2,10 @@ import React, { useState, useEffect, useRef, useCallback } from "react";
 import ReactDOM from "react-dom";
 import Snacks from "./Snacks";
 import styles from "./SnacksList.module.css";
-import SnackListNav from "./SnackListNav";
 import SnackSearchForm from "./SnackSearchForm";
 import SnackListManualAdd from "./SnackListManualAdd";
+import SecondaryNavbar from "../Navbar/SecondaryNavbar";
+import SnackListFilter from "./SnackListFilter";
 
 const apiUrl = "/api";
 
@@ -33,9 +34,17 @@ const SnacksList = ({ selectedPark, selectedCity }) => {
   const [lastFetchTimestamp, setLastFetchTimestamp] = useState(null);
   const cachedSnacksRef = useRef(null);
   const [error, setError] = useState(null);
+  const snacksListTabs = ["outstandingSnacks", "completedSnacks"];
 
   const inputRef = useRef(null);
   const dropdownRef = useRef(null);
+
+  const outstandingSnacksCount = snacks.filter(
+    (snack) => !snack.completed
+  ).length;
+  const completedSnacksCount = snacks.filter((snack) => snack.completed).length;
+
+  // console.log(outstandingSnacksCount, completedSnacksCount); // Check the counts
 
   useEffect(() => {
     return () => {
@@ -397,13 +406,15 @@ const SnacksList = ({ selectedPark, selectedCity }) => {
     setActiveTab(tab);
   };
 
+  // console.log(snacks); // Check if the snacks array is populated
   const filteredSnacks = snacks.filter((snack) => {
     const isCompleted = snack.completed;
     const isActiveTabCompleted = activeTab === "completedSnacks";
-    const isParkMatch = !selectedPark || snack.resort === selectedPark;
 
-    return isParkMatch && (isActiveTabCompleted ? isCompleted : !isCompleted);
+    return isActiveTabCompleted ? isCompleted : !isCompleted;
   });
+
+  // console.log(filteredSnacks); // This should output the filtered results
 
   const handleParkSelectionChange = (selectedParks) => {
     setSelectedParks(selectedParks);
@@ -449,10 +460,11 @@ const SnacksList = ({ selectedPark, selectedCity }) => {
               onSave={handleSaveSnack}
             />
           </div>,
-          document.body // Portal renders outside the current component tree
+          document.body
         )}
 
       <div className={styles.container}>
+        {/* Search form */}
         <SnackSearchForm
           onSubmit={handleSearchSubmit}
           loadingAddOrEdit={loadingAddOrEdit}
@@ -460,13 +472,24 @@ const SnacksList = ({ selectedPark, selectedCity }) => {
           setShowManualAddPopup={setShowManualAddPopup}
         />
 
-        <SnackListNav
-          activeTab={activeTab}
-          onTabChange={handleTabChange}
-          selectedPark={selectedPark}
-          selectedCity={selectedCity}
-          onParkChange={handleParkSelectionChange}
-        />
+        {/* Tab Navigation */}
+        <span className={styles.SnacklistNav}>
+          <SecondaryNavbar
+            tabs={snacksListTabs}
+            activeTab={activeTab}
+            onTabChange={setActiveTab}
+            itemCount={{
+              outstandingSnacks: outstandingSnacksCount,
+              completedSnacks: completedSnacksCount,
+            }}
+          />
+
+          <SnackListFilter
+            selectedPark={selectedPark}
+            onParkChange={handleParkSelectionChange}
+          />
+        </span>
+        {/* Snack list display */}
         <div className={styles.snacksContainer}>
           {listLoading ? (
             <p className={styles.loadingMessage}>
@@ -475,7 +498,9 @@ const SnacksList = ({ selectedPark, selectedCity }) => {
             </p>
           ) : filteredSnacks.length === 0 ? (
             activeTab === "outstandingSnacks" ? (
-              noSnacksMessage
+              <p className={styles.noSnacksMessage}>
+                Oh no, you're going to be hungry! 😱 Please add some snacks!
+              </p>
             ) : (
               <p className={styles.noSnacksMessage}>
                 No completed snacks yet. Keep snacking! 🍪
@@ -483,7 +508,7 @@ const SnacksList = ({ selectedPark, selectedCity }) => {
             )
           ) : (
             <Snacks
-              snacks={snacks}
+              snacks={filteredSnacks}
               setSnacks={setSnacks}
               handleComplete={handleComplete}
               handleEdit={handleEdit}

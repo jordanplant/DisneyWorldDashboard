@@ -1,9 +1,10 @@
 import React, { useState, useRef, useEffect } from "react";
 import styles from "./Navbar.module.css";
 
-const SecondaryNavbar = ({ tabs, activeTab, onTabChange, filterComponent }) => {
+const SecondaryNavbar = ({ tabs, activeTab, onTabChange, itemCount, filterComponent, snacks }) => {
   const [activeStyles, setActiveStyles] = useState({ width: 0, left: 0 });
   const [isAnimating, setIsAnimating] = useState(false);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const navRef = useRef(null);
   const tabsRef = useRef([]);
 
@@ -16,13 +17,11 @@ const SecondaryNavbar = ({ tabs, activeTab, onTabChange, filterComponent }) => {
 
     setIsAnimating(true);
 
-    // Get tab's position and nav's center position
     const tabLeft = tabElement.offsetLeft;
     const tabWidth = tabElement.offsetWidth;
     const navWidth = navElement.offsetWidth;
     const scrollPosition = tabLeft - (navWidth / 2) + (tabWidth / 2);
 
-    // Smoothly scroll the nav to center the clicked tab
     navElement.scrollTo({
       left: scrollPosition,
       behavior: "smooth",
@@ -36,6 +35,12 @@ const SecondaryNavbar = ({ tabs, activeTab, onTabChange, filterComponent }) => {
     setTimeout(() => setIsAnimating(false), 400);
   };
 
+  const tabDisplayNames = {
+    completedSnacks: 'Completed',
+    outstandingSnacks: 'Snacks',
+    Favorites: 'Favorites'
+  };
+
   useEffect(() => {
     const activeIndex = tabs.findIndex((tab) => tab === activeTab);
     if (activeIndex !== -1 && tabsRef.current[activeIndex]) {
@@ -45,7 +50,6 @@ const SecondaryNavbar = ({ tabs, activeTab, onTabChange, filterComponent }) => {
         left: tabElement.offsetLeft,
       });
 
-      // Center the active tab on load
       const navElement = navRef.current;
       const tabLeft = tabElement.offsetLeft;
       const tabWidth = tabElement.offsetWidth;
@@ -57,6 +61,9 @@ const SecondaryNavbar = ({ tabs, activeTab, onTabChange, filterComponent }) => {
       });
     }
   }, [activeTab, tabs]);
+
+  // console.log(itemCount); // Check if itemCount has values
+
 
   return (
     <nav ref={navRef} className={styles.secondaryNav}>
@@ -71,40 +78,47 @@ const SecondaryNavbar = ({ tabs, activeTab, onTabChange, filterComponent }) => {
         <div className={styles.sliderPill} />
       </div>
       <ul className={styles.navCategories}>
-      {tabs.map((tab, index) => (
-  <li
-    key={tab}
-    ref={(el) => (tabsRef.current[index] = el)}
-    className={`${styles.navOption} ${activeTab === tab ? styles.active : ''}`}
-    onClick={() => handleTabClick(tab, index)}
-  >
-    {tab === "Favorites" ? (
-      <i
-        className={`fa-${
-          activeTab === "Favorites" ? "solid" : "regular"
-        } fa-heart ${activeTab === "Favorites" ? styles.activeIcon : ''}`}
-      />
-    ) : (
-      tab
-    )}
-  </li>
-))}
+        {tabs.map((tab, index) => (
+          <li
+            key={tab}
+            ref={(el) => (tabsRef.current[index] = el)}
+            className={`${styles.navOption} ${activeTab === tab ? styles.active : ''}`}
+            onClick={() => handleTabClick(tab, index)}
+          >
+            {tab === "Favorites" ? (
+              <i
+                className={`fa-${
+                  activeTab === "Favorites" ? "solid" : "regular"
+                } fa-heart ${activeTab === "Favorites" ? styles.activeIcon : ''}`}
+              />
+            ) : (
+              <>
+                {tabDisplayNames[tab] || tab}
+                {itemCount && (
+  <span className={styles.itemCount}>
+    ({itemCount[tab] || 0})
+  </span>
+)}
+              </>
+            )}
+          </li>
+        ))}
 
         {filterComponent && (
           <li
             className={styles.navOption}
-            onClick={() =>
-              setActiveStyles((prev) => ({
-                ...prev,
-                isDropdownOpen: !prev.isDropdownOpen,
-              }))
-            }
+            onClick={() => setIsDropdownOpen((prev) => !prev)}
           >
-            <i className={`fa-solid ${activeStyles.isDropdownOpen ? "fa-times" : "fa-sliders"}`} />
+            <i className={`fa-solid ${isDropdownOpen ? "fa-times" : "fa-sliders"}`} />
           </li>
         )}
       </ul>
-      {activeStyles.isDropdownOpen && filterComponent && <div>{filterComponent}</div>}
+
+      {isDropdownOpen && filterComponent && (
+        <div className={styles.filterDropdown}>
+          {filterComponent}
+        </div>
+      )}
     </nav>
   );
 };

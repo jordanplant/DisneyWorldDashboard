@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import styles from "./SnacksList.module.css";
 import ButtonContainer from "../Common/ButtonContainer";
 import Rating from "./SnackRating";
 
-const apiUrl = "/api";
-
 const Snacks = ({
+  snacks,
+  setSnacks,
   handleComplete,
   handleEdit,
   handleDelete,
@@ -13,55 +13,15 @@ const Snacks = ({
   activeTab,
   selectedParks,
 }) => {
-  const [snacks, setSnacks] = useState([]);
   const [loadingSnackId, setLoadingSnackId] = useState(null);
-
-  // Fetch snacks when the component loads
-  useEffect(() => {
-    const fetchSnacks = async () => {
-      try {
-        const response = await fetch(`${apiUrl}/getSnacks`);
-        if (!response.ok) throw new Error("Failed to fetch snacks data.");
-        const data = await response.json();
-        setSnacks(data);
-      } catch (error) {
-        console.error("Error fetching snacks data:", error);
-      }
-    };
-
-    fetchSnacks();
-  }, []);
-
-  // If no parks are selected, return null (i.e., display nothing)
-  if (!selectedParks || selectedParks.length === 0) {
-    return null;
-  }
 
   // Filter snacks based on selected parks and active tab
   const filteredSnacks = snacks.filter((snack) => {
     const isCompleted = snack.completed;
     const isActiveTabCompleted = activeTab === "completedSnacks";
-    
-    // Check if the park of the snack is in the selectedParks array
     const isParkSelected = selectedParks.includes(snack.park);
-
     return (isActiveTabCompleted ? isCompleted : !isCompleted) && isParkSelected;
   });
-
-  // If no snacks match the filter, show a message
-  if (filteredSnacks.length === 0) {
-    return <p>No snacks available for the selected parks.</p>;
-  }
-
-  // Group snacks by park within the selected resort
-  const groupedSnacks = filteredSnacks.reduce((acc, snack) => {
-    const park = snack.park || "Unknown Park";
-    if (!acc[park]) {
-      acc[park] = [];
-    }
-    acc[park].push(snack);
-    return acc;
-  }, {});
 
   const getNoResultsMessage = () => {
     if (activeTab === "outstandingSnacks") {
@@ -123,7 +83,6 @@ const Snacks = ({
     }
   };
 
-
   return (
     <div>
       <ul className={styles.snacksList}>
@@ -132,14 +91,18 @@ const Snacks = ({
             {getNoResultsMessage()}
           </p>
         ) : (
-          filteredSnacks.map((snack) => (  // Fix: Removed extra curly braces here
+          filteredSnacks.map((snack) => (
             <li
               key={snack.id}
-              className={`${styles.snack} ${snack.completed ? styles.completed : ""}`}
+              className={`${styles.snack} ${
+                snack.completed ? styles.completed : ""
+              }`}
             >
               <div className={styles.leftContent}>
                 <button
-                  className={`${styles.buttonComplete} ${snack.completed ? styles.completedButton : ""}`}
+                  className={`${styles.buttonComplete} ${
+                    snack.completed ? styles.completedButton : ""
+                  }`}
                   onClick={() => {
                     snack.completed
                       ? handleUndocompleteWithLoading(snack.id)
@@ -153,7 +116,7 @@ const Snacks = ({
                     <i className="far fa-check-circle fa-xs"></i>
                   )}
                 </button>
-  
+
                 <div className={styles.snackContainer}>
                   {snack.isRating ? (
                     <Rating
@@ -165,7 +128,9 @@ const Snacks = ({
                     <>
                       <span className={styles.snackTitle}>{snack.title}</span>
                       <div className={styles.snacksInfo}>
-                        <span className={styles.snackPrice}>${snack.price}</span>
+                        <span className={styles.snackPrice}>
+                          ${snack.price}
+                        </span>
                         <span> - </span>
                         <span className={styles.snackLocation}>
                           {snack.location}, {snack.park}
@@ -201,7 +166,6 @@ const Snacks = ({
       </ul>
     </div>
   );
-  
 };
 
 export default Snacks;

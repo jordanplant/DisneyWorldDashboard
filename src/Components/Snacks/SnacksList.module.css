@@ -27,7 +27,7 @@ button {
   width: 100%;
 }
 
-.formSearchBar{
+.formSearchBar {
   display: flex;
   width: 100%;
   border-radius: 15px;
@@ -51,7 +51,6 @@ button {
   color: #222222;
 
   padding: 16px 0px 16px 16px;
-
 }
 .subInput {
   width: 70%;
@@ -226,9 +225,9 @@ button {
 
 .filterResultsList {
   position: absolute;
-  top:9.5em;
+  top: 9.5em;
   width: 5em;
-right: 0;
+  right: 0;
   background: #ffffff;
   display: flex;
   flex-direction: column;
@@ -273,11 +272,11 @@ right: 0;
   color: #fff;
 }
 
-.searchManualAdd{
-border-bottom: 2px solid #4f4f4f;
+.searchManualAdd {
+  border-bottom: 2px solid #4f4f4f;
 }
 
-.searchManualAdd p{
+.searchManualAdd p {
   color: #000;
   margin: 0 auto;
 }
@@ -319,7 +318,7 @@ border-bottom: 2px solid #4f4f4f;
 }
 
 .clearButton i {
- margin-right: 10px;
+  margin-right: 10px;
 }
 
 .clearButton i {
@@ -411,24 +410,18 @@ border-bottom: 2px solid #4f4f4f;
   color: #daefda;
 }
 
-
-
-
 .popupOverlay {
-  position: fixed; 
+  position: fixed;
   top: 0;
   left: 0;
   width: 100vw;
-  height: 100vh; 
-  background-color: rgba(0, 0, 0, 0.5); 
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
   display: flex;
   justify-content: center;
   align-items: center;
   z-index: 10000;
 }
-
-
-
 
 .popupTopSection {
   background: var(--modalgradient);
@@ -461,8 +454,6 @@ border-bottom: 2px solid #4f4f4f;
   text-align: left;
 }
 
-
-
 .popup input {
   border: 0px;
   box-sizing: border-box;
@@ -473,9 +464,6 @@ border-bottom: 2px solid #4f4f4f;
   margin-bottom: 1em;
   width: 100%;
 }
-
-
-
 
 .popupButtons {
   display: flex;
@@ -513,8 +501,6 @@ border-bottom: 2px solid #4f4f4f;
   background-color: #999;
 }
 
-
-
 .snacklistNav {
   margin: 0.5em 0;
 }
@@ -538,21 +524,26 @@ border-bottom: 2px solid #4f4f4f;
   font-weight: bold;
 }
 
-.filterResultsList  {
+.filterResultsList {
   width: 70%;
-padding: 0px;
+  padding: 0px;
 }
 
-.filterResultsList li{
+.filterResultsList li {
   list-style: none;
-  padding: .5em;
-
+  padding: 0.5em;
 }
 
 .filterOption {
   padding-left: 10px;
 }
 
-.parkFilterCheckbox{
-  margin-right: .5em;
+.parkFilterCheckbox {
+  margin-right: 0.5em;
+}
+
+.SnacklistNav {
+  margin-top: .5em;
+  display: flex;
+  justify-content: center;
 }

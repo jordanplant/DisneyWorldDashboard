@@ -188,7 +188,7 @@ right: 0px;
   padding: .5em 1em;
   cursor: pointer;
   border-radius: 9999px;
-  color: #fff;
+  color: #ccccccd6;
   transition: color 0.2s ease;
   cursor: pointer;
   margin: 0em .5em;
@@ -202,7 +202,7 @@ color: hsl(211, 48%, 78%);
 }
 
 .navOption.active {
-  /* color: #4F46E5; */
+  color: #fff;
   font-weight: bold;
 }
 
@@ -212,71 +212,8 @@ color: hsl(211, 48%, 78%);
   color: rgb(253, 75, 75); }
 
 
-
-/* SNACK STYLES
-.snacklistNav {
-  margin: 0.5em 0;
-}
-
-.snacklistCategories {
-  display: flex;
-  justify-content: center;
-  list-style-type: none;
-  padding: 0;
-  margin: 0;
-}
-
-.snackListOption {
-  padding: 10px 20px;
-  cursor: pointer;
-  border-bottom: 2px solid transparent;
-}
-
-.snackListOption.active {
-  border-bottom: 2px solid #007bff;
-  font-weight: bold;
-}
-
-.filterResultsList  {
-  width: 70%;
-padding: 0px;
-}
-
-.filterResultsList li{
-  list-style: none;
-  padding: .5em;
-
-}
-
-.filterOption {
-  padding-left: 10px;
-}
-
-.parkFilterCheckbox{
-  margin-right: .5em;
-}
-
-
-
-
-/* WAIT TIMES NAV STYLES */
-/* .waitTimeCategories {
-  display: flex;
-  justify-content: space-around;
-  padding: 0;
-  margin: 0.5em 0;
-}
-
-.WaitTimeOption {
-  list-style: none;
-  padding: 0.5em 1em;
-}
-
-.WaitTimeOption.active {
-  font-weight: bold;
-  border: 2px solid currentColor;
-  border-radius: 50px;
-} */
-
-
-
+  .itemCount {
+    color: #cccccc;
+    font-size: .8em;
+    margin-left: .5em;
+  }

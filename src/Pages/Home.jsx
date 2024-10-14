@@ -31,7 +31,6 @@ function Home() {
   const [activeTab, setActiveTab] = useState("Attractions");
   const waitTimeTabs = ["Favorites", "Attractions", "Shows", "Characters"];
 
-
   const handleScheduleDataChange = (newScheduleData) => {
     setParkSchedules(newScheduleData);
   };
@@ -132,12 +131,13 @@ function Home() {
               onParkChange={handleParkChange}
               activePark={activePark}
             />
-            <SecondaryNavbar
-              tabs={waitTimeTabs}
-              activeTab={activeTab}
-              onTabChange={setActiveTab}
-            />
-
+            <div className="waitTimesNav">
+              <SecondaryNavbar
+                tabs={waitTimeTabs}
+                activeTab={activeTab}
+                onTabChange={setActiveTab}
+              />
+            </div>
             {activeWaitTimeTab === "attractions" && (
               <WaitTimesAttractions selectedPark={activePark} />
             )}

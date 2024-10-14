@@ -60,7 +60,7 @@ const SnackListFilter = ({ selectedPark, onParkChange }) => {
         className={`${styles.snackListOption} ${isFilterActive ? styles.active : ""}`} 
         onClick={toggleDropdown}
       >
-        <i className={`fa-solid ${isFilterActive ? 'fa-times' : 'fa-sliders'}`}></i>
+        <i className={`fa-solid ${isFilterActive ? 'fa-times fa-xl' : 'fa-sliders fa-lg'}`}></i>
       </div>
 
       {isDropdownOpen && (

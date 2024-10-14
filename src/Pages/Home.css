@@ -15,8 +15,6 @@ main {
   padding: var(--main-padding);
 }
 
-
-
 .no-trips {
   display: flex;
   flex-direction: column;
@@ -43,13 +41,12 @@ main {
   background-color: #0056b3;
 }
 
-.just-looking-button{
-  margin-top: .3em;
+.just-looking-button {
+  margin-top: 0.3em;
   color: rgba(255, 255, 255, 0.8);
 }
 
-
-.just-looking-button:hover{
+.just-looking-button:hover {
   color: rgba(255, 255, 255, 1);
   cursor: pointer;
 }
@@ -134,8 +131,6 @@ h1 {
   align-items: center;
 }
 
-
-
 .snacks-bar {
   grid-row: 4;
   grid-column: span 2;
@@ -151,6 +146,13 @@ h1 {
   justify-content: center;
   align-items: center;
 }
+.waitTimesNav {
+  margin: 0.5em 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .itinerary-bar {
   grid-row: 6;
   grid-column: span 2;
@@ -164,4 +166,3 @@ h1 {
   justify-content: space-between;
   align-items: center;
 }
-

@@ -100,6 +100,7 @@ button {
 
 .snacksList {
   padding: 0px;
+  margin: 0 auto;
 }
 
 .buttonComplete {
@@ -501,9 +502,7 @@ button {
   background-color: #999;
 }
 
-.snacklistNav {
-  margin: 0.5em 0;
-}
+
 
 .snacklistCategories {
   display: flex;
@@ -519,10 +518,6 @@ button {
   border-bottom: 2px solid transparent;
 }
 
-.snackListOption.active {
-  border-bottom: 2px solid #007bff;
-  font-weight: bold;
-}
 
 .filterResultsList {
   width: 70%;
@@ -539,11 +534,31 @@ button {
 }
 
 .parkFilterCheckbox {
-  margin-right: 0.5em;
+  margin-right: 1em;
 }
 
 .SnacklistNav {
-  margin-top: .5em;
+  margin: 0.5em 0;
   display: flex;
   justify-content: center;
+  align-items: center;
+}
+
+.snackDropdownAddTitle{
+display: flex;
+justify-content: flex-start;
+gap: 5px;
+
+padding: 0px ;
+
+}
+
+.snackDropdownAddTitle p{
+  margin: 0;
+  padding: 0px ;
+  
+  }
+
+.snackDropdownAddTitle p:nth-child(2){
+  font-style: italic;
 }

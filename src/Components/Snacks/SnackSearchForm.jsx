@@ -5,9 +5,10 @@ const SnackSearchForm = ({
   onSubmit,
   loadingAddOrEdit,
   showManualAddPopup,
-  setShowManualAddPopup
+  setShowManualAddPopup,
+  title,
+  setTitle
 }) => {
-  const [title, setTitle] = useState("");
   const [results, setResults] = useState([]);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [dropdownLoading, setDropdownLoading] = useState(false);
@@ -106,16 +107,18 @@ const SnackSearchForm = ({
 
   const onSelectItem = (item) => {
     if (item === "manual") {
+      // Open manual add popup without clearing the inputs
       setShowManualAddPopup(true);
       setDropdownOpen(false);
+      setFetchEnabled(false);
     } else {
+      // Submit the selected item
       onSubmit(item);
+      clearInputs(); // Only clear after selecting an item
     }
-
+  
     clearTimeout(searchTimeout);
     setDropdownLoading(false);
-    setFetchEnabled(false);
-    clearInputs();
   };
 
   return (
@@ -150,7 +153,9 @@ const SnackSearchForm = ({
           className={`${styles.searchManualAdd} ${styles.searchResult}`}
           onClick={() => onSelectItem("manual")}
         >
-          <p>Add Manually</p>
+          <span className={styles.snackDropdownAddTitle}><p>Add</p>
+          <p>{title.trim() || "item"}</p>
+          </span>
         </div>
         {results.map((item) => (
           <div

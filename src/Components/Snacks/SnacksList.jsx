@@ -452,12 +452,13 @@ const SnacksList = ({ selectedPark, selectedCity }) => {
 
   return (
     <>
-      {showManualAddPopup &&
+    {showManualAddPopup &&
         ReactDOM.createPortal(
           <div className={styles.popupOverlay}>
             <SnackListManualAdd
               onClose={() => setShowManualAddPopup(false)}
               onSave={handleSaveSnack}
+              initialTitle={title}
             />
           </div>,
           document.body
@@ -470,6 +471,8 @@ const SnacksList = ({ selectedPark, selectedCity }) => {
           loadingAddOrEdit={loadingAddOrEdit}
           showManualAddPopup={showManualAddPopup}
           setShowManualAddPopup={setShowManualAddPopup}
+          title={title}
+          setTitle={setTitle}
         />
 
         {/* Tab Navigation */}

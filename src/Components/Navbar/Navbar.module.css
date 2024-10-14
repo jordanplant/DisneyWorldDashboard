@@ -146,7 +146,7 @@ right: 0px;
   position: relative;
   overflow-x: scroll;
   white-space: nowrap;
-  margin-bottom: 1em;
+  /* margin-bottom: 1em; */
   scrollbar-width: none; /* For Firefox */
 }
 
@@ -173,6 +173,7 @@ right: 0px;
   position: relative;
   display: flex;
   justify-content: space-around;
+  align-items: center;
   /* gap: 4px; */
   margin: 0;
   padding: 0;
@@ -209,7 +210,7 @@ color: hsl(211, 48%, 78%);
 
 
 .navOption:hover i , .activeIcon {
-  color: rgb(253, 75, 75); }
+  color: rgb(253, 75, 75); } 
 
 
   .itemCount {

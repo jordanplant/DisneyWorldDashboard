@@ -1,14 +1,22 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import PropTypes from "prop-types";
 import ModalForm from "../Common/ModalForm"; // Adjust the import path as needed
 
-const SnackListManualAdd = ({ onClose, onSave }) => {
+const SnackListManualAdd = ({ onClose, onSave, initialTitle }) => {
   const [snackData, setSnackData] = useState({
-    title: "",
+    title: initialTitle || "",
     price: "",
     location: "",
     park: "",
   });
+
+  // Use useEffect to update the title if initialTitle changes
+  useEffect(() => {
+    setSnackData(prevData => ({
+      ...prevData,
+      title: initialTitle || "",
+    }));
+  }, [initialTitle]);
 
   const handleInputChange = (field, value) => {
     setSnackData(prevData => ({
@@ -72,21 +80,22 @@ const SnackListManualAdd = ({ onClose, onSave }) => {
 
   return (
     <ModalForm
-      formTitle="Add Snack Details"
-      pages={fields}
-      currentPage={0}
-      handleSave={handleSave}
-      onClose={onClose}
-      submitLabel="Add Snack"
-      goToNextPage={() => {}} // Not needed for single page
-      goToPreviousPage={() => {}} // Not needed for single page
-    />
+    formTitle="Add Snack Details"
+    pages={fields}
+    currentPage={0}
+    handleSave={handleSave}
+    onClose={onClose}
+    submitLabel="Add Snack"
+    goToNextPage={() => {}}
+    goToPreviousPage={() => {}}
+  />
   );
 };
 
 SnackListManualAdd.propTypes = {
   onClose: PropTypes.func.isRequired,
   onSave: PropTypes.func.isRequired,
+  initialTitle: PropTypes.string,
 };
 
 export default SnackListManualAdd;

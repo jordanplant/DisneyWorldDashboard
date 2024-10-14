@@ -52,6 +52,7 @@ form {
   margin-top: 1.5em;
   text-align: left;
   border: 0px;
+
 }
 
 form > *
@@ -61,6 +62,8 @@ input,
 select,
 textarea {
   box-sizing: border-box; /* This ensures padding and borders are included in the width */
+  color: #000;
+
 }
 
 
@@ -84,7 +87,8 @@ form label {
   text-align: center;
 }
 
-.formInput[type="text"], .formInput::placeholder {
+.formInput[type="text"],
+.formInput[type="number"], .formInput::placeholder {
   text-align: left;
 }
 

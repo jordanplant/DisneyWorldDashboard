@@ -1,15 +1,31 @@
-import React from 'react'
+import React from "react";
+import styles from "./Pages.module.css";
 
-const Profile = () => {
+const Profile = ({ user, setUser }) => {
   return (
     <>
-    <div>Profile</div>
+      <main>
+        <div className={styles.cardContainers}>
+          <div className={`${styles.titleBar} ${styles.card}`}>
+            <div className={styles.profileDetails}>
+              {user ? (
+                <>
+                  <img className={styles.profileAvatar} src={user.photoURL} alt="User Avatar" />
+                  <h3>{user.displayName}</h3> {/* Display name */}
+                </>
+              ) : (
+                <div>No user info</div>
+              )}
+            </div>
+          </div>
+        </div>
 
-
-    <div>Settings</div> 
-    <div>Logout</div>
+        <div>Profile</div>
+        <div>Settings</div>
+        <div onClick={() => setUser(null)}>Logout</div> {/* Logout logic */}
+      </main>
     </>
-  )
-}
+  );
+};
 
-export default Profile
+export default Profile;

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "./Home.css";
+import styles from "./Pages.module.css";
 import Countdown from "../Components/Countdown/Countdown";
 import WeatherApp from "../Components/Weather/WeatherApp";
 import SnacksList from "../Components/Snacks/SnacksList";
@@ -8,14 +8,11 @@ import Navbar from "../Components/Navbar/Navbar";
 import ParkSelect from "../Components/Common/ParkSelect";
 import WaitTimesShows from "../Components/WaitTimes/WaitTimesShows";
 import WaitTimesOpeningHours from "../Components/WaitTimes/WaitTimesOpeningHours";
-import WaitTimesNav from "../Components/WaitTimes/WaitTimesNav";
 import WaitTimesCharacters from "../Components/WaitTimes/WaitTimesCharacters";
-import SnackListManualAdd from "../Components/Snacks/SnackListManualAdd";
 import TripSetup from "../Components/Common/TripSetup";
 import SecondaryNavbar from "../Components/Navbar/SecondaryNavbar";
 
-function Home() {
-  const [user, setUser] = useState(null);
+function Home({ user, setUser }) {
   const [input, setInput] = useState("");
   const [snacks, setSnacks] = useState([]);
   const [editSnack, setEditSnack] = useState(null);
@@ -60,58 +57,57 @@ function Home() {
 
   return (
     <>
-      <Navbar user={user} setUser={setUser} />
       <main>
-        <div className="card-containers">
-          <div className="title-bar card">
+        <div className={styles.cardContainers}>
+          <div className={`${styles.titleBar} ${styles.card}`}>
             {trips.length === 0 && !justLooking ? (
-              <div className="no-trips">
-                <h1 className="text-gradient">You have no trips</h1>
+              <div className={styles.noTrips}>
+                <h1 className={styles.textGradient}>You have no trips</h1>
                 <button
                   onClick={() => setIsModalOpen(true)}
-                  className="start-trip-button"
+                  className={styles.startTripButton}
                 >
                   Start a New Trip
                 </button>
                 <button
                   onClick={handleJustLooking}
-                  className="just-looking-button"
+                  className={styles.justLookingButton}
                 >
                   I'm just looking
                 </button>
               </div>
             ) : (
-              <h1 className="text-gradient">
+              <h1 className={styles.textGradient}>
                 Your day at <br />{" "}
                 {currentTrip ? currentTrip.name : "Disney World"}
               </h1>
             )}
           </div>
 
-          <div className="countdown-bar card">
+          <div className={`${styles.countdownBar} ${styles.card}`}>
             {currentTrip && !justLooking ? (
               <Countdown
                 startDate={currentTrip.startDate}
                 endDate={currentTrip.endDate}
               />
             ) : (
-              <p className="countdownDays">Days to go</p>
+              <p className={styles.countdownDays}>Days to go</p>
             )}
           </div>
 
-          <div className="weather-bar card">
+          <div className={`${styles.weatherBar} ${styles.card}`}>
             <WeatherApp city={selectedCity} />
           </div>
-          <div className="openingTimes-bar card">
-            <h2 className="text-gradient">Opening Hours</h2>
+          <div className={`${styles.openingTimesBar} ${styles.card}`}>
+            <h2 className={styles.textGradient}>Opening Hours</h2>
             <WaitTimesOpeningHours
               selectedCity={selectedCity}
               onScheduleDataChange={handleScheduleDataChange}
             />
           </div>
 
-          <div className="snacks-bar card">
-            <h2 className="text-gradient">Snacks</h2>
+          <div className={`${styles.snacksBar} ${styles.card}`}>
+            <h2 className={styles.textGradient}>Snacks</h2>
             <SnacksList
               input={input}
               setInput={setInput}
@@ -124,14 +120,14 @@ function Home() {
             />
           </div>
 
-          <div className="waitTimes-bar card">
-            <h2 className="text-gradient">Wait Times</h2>
+          <div className={`${styles.waitTimesBar} ${styles.card}`}>
+            <h2 className={styles.textGradient}>Wait Times</h2>
             <ParkSelect
               selectedPark={selectedPark}
               onParkChange={handleParkChange}
               activePark={activePark}
             />
-            <div className="waitTimesNav">
+            <div className={styles.waitTimesNav}>
               <SecondaryNavbar
                 tabs={waitTimeTabs}
                 activeTab={activeTab}
@@ -142,22 +138,17 @@ function Home() {
               <WaitTimesAttractions selectedPark={activePark} />
             )}
             {activeWaitTimeTab === "shows" && (
-              <>
-                <WaitTimesShows selectedPark={activePark} />
-              </>
+              <WaitTimesShows selectedPark={activePark} />
             )}
             {activeWaitTimeTab === "characters" && (
-              <>
-                <WaitTimesCharacters selectedPark={activePark} />
-                {/* <WaitTimesShows selectedPark={activePark} /> */}
-              </>
+              <WaitTimesCharacters selectedPark={activePark} />
             )}
             {activeWaitTimeTab === "Favorites" && (
               <WaitTimesFavourites selectedPark={activePark} />
             )}
           </div>
         </div>
-        <div className="footer">
+        <div className={styles.footer}>
           <a
             href="https://github.com/jordanplant/DisneyWorldDashboard---JS-React-Node"
             target="_blank"

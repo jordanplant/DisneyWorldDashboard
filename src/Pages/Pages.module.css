@@ -1,35 +1,26 @@
 :root {
-  --main-padding: 20px; /* Define a CSS variable for main padding */
-}
-
-body {
-  margin: 0; /* Remove default body margin */
-  display: flex;
-  justify-content: center; /* Center horizontally */
-  align-items: center; /* Center vertically */
-  min-height: 100vh; /* Make body take the full viewport height */
+  --main-padding: 20px;
 }
 
 main {
-  /* max-width: 640px; */
   padding: var(--main-padding);
 }
 
-.no-trips {
+
+/* HOME */
+
+.noTrips {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
   grid-column: span 2;
   margin: 0 auto;
-
   text-align: center;
-  /* padding: 200px; */
 }
 
-.start-trip-button {
+.startTripButton {
   padding: 10px 20px;
-  /* margin-top: 20px; */
   background-color: #007bff;
   color: white;
   border: none;
@@ -37,22 +28,22 @@ main {
   cursor: pointer;
 }
 
-.start-trip-button:hover {
+.startTripButton:hover {
   background-color: #0056b3;
 }
 
-.just-looking-button {
+.justLookingButton {
   margin-top: 0.3em;
   color: rgba(255, 255, 255, 0.8);
 }
 
-.just-looking-button:hover {
+.justLookingButton:hover {
   color: rgba(255, 255, 255, 1);
   cursor: pointer;
 }
 
 .setupModal {
-  position: a;
+  position: absolute;
   z-index: 1;
 }
 
@@ -66,26 +57,20 @@ main {
   padding: 10px;
 }
 
-.text-gradient {
+.textGradient {
   background: -webkit-linear-gradient(#e6ebed, #0d9fc7);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
-h1 {
-  font-size: 2em;
-  margin: 0;
-  padding: 10px 0;
-  text-align: center;
-}
-
-.card-containers {
+.cardContainers {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
   gap: 10px;
   z-index: 0;
 }
-.title-bar {
+
+.titleBar {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -95,8 +80,7 @@ h1 {
   margin: 0 auto;
 }
 
-.behind-navbar {
-  /* background: transparent; */
+.behindNavbar {
   position: relative;
   top: -877px;
   display: flex;
@@ -104,11 +88,10 @@ h1 {
   justify-content: space-around;
   flex: 1;
   flex-shrink: 0;
-  /* align-items: center; */
   z-index: 0;
 }
 
-.countdown-bar {
+.countdownBar {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -116,14 +99,14 @@ h1 {
   flex: 1;
 }
 
-.weather-bar {
+.weatherBar {
   grid-row: 2;
   flex-direction: column;
   align-items: center;
   flex: 1;
 }
 
-.openingTimes-bar {
+.openingTimesBar {
   grid-row: 3;
   grid-column: span 2;
   flex-direction: column;
@@ -131,7 +114,7 @@ h1 {
   align-items: center;
 }
 
-.snacks-bar {
+.snacksBar {
   grid-row: 4;
   grid-column: span 2;
   flex-direction: column;
@@ -139,13 +122,14 @@ h1 {
   align-items: center;
 }
 
-.waitTimes-bar {
+.waitTimesBar {
   grid-row: 5;
   grid-column: span 2;
   flex-direction: column;
   justify-content: center;
   align-items: center;
 }
+
 .waitTimesNav {
   margin: 0.5em 0;
   display: flex;
@@ -153,7 +137,7 @@ h1 {
   align-items: center;
 }
 
-.itinerary-bar {
+.itineraryBar {
   grid-row: 6;
   grid-column: span 2;
   flex-direction: column;
@@ -165,4 +149,23 @@ h1 {
   display: flex;
   justify-content: space-between;
   align-items: center;
+}
+
+
+/* PROFILE */
+
+.profileDetails {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  grid-column: span 2;
+  margin: 0 auto;
+  text-align: center;
+}
+
+
+.profileAvatar {
+  width: 200px;
+  /* height: 100px; */
 }

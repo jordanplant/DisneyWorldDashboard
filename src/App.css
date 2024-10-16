@@ -1,6 +1,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&display=swap");
 
 #root {
+  --main-padding: 20px;
   --main-color: #00a9fe;
   --light-color: #f7f7ff;
   --dark-color: #2f3542;
@@ -11,8 +12,23 @@
 }
 
 body {
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
   background: var(--gradient);
   color: var(--light-color);
+}
+.main {
+  padding: var(--main-padding);
+}
+
+h1 {
+  font-size: 2em;
+  margin: 0;
+  padding: 10px 0;
+  text-align: center;
 }
 
 h2 {
@@ -24,7 +40,4 @@ h2 {
   padding: 10px 0px;
   margin: 0px;
 }
-
-
-
 

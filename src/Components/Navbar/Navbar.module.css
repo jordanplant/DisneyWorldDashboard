@@ -5,7 +5,7 @@
   z-index: 1000; /* Ensures the navbar is above other content */
   background-color: #333; /* Background color for the navbar */
   transition: all 0.3s ease;
-  padding: 10px 20px; /* Adjust padding as needed */
+  padding: 10px 20px;
   border-radius: 0px 0 20px 20px;
   background: rgba(255, 255, 255, 0.3); 
   -webkit-backdrop-filter: blur(10px);
@@ -15,6 +15,7 @@
   display: flex;
   justify-content: flex-end;
   align-items: center;
+  /* width: 100%; */
 }
 
 .navbarLinks {

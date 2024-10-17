@@ -8,13 +8,16 @@
   --gradient: linear-gradient(135deg, #153677, #4e085f);
   --gradientTwo: linear-gradient(135deg, #00fee5, #6f47ae);
   --opaque: #f7f7ffe9;
+  min-width: 320px;
   max-width: 480px;
 }
 
 body {
   margin: 0;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  justify-content: flex-start;
+
   align-items: center;
   min-height: 100vh;
   background: var(--gradient);
@@ -36,7 +39,7 @@ h2 {
   font-size: 1.5em;
   font-weight: 600;
   text-align: center;
-  text-transform: uppercase;
+  /* text-transform: uppercase; */
   padding: 10px 0px;
   margin: 0px;
 }

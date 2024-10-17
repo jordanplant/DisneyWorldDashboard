@@ -9,9 +9,9 @@ function App() {
 
   return (
     <>
-      <Navbar user={user} setUser={setUser} /> {/* Navbar visible on both pages */}
-      <Home user={user} setUser={setUser} />  {/* Home page always displayed */}
-      <Profile user={user} setUser={setUser} />  {/* Profile page always displayed */}
+      <Navbar user={user} setUser={setUser} /> 
+      <Profile user={user} setUser={setUser} />  
+      <Home user={user} setUser={setUser} /> 
     </>
   );
 }

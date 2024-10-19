@@ -1,0 +1,50 @@
+.tripList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.tripListItem {
+  margin-bottom: 1rem;
+  /* border: 1px solid #ddd; */
+  /* border-radius: 8px; */
+
+  /* background-color: hsl(0, 0%, 98%); */
+  /* transition: box-shadow 0.3s ease; */
+  border-bottom: 1px solid #ffffff18;
+}
+
+.tripListItem:hover {
+  /* box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); */
+}
+
+.tripDetails {
+  display: flex;
+  flex-direction: column;
+}
+
+.tripName {
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.tripDates {
+  font-size: 1rem;
+  color: #666;
+}
+
+.tripName {
+  max-width: 30ch;
+}
+
+.tripDates {
+  font-size: 12px;
+  max-width: 30ch;
+  color: #cccccc;
+  font-style: italic;
+}
+
+.snackPrice,
+.snackLocation {
+  /* padding: 0px 5px; */
+}

@@ -1,0 +1,31 @@
+.accordion {
+    /* border: 1px solid #ccc; */
+    border-radius: 5px;
+    margin-bottom: 1rem;
+    /* background-color: #fff; */
+  }
+  
+  .accordionTitle {
+    width: 100%;
+    height: 100%;
+    text-align: center;
+padding: .5em 0em;
+    cursor: pointer;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    font-size: 1.1rem;
+    border-radius: 8px;
+    transition: background-color 0.3s ease;
+  }
+  
+  .accordionTitle:hover {
+    background-color: #0056b3;
+  }
+  
+  .accordionContent {
+    padding: 1rem;
+    /* border-top: 1px solid #ddd; */
+    /* background-color: #f8f9fa; */
+  }
+  

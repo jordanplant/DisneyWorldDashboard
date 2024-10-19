@@ -1,5 +1,6 @@
 import React from "react";
 import styles from "./Pages.module.css";
+import TripStats from "../Components/Common/TripStats";
 
 const Profile = ({ user, setUser }) => {
   return (
@@ -41,8 +42,14 @@ const Profile = ({ user, setUser }) => {
               )}
             </div>
 
-            <div className={styles.profileStats}></div>
+            <div className={styles.profileStats}>
             <h2>Your Trips</h2>
+            <TripStats />
+
+
+    
+
+            </div>
           </div>
         </div>
       </main>

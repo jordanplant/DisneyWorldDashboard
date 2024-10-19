@@ -3,8 +3,8 @@ import styles from "./WaitTimes.module.css";
 import Events from "../Services/Events";
 import ParkIcons from "../Common/Icons";
 import ButtonContainer from "../Common/ButtonContainer";
+import AccordionToggle from "../Common/AccordionToggle";
 
-// Mapping configurations
 const locationParkMapping = {
   Orlando: [
     "75ea578a-adc8-4116-a54d-dccb60765ef9", // Magic Kingdom
@@ -18,7 +18,6 @@ const locationParkMapping = {
     "dae968d5-630d-4719-8b06-3d107e944401", // Disneyland Park Paris
     "ca888437-ebb4-4d50-aed2-d227f7096968", // Walt Disney Studios Paris
   ],
-  // Add more locations and park IDs as needed
 };
 
 const parkNameMapping = {
@@ -28,7 +27,6 @@ const parkNameMapping = {
   "Disney's Animal Kingdom Theme Park": "Animal Kingdom",
   "Disney's Typhoon Lagoon Water Park": "Typhoon Lagoon Water Park",
   "Disney's Blizzard Beach Water Park": "Blizzard Beach Water Park",
-  // Add any other variations you need
 };
 
 const parkIconMapping = {
@@ -94,15 +92,10 @@ const getEventDetails = (date, park) => {
   return null;
 };
 
-
-
-// Component definition
 function WaitTimesOpeningHours({ selectedCity }) {
   const [scheduleData, setScheduleData] = useState([]);
   const [loadingSchedule, setLoadingSchedule] = useState(true);
-  const [selectedDate, setSelectedDate] = useState(
-    new Date().toISOString().split("T")[0]
-  );
+  const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split("T")[0]);
   const [expandedParkIds, setExpandedParkIds] = useState({});
   const [error, setError] = useState(null);
 
@@ -132,13 +125,11 @@ function WaitTimesOpeningHours({ selectedCity }) {
 
       const data = await Promise.all(fetchPromises);
 
-      // Rename park names and log for verification
       const renamedData = data.map((parkSchedule) => ({
         ...parkSchedule,
         name: parkNameMapping[parkSchedule.name] || parkSchedule.name,
       }));
 
-      // console.log("Renamed Park Data:", renamedData);
       setScheduleData(renamedData);
     } catch (error) {
       console.error("An error occurred:", error);
@@ -148,38 +139,29 @@ function WaitTimesOpeningHours({ selectedCity }) {
     }
   };
 
-// Calculate next 5 days
-const calculateNextDays = () => {
-  const nextDays = [];
-  for (let i = 0; i < 5; i++) {
-    const date = new Date();
-    date.setDate(date.getDate() + i);
+  const calculateNextDays = () => {
+    const nextDays = [];
+    for (let i = 0; i < 5; i++) {
+      const date = new Date();
+      date.setDate(date.getDate() + i);
+      const formattedDate = date.toLocaleDateString("en-GB", {
+        day: "2-digit",
+        month: "short",
+      });
+      const [day, month] = formattedDate.split(" ");
+      const modifiedMonth = month.slice(0, 3);
 
-    // Format the date for display
-    const formattedDate = date.toLocaleDateString("en-GB", {
-      day: "2-digit",
-      month: "short",
-    });
-
-    // Ensure the month is always 3 characters long
-    const [day, month] = formattedDate.split(" ");
-    const modifiedMonth = month.slice(0, 3); // Get first 3 characters
-
-    nextDays.push({
-      date: date.toISOString().split("T")[0],
-      formattedDate: `${day} ${modifiedMonth}`, // Combine day and modified month
-      dayName: date.toLocaleDateString("en-GB", { weekday: "short" }),
-    });
-  }
-  return nextDays;
-};
-
-// console.log(calculateNextDays());
-
+      nextDays.push({
+        date: date.toISOString().split("T")[0],
+        formattedDate: `${day} ${modifiedMonth}`,
+        dayName: date.toLocaleDateString("en-GB", { weekday: "short" }),
+      });
+    }
+    return nextDays;
+  };
 
   const handleDateChange = (date) => setSelectedDate(date);
 
-  // Format time according to timezone
   const formatTime = (timestamp, timezone) => {
     let date = new Date(timestamp);
     if (date.getUTCHours() === 0 && timestamp.endsWith("T24:00:00")) {
@@ -194,7 +176,6 @@ const calculateNextDays = () => {
     return date.toLocaleTimeString("en-US", options);
   };
 
-  // Toggle expanded view for park details
   const toggleExpanded = (parkId) => {
     setExpandedParkIds((prevState) => ({
       ...prevState,
@@ -213,7 +194,6 @@ const calculateNextDays = () => {
     );
   };
 
-  // Generate next days for date buttons
   const nextDays = calculateNextDays();
 
   return (
@@ -241,53 +221,30 @@ const calculateNextDays = () => {
             {scheduleData.map((parkSchedule) => {
               const ParkIcon = parkIconMapping[parkSchedule.name];
               const isExpanded = expandedParkIds[parkSchedule.id] || false;
-              const showExpandButton = hasAdditionalTimes(
-                parkSchedule,
-                selectedDate
-              );
+              const showExpandButton = hasAdditionalTimes(parkSchedule, selectedDate);
+
               return (
-                <div
-                  className={styles.themeParkOpeningHours}
-                  key={parkSchedule.id}
-                >
+                <div className={styles.themeParkOpeningHours} key={parkSchedule.id}>
                   <div className={styles.parkDetails}>
                     <div className={styles.parkAndOperating}>
                       <div className={styles.iconAndPark}>
                         {ParkIcon && <ParkIcon active={false} />}
                         <div className={styles.parkAndHours}>
-                          <h3 className={styles.parkName}>
-                            {parkSchedule.name}
-                          </h3>
+                          <h3 className={styles.parkName}>{parkSchedule.name}</h3>
                           <div className={styles.operatingHours}>
                             {parkSchedule.schedule
-                              .filter(
-                                (entry) =>
-                                  entry.date === selectedDate &&
-                                  entry.type === "OPERATING"
-                              )
+                              .filter((entry) => entry.date === selectedDate && entry.type === "OPERATING")
                               .map((entry) => (
                                 <div key={entry.type}>
                                   <p className={styles.operatingEntryTime}>
-                                    {formatTime(
-                                      entry.openingTime,
-                                      parkSchedule.timezone
-                                    )}{" "}
-                                    -{" "}
-                                    {formatTime(
-                                      entry.closingTime,
-                                      parkSchedule.timezone
-                                    )}
+                                    {formatTime(entry.openingTime, parkSchedule.timezone)} - {formatTime(entry.closingTime, parkSchedule.timezone)}
                                   </p>
                                 </div>
                               ))}
                             {!parkSchedule.schedule.some(
-                              (entry) =>
-                                entry.date === selectedDate &&
-                                entry.type === "OPERATING"
+                              (entry) => entry.date === selectedDate && entry.type === "OPERATING"
                             ) && (
-                              <p className={`${styles.operatingClosed}`}>
-                                Closed Today
-                              </p>
+                              <p className={`${styles.operatingClosed}`}>Closed Today</p>
                             )}
                           </div>
                         </div>
@@ -295,118 +252,65 @@ const calculateNextDays = () => {
                     </div>
                     {showExpandButton && (
                       <div className={styles.dropdownButtonContainer}>
-                        <ButtonContainer
-                          onClick={() => toggleExpanded(parkSchedule.id)}
-                          isExpanded={isExpanded}
-                        />
+                        <ButtonContainer onClick={() => toggleExpanded(parkSchedule.id)} isExpanded={isExpanded} />
                       </div>
                     )}
                   </div>
-  
-                  {isExpanded && (
-                    <div className={styles.expandedHours}>
-                      {/* EARLY ENTRY */}
-                      {parkSchedule.schedule
-                        .filter(
-                          (entry) =>
-                            entry.date === selectedDate &&
-                            entry.description === "Early Entry"
-                        )
-                        .map((entry) => (
-                          <div key={entry.type}>
-                            <p className={styles.entryDescription}>
-                              {entry.description}
-                            </p>
-                            <p className={styles.entryTime}>
-                              {formatTime(
-                                entry.openingTime,
-                                parkSchedule.timezone
-                              )}{" "}
-                              -{" "}
-                              {formatTime(
-                                entry.closingTime,
-                                parkSchedule.timezone
-                              )}
-                            </p>
-                          </div>
-                        ))}
-                      {/* EXTRA HOURS */}
-                      {parkSchedule.schedule.some(
-                        (entry) =>
-                          entry.date === selectedDate &&
-                          entry.type === "EXTRA_HOURS"
-                      ) && (
-                        <div>
-                          {parkSchedule.schedule
-                            .filter(
-                              (entry) =>
-                                entry.date === selectedDate &&
-                                entry.type === "EXTRA_HOURS"
-                            )
-                            .map((entry) => (
-                              <div key={entry.type}>
-                                <p className={styles.entryDescription}>
-                                  {entry.description}
-                                </p>
-                                <p className={styles.entryTime}>
-                                  {formatTime(
-                                    entry.openingTime,
-                                    parkSchedule.timezone
-                                  )}{" "}
-                                  -{" "}
-                                  {formatTime(
-                                    entry.closingTime,
-                                    parkSchedule.timezone
-                                  )}
-                                </p>
-                              </div>
-                            ))}
-                        </div>
-                      )}
-                      {/* EXTENDED EVENING */}
-                      <div>
+
+                  {showExpandButton && (
+                    <AccordionToggle
+                      isExpanded={isExpanded}
+                    >
+                      <div className={styles.accordionContent}>
+                        {/* EARLY ENTRY */}
                         {parkSchedule.schedule
-                          .filter(
-                            (entry) =>
-                              entry.date === selectedDate &&
-                              entry.description === "Extended Evening"
-                          )
+                          .filter((entry) => entry.date === selectedDate && entry.description === "Early Entry")
                           .map((entry) => (
                             <div key={entry.type}>
-                              <p className={styles.entryDescription}>
-                                {entry.description}
-                              </p>
+                              <p className={styles.entryDescription}>{entry.description}</p>
                               <p className={styles.entryTime}>
-                                {formatTime(
-                                  entry.openingTime,
-                                  parkSchedule.timezone
-                                )}{" "}
-                                -{" "}
-                                {formatTime(
-                                  entry.closingTime,
-                                  parkSchedule.timezone
-                                )}
+                                {formatTime(entry.openingTime, parkSchedule.timezone)} - {formatTime(entry.closingTime, parkSchedule.timezone)}
                               </p>
                             </div>
                           ))}
-                      </div>
-                      {/* TICKETED EVENT */}
-                      <div>
+                        {/* EXTRA HOURS */}
+                        {parkSchedule.schedule.some(
+                          (entry) => entry.date === selectedDate && entry.type === "EXTRA_HOURS"
+                        ) && (
+                          <div>
+                            {parkSchedule.schedule
+                              .filter((entry) => entry.date === selectedDate && entry.type === "EXTRA_HOURS")
+                              .map((entry) => (
+                                <div key={entry.type}>
+                                  <p className={styles.entryDescription}>{entry.description}</p>
+                                  <p className={styles.entryTime}>
+                                    {formatTime(entry.openingTime, parkSchedule.timezone)} - {formatTime(entry.closingTime, parkSchedule.timezone)}
+                                  </p>
+                                </div>
+                              ))}
+                          </div>
+                        )}
+                        {/* EXTENDED EVENING */}
                         {parkSchedule.schedule
-                          .filter(
-                            (entry) =>
-                              entry.date === selectedDate &&
-                              entry.description === "Special Ticketed Event"
-                          )
+                          .filter((entry) => entry.date === selectedDate && entry.description === "Extended Evening")
+                          .map((entry) => (
+                            <div key={entry.type}>
+                              <p className={styles.entryDescription}>{entry.description}</p>
+                              <p className={styles.entryTime}>
+                                {formatTime(entry.openingTime, parkSchedule.timezone)} - {formatTime(entry.closingTime, parkSchedule.timezone)}
+                              </p>
+                            </div>
+                          ))}
+                        {/* TICKETED EVENT */}
+                        {parkSchedule.schedule
+                          .filter((entry) => entry.date === selectedDate && entry.description === "Special Ticketed Event")
                           .map((entry) => {
                             const eventDetails = getEventDetails(entry.date, parkSchedule.name);
                             const eventName = eventDetails?.eventName || entry.description;
-  
+
                             return (
                               <div key={entry.type}>
-                                <p className={styles.entryDescription}>
-                                  {eventName}
-                                </p>
+                                <p className={styles.entryDescription}>{eventName}</p>
                                 <p className={styles.entryTime}>
                                   {formatTime(entry.openingTime, parkSchedule.timezone)} - {formatTime(entry.closingTime, parkSchedule.timezone)}
                                 </p>
@@ -414,7 +318,7 @@ const calculateNextDays = () => {
                             );
                           })}
                       </div>
-                    </div>
+                    </AccordionToggle>
                   )}
                 </div>
               );
@@ -424,6 +328,6 @@ const calculateNextDays = () => {
       )}
     </div>
   );
-}  
+}
 
 export default WaitTimesOpeningHours;
